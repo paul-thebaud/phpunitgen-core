@@ -1,0 +1,9 @@
+# IDE.
+/\.idea/
+
+# Dependencies.
+/composer\.lock
+/vendor/
+
+# Cache.
+/\.phpunit\.result\.cache
