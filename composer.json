@@ -1,0 +1,49 @@
+{
+  "name": "phpunitgen/core",
+  "description": "The PhpUnitGen core features for tests generation.",
+  "license": "MIT",
+  "type": "library",
+  "keywords": [
+    "test",
+    "generation",
+    "generator"
+  ],
+  "support": {
+    "issues": "https://github.com/paul-thebaud/phpunitgen-core/issues",
+    "source": "https://github.com/paul-thebaud/phpunitgen-core"
+  },
+  "authors": [
+    {
+      "name": "Paul Thébaud",
+      "email": "paul.thebaud29@gmail.com"
+    },
+    {
+      "name": "Killian Hascoët",
+      "email": "killian.h@live.fr"
+    }
+  ],
+  "require": {
+    "php": "~7.2",
+    "league/container": "^3.2",
+    "roave/better-reflection": "^3.5"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.0",
+    "phpunit/phpunit": "^7.5 | ^8.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "PhpUnitGen\\Core\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PhpUnitGen\\Core\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
