@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use League\Container\Container;
+use PhpUnitGen\Core\Contracts\CodeParser as CodeParserContract;
+use PhpUnitGen\Core\Providers\CoreServiceProvider;
+
+if ($argc < 2) {
+    echo "you must provide the path to your PHP file as an argument\n";
+
+    exit(1);
+}
+
+echo "analysing {$argv[1]}\n";
+
+$container = new Container();
+
+$container->addServiceProvider(new CoreServiceProvider());
+
+/** @var CodeParserContract $codeParser */
+$codeParser = $container->get(CodeParserContract::class);
+
+try {
+    $reflectionClass = $codeParser->parse(
+        file_get_contents($argv[1])
+    );
+} catch (\Throwable $exception) {
+    echo "exception thrown: {$exception->getMessage()}\n";
+
+    exit(1);
+}
+
+echo "Class: {$reflectionClass->getName()} with ";
+echo count($reflectionClass->getImmediateMethods()) . " methods\n";
+foreach ($reflectionClass->getImmediateMethods() as $method) {
+    echo "Method: {$method->getName()} with ";
+    echo count($method->getParameters()) . " parameters\n";
+
+    foreach ($method->getParameters() as $key => $parameter) {
+        $type = (string)$parameter->getType();
+        echo "Param $key: {$parameter->getName()} [{$type}]\n";
+    }
+}
+
+exit(0);
+
