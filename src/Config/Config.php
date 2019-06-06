@@ -31,12 +31,7 @@ class Config
     public const MOCK_WITH_PHPUNIT = 'phpunit';
 
     /**
-     * @var bool $automaticConstruct If tested class's constructor should be invoked in "setUp" with mocked parameters.
-     */
-    protected $automaticConstruct = true;
-
-    /**
-     * @var bool $automaticTests If tests should be generated (getter, setter...).
+     * @var bool $automaticTests If instantiation and tests (getter, setter...) should be generated.
      */
     protected $automaticTests = true;
 
@@ -69,16 +64,6 @@ class Config
 
             $this->{$configurationKey} = $configurationValue;
         }
-    }
-
-    /**
-     * Check if this config allow automatic construct.
-     *
-     * @return bool
-     */
-    public function hasAutomaticConstruct(): bool
-    {
-        return (bool) $this->automaticConstruct;
     }
 
     /**

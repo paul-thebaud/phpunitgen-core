@@ -34,25 +34,16 @@ class ConfigTest extends TestCase
     public function testWhenCompleteConfigurationGiven(): void
     {
         $config = new Config([
-            'automaticConstruct' => false,
             'automaticTests'     => false,
             'mockWith'           => 'phpunit',
             'baseTestNamespace'  => '',
             'phpDocumentation'   => ['author' => 'John Doe'],
         ]);
 
-        $this->assertFalse($config->hasAutomaticConstruct());
         $this->assertFalse($config->hasAutomaticTests());
         $this->assertSame('phpunit', $config->getMockWith());
         $this->assertSame('', $config->getBaseTestNamespace());
         $this->assertSame(['author' => 'John Doe'], $config->getPhpDocumentation());
-    }
-
-    public function testWhenAutomaticConstructIsCasted(): void
-    {
-        $config = new Config(['automaticConstruct' => '']);
-
-        $this->assertFalse($config->hasAutomaticConstruct());
     }
 
     public function testWhenAutomaticTestIsCasted(): void
