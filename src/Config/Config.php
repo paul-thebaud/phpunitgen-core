@@ -17,6 +17,20 @@ use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 class Config
 {
     /**
+     * Generate mock construction with Mockery.
+     *
+     * @see https://github.com/mockery/mockery
+     */
+    public const MOCK_WITH_MOCKERY = 'mockery';
+
+    /**
+     * Generate mock construction with PHPUnit.
+     *
+     * @see https://github.com/sebastianbergmann/phpunit
+     */
+    public const MOCK_WITH_PHPUNIT = 'phpunit';
+
+    /**
      * @var bool $automaticConstruct If tested class's constructor should be invoked in "setUp" with mocked parameters.
      */
     protected $automaticConstruct = true;
@@ -25,6 +39,11 @@ class Config
      * @var bool $automaticTests If tests should be generated (getter, setter...).
      */
     protected $automaticTests = true;
+
+    /**
+     * @var string $mockWith Tells which library should be used to generate mock construction.
+     */
+    protected $mockWith = self::MOCK_WITH_MOCKERY;
 
     /**
      * @var string $baseTestNamespace The base namespace for the test class.
@@ -70,6 +89,16 @@ class Config
     public function hasAutomaticTests(): bool
     {
         return (bool) $this->automaticTests;
+    }
+
+    /**
+     * Get the mocking library to use.
+     *
+     * @return string
+     */
+    public function getMockWith(): string
+    {
+        return (string) $this->mockWith;
     }
 
     /**

@@ -36,12 +36,14 @@ class ConfigTest extends TestCase
         $config = new Config([
             'automaticConstruct' => false,
             'automaticTests'     => false,
+            'mockWith'           => 'phpunit',
             'baseTestNamespace'  => '',
             'phpDocumentation'   => ['author' => 'John Doe'],
         ]);
 
         $this->assertFalse($config->hasAutomaticConstruct());
         $this->assertFalse($config->hasAutomaticTests());
+        $this->assertSame('phpunit', $config->getMockWith());
         $this->assertSame('', $config->getBaseTestNamespace());
         $this->assertSame(['author' => 'John Doe'], $config->getPhpDocumentation());
     }
@@ -58,6 +60,13 @@ class ConfigTest extends TestCase
         $config = new Config(['automaticTests' => '']);
 
         $this->assertFalse($config->hasAutomaticTests());
+    }
+
+    public function testWhenMockWithIsCasted(): void
+    {
+        $config = new Config(['mockWith' => null]);
+
+        $this->assertSame('', $config->getMockWith());
     }
 
     public function testWhenBaseTestNamespaceIsCasted(): void
