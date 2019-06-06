@@ -10,7 +10,7 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 /**
  * Interface CodeParser.
  *
- * Methods for code parsing.
+ * An object which can parse a code to retrieve a ReflectionClass.
  *
  * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
@@ -22,11 +22,11 @@ interface CodeParser
     /**
      * Parse a code source and build the ReflectionClass from it.
      *
-     * @param string $code
+     * @param Source $source
      *
      * @return ReflectionClass
      *
      * @throws InvalidArgumentException
      */
-    public function parse(string $code): ReflectionClass;
+    public function parse(Source $source): ReflectionClass;
 }

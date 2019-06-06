@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Parsers;
 
 use PhpUnitGen\Core\Contracts\CodeParser as CodeParserContract;
+use PhpUnitGen\Core\Contracts\Source;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -40,10 +41,10 @@ class CodeParser implements CodeParserContract
     /**
      * {@inheritDoc}
      */
-    public function parse(string $code): ReflectionClass
+    public function parse(Source $source): ReflectionClass
     {
         $reflector = new ClassReflector(
-            new StringSourceLocator($code, $this->astLocator)
+            new StringSourceLocator($source->toString(), $this->astLocator)
         );
 
         $classes = $reflector->getAllClasses();
