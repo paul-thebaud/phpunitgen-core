@@ -16,7 +16,7 @@ use Roave\BetterReflection\BetterReflection;
  *
  * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
- * @author  Killian Hascoët <killian.h@live.fr>
+ * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
 class CoreServiceProvider extends AbstractServiceProvider
@@ -36,7 +36,6 @@ class CoreServiceProvider extends AbstractServiceProvider
         /** @var Container $container */
         $container = $this->getContainer();
 
-        $container->defaultToShared();
         $container->delegate(
             (new ReflectionContainer())->cacheResolutions()
         );

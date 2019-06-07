@@ -14,7 +14,7 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
  *
  * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
- * @author  Killian Hascoët <killian.h@live.fr>
+ * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
 interface CodeParser

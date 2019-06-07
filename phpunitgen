@@ -6,6 +6,7 @@ require __DIR__ . '/vendor/autoload.php';
 use League\Container\Container;
 use PhpUnitGen\Core\Contracts\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Providers\CoreServiceProvider;
+use PhpUnitGen\Core\Sources\StringSource;
 
 if ($argc < 2) {
     echo "you must provide the path to your PHP file as an argument\n";
@@ -24,7 +25,7 @@ $codeParser = $container->get(CodeParserContract::class);
 
 try {
     $reflectionClass = $codeParser->parse(
-        file_get_contents($argv[1])
+        new StringSource(file_get_contents($argv[1]))
     );
 } catch (\Throwable $exception) {
     echo "exception thrown: {$exception->getMessage()}\n";

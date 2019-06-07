@@ -11,7 +11,7 @@ use InvalidArgumentException as BaseInvalidArgumentException;
  *
  * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
- * @author  Killian Hascoët <killian.h@live.fr>
+ * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
 class InvalidArgumentException extends BaseInvalidArgumentException

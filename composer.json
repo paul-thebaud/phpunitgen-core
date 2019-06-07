@@ -19,11 +19,12 @@
     },
     {
       "name": "Killian Hascoët",
-      "email": "killian.h@live.fr"
+      "email": "killianh@live.fr"
     }
   ],
   "require": {
     "php": "~7.2",
+    "brianium/paratest": "^3.0",
     "league/container": "^3.2",
     "roave/better-reflection": "^3.5"
   },
