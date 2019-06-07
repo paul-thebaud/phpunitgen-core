@@ -64,7 +64,9 @@ class Config
     {
         foreach ($configuration as $configurationKey => $configurationValue) {
             if (! is_string($configurationKey) || ! property_exists($this, $configurationKey)) {
-                throw new InvalidArgumentException("configuration key {$configurationKey} does not exists");
+                throw new InvalidArgumentException(
+                    "configuration key {$configurationKey} does not exists"
+                );
             }
 
             $this->{$configurationKey} = $configurationValue;
