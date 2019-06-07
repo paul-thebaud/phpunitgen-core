@@ -67,8 +67,6 @@ class Config
     }
 
     /**
-     * Check if this config allow automatic tests.
-     *
      * @return bool
      */
     public function hasAutomaticTests(): bool
@@ -77,8 +75,6 @@ class Config
     }
 
     /**
-     * Get the mocking library to use.
-     *
      * @return string
      */
     public function getMockWith(): string
@@ -87,8 +83,6 @@ class Config
     }
 
     /**
-     * Get the base namespace for test.
-     *
      * @return string
      */
     public function getBaseTestNamespace(): string
@@ -97,8 +91,6 @@ class Config
     }
 
     /**
-     * Get the PHP documentation for test.
-     *
      * @return array
      */
     public function getPhpDocumentation(): array
