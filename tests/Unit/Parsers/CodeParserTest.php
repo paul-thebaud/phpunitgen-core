@@ -41,7 +41,9 @@ class CodeParserTest extends TestCase
     public function testItThrowsAnExceptionWhenNoClassInCode(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('code contains less or more than one class/interface/trait');
+        $this->expectExceptionMessage(
+            'code must contains exactly one class/interface/trait, found 0'
+        );
 
         $this->codeParser->parse(new StringSource('<?php'));
     }
@@ -49,7 +51,9 @@ class CodeParserTest extends TestCase
     public function testItThrowsAnExceptionWhenTooMuchClassesInCode(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('code contains less or more than one class/interface/trait');
+        $this->expectExceptionMessage(
+            'code must contains exactly one class/interface/trait, found 2'
+        );
 
         $this->codeParser->parse(new StringSource('<?php class Foo {} class Bar {}'));
     }

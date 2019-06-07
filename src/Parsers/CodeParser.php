@@ -47,9 +47,12 @@ class CodeParser implements CodeParserContract
             new StringSourceLocator($source->toString(), $this->astLocator)
         );
 
-        $classes = $reflector->getAllClasses();
-        if (count($classes) !== 1) {
-            throw new InvalidArgumentException('code contains less or more than one class/interface/trait');
+        $classes      = $reflector->getAllClasses();
+        $classesCount = count($classes);
+        if ($classesCount !== 1) {
+            throw new InvalidArgumentException(
+                "code must contains exactly one class/interface/trait, found {$classesCount}"
+            );
         }
 
         return $classes[0];
