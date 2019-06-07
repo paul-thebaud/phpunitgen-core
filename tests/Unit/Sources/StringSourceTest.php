@@ -14,7 +14,7 @@ use PhpUnitGen\Core\Sources\StringSource;
  */
 class StringSourceTest extends TestCase
 {
-    public function testStringSourceRetrievesSource(): void
+    public function testItRetrievesSourceCode(): void
     {
         $source = new StringSource('<?php class Foo {}');
 

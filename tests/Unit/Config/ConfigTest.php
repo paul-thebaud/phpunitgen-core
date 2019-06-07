@@ -15,7 +15,7 @@ use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
  */
 class ConfigTest extends TestCase
 {
-    public function testWhenInvalidKeyGiven(): void
+    public function testItThrowsAnExceptionWhenKeyIsInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('configuration key 0 does not exists');
@@ -23,7 +23,7 @@ class ConfigTest extends TestCase
         new Config(['unknownValue']);
     }
 
-    public function testWhenUnknownKeyGiven(): void
+    public function testItThrowsAnExceptionWhenKeyIsUnknown(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('configuration key unknownKey does not exists');
@@ -31,7 +31,7 @@ class ConfigTest extends TestCase
         new Config(['unknownKey' => 'unknownValue']);
     }
 
-    public function testWhenCompleteConfigurationGiven(): void
+    public function testItConstructWithCompleteConfiguration(): void
     {
         $config = new Config([
             'automaticTests'    => false,
@@ -48,35 +48,35 @@ class ConfigTest extends TestCase
         $this->assertSame(['author' => 'John Doe'], $config->getPhpDocumentation());
     }
 
-    public function testWhenAutomaticTestIsCasted(): void
+    public function testItCastOnHasAutomaticTest(): void
     {
         $config = new Config(['automaticTests' => '']);
 
         $this->assertFalse($config->hasAutomaticTests());
     }
 
-    public function testWhenMockWithIsCasted(): void
+    public function testItCastOnGetMockWith(): void
     {
         $config = new Config(['mockWith' => null]);
 
         $this->assertSame('', $config->getMockWith());
     }
 
-    public function testWhenBaseNamespaceIsCasted(): void
+    public function testItCastOnGetBaseNamespace(): void
     {
         $config = new Config(['baseNamespace' => null]);
 
         $this->assertSame('', $config->getBaseNamespace());
     }
 
-    public function testWhenBaseTestNamespaceIsCasted(): void
+    public function testItCastOnGetBaseTestNamespace(): void
     {
         $config = new Config(['baseTestNamespace' => null]);
 
         $this->assertSame('', $config->getBaseTestNamespace());
     }
 
-    public function testWhenPhpDocumentationIsCasted(): void
+    public function testItCastOnGetPhpDocumentation(): void
     {
         $config = new Config(['phpDocumentation' => null]);
 

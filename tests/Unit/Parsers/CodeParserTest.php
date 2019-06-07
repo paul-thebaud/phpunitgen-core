@@ -38,7 +38,7 @@ class CodeParserTest extends TestCase
         $this->codeParser = new CodeParser(new BetterReflection());
     }
 
-    public function testWhenNoClassInCode(): void
+    public function testItThrowsAnExceptionWhenNoClassInCode(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('code contains less or more than one class/interface/trait');
@@ -46,7 +46,7 @@ class CodeParserTest extends TestCase
         $this->codeParser->parse(new StringSource('<?php'));
     }
 
-    public function testWhenTooMuchClassesInCode(): void
+    public function testItThrowsAnExceptionWhenTooMuchClassesInCode(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('code contains less or more than one class/interface/trait');
@@ -54,7 +54,7 @@ class CodeParserTest extends TestCase
         $this->codeParser->parse(new StringSource('<?php class Foo {} class Bar {}'));
     }
 
-    public function testWhenOnlyOneClassInCode(): void
+    public function testItReturnsReflectionClass(): void
     {
         $class = $this->codeParser->parse(new StringSource('<?php class Foo {}'));
 
