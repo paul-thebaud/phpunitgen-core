@@ -26,11 +26,12 @@
     "php": "~7.2",
     "brianium/paratest": "^3.0",
     "league/container": "^3.2",
-    "roave/better-reflection": "^3.5"
+    "roave/better-reflection": "^3.5",
+    "tightenco/collect": "^5.8"
   },
   "require-dev": {
     "mockery/mockery": "^1.0",
-    "phpunit/phpunit": "^7.5 | ^8.1"
+    "phpunit/phpunit": "^8.1"
   },
   "autoload": {
     "psr-4": {
