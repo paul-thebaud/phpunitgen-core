@@ -41,6 +41,11 @@ class Config
     protected $mockWith = self::MOCK_WITH_MOCKERY;
 
     /**
+     * @var string $baseNamespace The base namespace of source code.
+     */
+    protected $baseNamespace = '';
+
+    /**
      * @var string $baseTestNamespace The base namespace for the test class.
      */
     protected $baseTestNamespace = 'Tests\\';
@@ -80,6 +85,14 @@ class Config
     public function getMockWith(): string
     {
         return (string) $this->mockWith;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseNamespace(): string
+    {
+        return (string) $this->baseNamespace;
     }
 
     /**
