@@ -8,20 +8,20 @@ use League\Container\Container;
 use PHPUnit\Framework\TestCase;
 use PhpUnitGen\Core\Contracts\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Parsers\CodeParser;
-use PhpUnitGen\Core\Providers\CoreServiceProvider;
+use PhpUnitGen\Core\Providers\PhpUnitGenCoreServiceProvider;
 
 /**
- * Class CoreServiceProviderTest.
+ * Class PhpUnitGenCoreServiceProviderTest.
  *
- * @covers CoreServiceProvider
+ * @covers PhpUnitGenCoreServiceProvider
  */
-class CoreServiceProviderTest extends TestCase
+class PhpUnitGenCoreServiceProviderTest extends TestCase
 {
     public function testItProvidesCodeParserContractImplementation(): void
     {
         $container = new Container();
 
-        $container->addServiceProvider(new CoreServiceProvider());
+        $container->addServiceProvider(new PhpUnitGenCoreServiceProvider());
 
         $this->assertInstanceOf(CodeParser::class, $container->get(CodeParserContract::class));
     }

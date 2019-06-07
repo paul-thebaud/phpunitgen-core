@@ -12,14 +12,14 @@ use PhpUnitGen\Core\Parsers\CodeParser;
 use Roave\BetterReflection\BetterReflection;
 
 /**
- * Class CoreServiceProvider.
+ * Class PhpUnitGenCoreServiceProvider.
  *
  * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class CoreServiceProvider extends AbstractServiceProvider
+class PhpUnitGenCoreServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var string[] $provides

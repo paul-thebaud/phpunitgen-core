@@ -5,7 +5,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use League\Container\Container;
 use PhpUnitGen\Core\Contracts\CodeParser as CodeParserContract;
-use PhpUnitGen\Core\Providers\CoreServiceProvider;
+use PhpUnitGen\Core\Providers\PhpUnitGenCoreServiceProvider;
 use PhpUnitGen\Core\Sources\StringSource;
 
 if ($argc < 2) {
@@ -18,7 +18,7 @@ echo "analysing {$argv[1]}\n";
 
 $container = new Container();
 
-$container->addServiceProvider(new CoreServiceProvider());
+$container->addServiceProvider(new PhpUnitGenCoreServiceProvider());
 
 /** @var CodeParserContract $codeParser */
 $codeParser = $container->get(CodeParserContract::class);
