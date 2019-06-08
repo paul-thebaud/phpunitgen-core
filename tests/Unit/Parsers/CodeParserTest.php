@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use Mockery\Mock;
-use Tests\PhpUnitGen\Core\TestCase;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Parsers\Sources\StringSource;
 use Roave\BetterReflection\BetterReflection;
+use Tests\PhpUnitGen\Core\TestCase;
 
 /**
  * Class CodeParserTest.

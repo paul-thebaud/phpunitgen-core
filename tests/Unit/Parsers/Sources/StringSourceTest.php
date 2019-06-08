@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\PhpUnitGen\Core\Unit\Parsers\Sources;
 
-use Tests\PhpUnitGen\Core\TestCase;
 use PhpUnitGen\Core\Parsers\Sources\StringSource;
+use Tests\PhpUnitGen\Core\TestCase;
 
 /**
  * Class StringSourceTest.
