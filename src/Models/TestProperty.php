@@ -47,7 +47,7 @@ class TestProperty implements Renderable
         TestClass $testClass,
         string $name,
         string $class,
-        bool $isTestedClass
+        bool $isTestedClass = false
     ) {
         $this->testClass = $testClass->addProperty($this);
 
