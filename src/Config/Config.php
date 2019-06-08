@@ -36,9 +36,14 @@ class Config
     protected $automaticTests = true;
 
     /**
-     * @var string $mockWith Tells which library should be used to generate mock construction.
+     * @var string $mockWith Tells which generator should be used to generate mock construction.
      */
-    protected $mockWith = self::MOCK_WITH_MOCKERY;
+    protected $mockWith;
+
+    /**
+     * @var string $generateWith Tells which generator should be used to test class.
+     */
+    protected $generateWith;
 
     /**
      * @var string $baseNamespace The base namespace of source code.

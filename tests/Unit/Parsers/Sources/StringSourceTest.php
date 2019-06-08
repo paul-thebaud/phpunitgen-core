@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PhpUnitGen\Core\Tests\Unit\Parsers;
+namespace Tests\PhpUnitGen\Core\Unit\Parsers\Sources;
 
-use PHPUnit\Framework\TestCase;
-use PhpUnitGen\Core\Sources\StringSource;
+use Tests\PhpUnitGen\Core\TestCase;
+use PhpUnitGen\Core\Parsers\Sources\StringSource;
 
 /**
  * Class StringSourceTest.
  *
- * @covers StringSource
+ * @covers \PhpUnitGen\Core\Parsers\Sources\StringSource
  */
 class StringSourceTest extends TestCase
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhpUnitGen\Core\Sources;
+namespace PhpUnitGen\Core\Parsers\Sources;
 
-use PhpUnitGen\Core\Contracts\Source;
+use PhpUnitGen\Core\Contracts\Parsers\Source;
 
 /**
  * Class StringSource.

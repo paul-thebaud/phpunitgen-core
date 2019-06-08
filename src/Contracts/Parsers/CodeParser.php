@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpUnitGen\Core\Contracts;
+namespace PhpUnitGen\Core\Contracts\Parsers;
 
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use Roave\BetterReflection\Reflection\ReflectionClass;

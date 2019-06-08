@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PhpUnitGen\Core\Tests\Unit\Parsers;
+namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
-use PHPUnit\Framework\TestCase;
+use Tests\PhpUnitGen\Core\TestCase;
 use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 
 /**
  * Class ConfigTest.
  *
- * @covers Config
+ * @covers \PhpUnitGen\Core\Config\Config
  */
 class ConfigTest extends TestCase
 {

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PhpUnitGen\Core\Tests\Unit\Parsers;
+namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use Mockery\Mock;
-use PHPUnit\Framework\TestCase;
+use Tests\PhpUnitGen\Core\TestCase;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Parsers\CodeParser;
-use PhpUnitGen\Core\Sources\StringSource;
+use PhpUnitGen\Core\Parsers\Sources\StringSource;
 use Roave\BetterReflection\BetterReflection;
 
 /**
  * Class CodeParserTest.
  *
- * @covers CodeParser
+ * @covers \PhpUnitGen\Core\Parsers\CodeParser
  */
 class CodeParserTest extends TestCase
 {
