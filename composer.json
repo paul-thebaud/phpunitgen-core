@@ -40,7 +40,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "PhpUnitGen\\Core\\Tests\\": "tests/"
+      "Tests\\PhpUnitGen\\Core\\": "tests/"
     }
   },
   "config": {
