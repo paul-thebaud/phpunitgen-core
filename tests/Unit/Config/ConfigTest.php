@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
-use Tests\PhpUnitGen\Core\TestCase;
 use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
+use Tests\PhpUnitGen\Core\TestCase;
 
 /**
  * Class ConfigTest.
@@ -36,6 +36,7 @@ class ConfigTest extends TestCase
         $config = new Config([
             'automaticTests'    => false,
             'mockWith'          => 'phpunit',
+            'generateWith'      => 'basic',
             'baseNamespace'     => 'App\\',
             'baseTestNamespace' => '',
             'phpDocumentation'  => ['author' => 'John Doe'],
@@ -43,6 +44,7 @@ class ConfigTest extends TestCase
 
         $this->assertFalse($config->hasAutomaticTests());
         $this->assertSame('phpunit', $config->getMockWith());
+        $this->assertSame('basic', $config->getGenerateWith());
         $this->assertSame('App\\', $config->getBaseNamespace());
         $this->assertSame('', $config->getBaseTestNamespace());
         $this->assertSame(['author' => 'John Doe'], $config->getPhpDocumentation());
@@ -55,6 +57,13 @@ class ConfigTest extends TestCase
         $this->assertFalse($config->hasAutomaticTests());
     }
 
+    public function testItCastOnGetBaseNamespace(): void
+    {
+        $config = new Config(['baseNamespace' => null]);
+
+        $this->assertSame('', $config->getBaseNamespace());
+    }
+
     public function testItCastOnGetMockWith(): void
     {
         $config = new Config(['mockWith' => null]);
@@ -62,11 +71,11 @@ class ConfigTest extends TestCase
         $this->assertSame('', $config->getMockWith());
     }
 
-    public function testItCastOnGetBaseNamespace(): void
+    public function testItCastOnGetGenerateWith(): void
     {
-        $config = new Config(['baseNamespace' => null]);
+        $config = new Config(['generateWith' => null]);
 
-        $this->assertSame('', $config->getBaseNamespace());
+        $this->assertSame('', $config->getGenerateWith());
     }
 
     public function testItCastOnGetBaseTestNamespace(): void
