@@ -24,12 +24,12 @@
   ],
   "require": {
     "php": "~7.2",
-    "brianium/paratest": "^3.0",
     "league/container": "^3.2",
     "roave/better-reflection": "^3.5",
     "tightenco/collect": "^5.8"
   },
   "require-dev": {
+    "brianium/paratest": "^3.0",
     "mockery/mockery": "^1.0",
     "phpunit/phpunit": "^8.1"
   },
