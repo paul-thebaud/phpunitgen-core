@@ -1,12 +1,23 @@
 language: php
 
+dist: trusty
+
+addons:
+  sonarcloud:
+    organization: "paul-thebaud-github"
+    token:
+      secure: "$SONAR_TOKEN"
+
 php:
   - 7.2
   - 7.3
 
 before_script:
+  - phpenv config-rm xdebug.ini
   - composer self-update
+  - composer global require hirak/prestissimo
   - composer install --no-interaction
 
 script:
-  - vendor/bin/phpunit
+  - phpdbg -qrr vendor/bin/phpunit
+  - sonar-scanner
