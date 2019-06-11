@@ -19,5 +19,5 @@ before_script:
   - composer install --no-interaction
 
 script:
-  - phpdbg -qrr vendor/bin/phpunit
+  - phpdbg -qrr vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover=coverage-report.clover --log-junit=test-report.xml
   - sonar-scanner
