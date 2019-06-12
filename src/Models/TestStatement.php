@@ -11,7 +11,6 @@ use PhpUnitGen\Core\Models\Concerns\HasTestMethodParent;
 /**
  * Class TestStatement.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -21,7 +20,7 @@ class TestStatement implements Renderable
     use HasTestMethodParent;
 
     /**
-     * @var string $statement The statement.
+     * @var string The statement.
      */
     protected $statement;
 
@@ -39,7 +38,7 @@ class TestStatement implements Renderable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function accept(Renderer $renderer): void
     {

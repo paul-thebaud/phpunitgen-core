@@ -11,7 +11,6 @@ use PhpUnitGen\Core\Models\Concerns\HasTestClassParent;
 /**
  * Class TestTrait.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -21,7 +20,7 @@ class TestTrait implements Renderable
     use HasTestClassParent;
 
     /**
-     * @var string $name The name of the class (not including namespace).
+     * @var string The name of the class (not including namespace).
      */
     protected $name;
 
@@ -39,7 +38,7 @@ class TestTrait implements Renderable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function accept(Renderer $renderer): void
     {

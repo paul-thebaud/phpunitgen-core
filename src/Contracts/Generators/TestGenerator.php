@@ -12,7 +12,6 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
  *
  * A strategy to generate test classes.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT

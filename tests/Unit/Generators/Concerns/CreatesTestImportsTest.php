@@ -20,17 +20,17 @@ use Tests\PhpUnitGen\Core\TestCase;
 class CreatesTestImportsTest extends TestCase
 {
     /**
-     * @var TestClass $class
+     * @var TestClass
      */
     protected $class;
 
     /**
-     * @var CreatesTestImports $createsTestImports
+     * @var CreatesTestImports
      */
     protected $createsTestImports;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {

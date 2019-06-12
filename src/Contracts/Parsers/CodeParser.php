@@ -12,7 +12,6 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
  *
  * An object which can parse a code to retrieve a ReflectionClass.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT

@@ -11,7 +11,6 @@ use PhpUnitGen\Core\Models\TestClass;
  *
  * The mock generator for Mockery.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT

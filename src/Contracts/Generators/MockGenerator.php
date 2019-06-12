@@ -13,7 +13,6 @@ use Roave\BetterReflection\Reflection\ReflectionParameter;
  *
  * A strategy to generate mock properties and statements.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
