@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Mocks;
 
-use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
-use PhpUnitGen\Core\Generators\Concerns\CreatesTestImports;
 use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestMethod;
-use PhpUnitGen\Core\Models\TestProperty;
-use PhpUnitGen\Core\Models\TestStatement;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 /**
  * Class MockeryMockGenerator.
@@ -22,43 +16,23 @@ use Roave\BetterReflection\Reflection\ReflectionParameter;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class MockeryMockGenerator implements MockGenerator
+class MockeryMockGenerator extends AbstractMockGenerator
 {
-    use CreatesTestImports;
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function generateProperty(TestClass $class, ReflectionParameter $parameter): void
+    protected function getMockClass(): string
     {
-        $type = $parameter->getType();
-        if (! $type || $type->isBuiltin()) {
-            return;
-        }
-
-        new TestProperty(
-            $class,
-            $parameter->getName() . 'Mock',
-            $this->createTestImport($class, 'Mockery\\Mock')
-        );
+        return 'Mockery\\Mock';
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function generateStatement(TestMethod $method, ReflectionParameter $parameter): void
+    protected function getMockCreationLine(TestClass $testClass, string $class): string
     {
-        $type = $parameter->getType();
-        if (! $type || $type->isBuiltin()) {
-            return;
-        }
+        $mockeryImport = $this->createTestImport($testClass, 'Mockery');
 
-        $mockeryImport = $this->createTestImport($method->getTestClass(), 'Mockery');
-        $classImport   = $this->createTestImport($method->getTestClass(), (string) $type);
-
-        new TestStatement(
-            $method,
-            "\$this->{$parameter->getName()}Mock = {$mockeryImport}::mock({$classImport}::class);"
-        );
+        return "{$mockeryImport}::mock({$class}::class);";
     }
 }
