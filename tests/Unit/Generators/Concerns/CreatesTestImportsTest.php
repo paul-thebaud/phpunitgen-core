@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use Mockery;
-use PhpUnitGen\Core\Generators\Concerns\UsesImports;
+use PhpUnitGen\Core\Generators\Concerns\CreatesTestImports;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
@@ -13,11 +13,11 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
- * Class UsesImportsTest.
+ * Class CreatesTestImportsTest.
  *
- * @covers \PhpUnitGen\Core\Generators\Concerns\UsesImports
+ * @covers \PhpUnitGen\Core\Generators\Concerns\CreatesTestImports
  */
-class UsesImportsTest extends TestCase
+class CreatesTestImportsTest extends TestCase
 {
     /**
      * @var TestClass $class
@@ -25,9 +25,9 @@ class UsesImportsTest extends TestCase
     protected $class;
 
     /**
-     * @var UsesImports $usesImports
+     * @var CreatesTestImports $createsTestImports
      */
-    protected $usesImports;
+    protected $createsTestImports;
 
     /**
      * {@inheritDoc}
@@ -36,7 +36,7 @@ class UsesImportsTest extends TestCase
     {
         parent::setUp();
 
-        $this->usesImports = new MockeryMockGenerator();
+        $this->createsTestImports = new MockeryMockGenerator();
 
         $this->class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
     }
@@ -46,8 +46,8 @@ class UsesImportsTest extends TestCase
         new TestImport($this->class, 'Foo\\Bar\\Baz');
 
         $class = $this->callProtectedMethod(
-            $this->usesImports,
-            'importClass',
+            $this->createsTestImports,
+            'createTestImport',
             $this->class,
             'Foo\\Bar\\Baz'
         );
@@ -61,8 +61,8 @@ class UsesImportsTest extends TestCase
         new TestImport($this->class, 'Foo\\Bar\\Baz', 'BazAlias');
 
         $class = $this->callProtectedMethod(
-            $this->usesImports,
-            'importClass',
+            $this->createsTestImports,
+            'createTestImport',
             $this->class,
             'Foo\\Bar\\Baz'
         );
@@ -74,8 +74,8 @@ class UsesImportsTest extends TestCase
     public function testItReturnsNotImportedClassWithoutAliasing(): void
     {
         $class = $this->callProtectedMethod(
-            $this->usesImports,
-            'importClass',
+            $this->createsTestImports,
+            'createTestImport',
             $this->class,
             'Foo\\Bar\\Baz'
         );
@@ -89,8 +89,8 @@ class UsesImportsTest extends TestCase
         new TestImport($this->class, 'Foo\\Bar\\BazModel', 'Baz');
 
         $class = $this->callProtectedMethod(
-            $this->usesImports,
-            'importClass',
+            $this->createsTestImports,
+            'createTestImport',
             $this->class,
             'Foo\\Bar\\Baz'
         );
@@ -105,8 +105,8 @@ class UsesImportsTest extends TestCase
         new TestImport($this->class, 'Foo\\Bar\\BazBar', 'BazAlias');
 
         $class = $this->callProtectedMethod(
-            $this->usesImports,
-            'importClass',
+            $this->createsTestImports,
+            'createTestImport',
             $this->class,
             'Foo\\Bar\\Baz'
         );

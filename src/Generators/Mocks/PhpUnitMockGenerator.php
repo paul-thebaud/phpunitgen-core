@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Generators\Mocks;
 
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
-use PhpUnitGen\Core\Generators\Concerns\UsesImports;
+use PhpUnitGen\Core\Generators\Concerns\CreatesTestImports;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestProperty;
@@ -24,7 +24,7 @@ use Roave\BetterReflection\Reflection\ReflectionParameter;
  */
 class PhpUnitMockGenerator implements MockGenerator
 {
-    use UsesImports;
+    use CreatesTestImports;
 
     /**
      * {@inheritDoc}
@@ -39,7 +39,7 @@ class PhpUnitMockGenerator implements MockGenerator
         new TestProperty(
             $class,
             $parameter->getName() . 'Mock',
-            $this->importClass($class, 'PHPUnit\\Framework\\MockObject\\MockObject')
+            $this->createTestImport($class, 'PHPUnit\\Framework\\MockObject\\MockObject')
         );
     }
 
@@ -53,7 +53,7 @@ class PhpUnitMockGenerator implements MockGenerator
             return;
         }
 
-        $classImport = $this->importClass($method->getTestClass(), (string) $type);
+        $classImport = $this->createTestImport($method->getTestClass(), (string) $type);
 
         new TestStatement(
             $method,
