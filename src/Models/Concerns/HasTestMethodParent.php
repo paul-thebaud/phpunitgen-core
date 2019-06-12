@@ -9,7 +9,6 @@ use PhpUnitGen\Core\Models\TestMethod;
 /**
  * Trait HasTestMethodParent.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -17,7 +16,7 @@ use PhpUnitGen\Core\Models\TestMethod;
 trait HasTestMethodParent
 {
     /**
-     * @var TestMethod $testMethod The parent test method.
+     * @var TestMethod The parent test method.
      */
     protected $testMethod;
 

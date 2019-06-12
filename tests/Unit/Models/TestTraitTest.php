@@ -19,17 +19,17 @@ use Tests\PhpUnitGen\Core\TestCase;
 class TestTraitTest extends TestCase
 {
     /**
-     * @var TestClass $class
+     * @var TestClass
      */
     protected $class;
 
     /**
-     * @var TestTrait $trait
+     * @var TestTrait
      */
     protected $trait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {

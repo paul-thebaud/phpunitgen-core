@@ -19,23 +19,23 @@ use Tests\PhpUnitGen\Core\TestCase;
 class TestImportTest extends TestCase
 {
     /**
-     * @var TestClass $class
+     * @var TestClass
      */
     protected $class;
 
     /**
-     * @var TestImport $import
+     * @var TestImport
      */
     protected $import;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->class  = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $this->class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
         $this->import = new TestImport($this->class, 'Bar', 'BarAlias');
     }
 

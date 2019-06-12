@@ -9,7 +9,6 @@ use PhpUnitGen\Core\Models\TestClass;
 /**
  * Trait HasTestClassParent.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -17,7 +16,7 @@ use PhpUnitGen\Core\Models\TestClass;
 trait HasTestClassParent
 {
     /**
-     * @var TestClass $testClass The parent test class.
+     * @var TestClass The parent test class.
      */
     protected $testClass;
 

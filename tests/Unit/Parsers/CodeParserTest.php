@@ -24,12 +24,12 @@ class CodeParserTest extends TestCase
     protected $betterReflection;
 
     /**
-     * @var CodeParser $codeParser
+     * @var CodeParser
      */
     protected $codeParser;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {

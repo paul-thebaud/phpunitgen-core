@@ -7,7 +7,6 @@ namespace PhpUnitGen\Core\Providers;
 use League\Container\Container;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use PhpUnitGen\Core\Config\Config;
-use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
@@ -23,7 +22,6 @@ use Roave\BetterReflection\BetterReflection;
 /**
  * Class CoreServiceProvider.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -31,7 +29,7 @@ use Roave\BetterReflection\BetterReflection;
 class CoreServiceProvider extends AbstractServiceProvider
 {
     /**
-     * @var string[] $provides
+     * @var string[]
      */
     protected $provides = [
         Config::class,
@@ -42,17 +40,17 @@ class CoreServiceProvider extends AbstractServiceProvider
     ];
 
     /**
-     * @var callable[] $mockGeneratorResolvers The mock generator resolvers.
+     * @var callable[] The mock generator resolvers.
      */
     protected $mockGeneratorResolvers = [];
 
     /**
-     * @var callable[] $testGeneratorResolvers The test generator resolvers.
+     * @var callable[] The test generator resolvers.
      */
     protected $testGeneratorResolvers = [];
 
     /**
-     * @var Config $config
+     * @var Config
      */
     protected $config;
 
@@ -71,7 +69,7 @@ class CoreServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function register()
     {

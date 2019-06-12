@@ -13,7 +13,6 @@ use Tightenco\Collect\Support\Collection;
 /**
  * Class TestClass.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -21,32 +20,32 @@ use Tightenco\Collect\Support\Collection;
 class TestClass implements Renderable
 {
     /**
-     * @var ReflectionClass $reflectionClass The class for which this test class is created.
+     * @var ReflectionClass The class for which this test class is created.
      */
     protected $reflectionClass;
 
     /**
-     * @var string $name The complete name of the class (including namespace).
+     * @var string The complete name of the class (including namespace).
      */
     protected $name;
 
     /**
-     * @var TestImport[]|Collection $imports The list of test imports.
+     * @var TestImport[]|Collection The list of test imports.
      */
     protected $imports;
 
     /**
-     * @var TestTrait[]|Collection $traits The list of test traits.
+     * @var TestTrait[]|Collection The list of test traits.
      */
     protected $traits;
 
     /**
-     * @var TestProperty[]|Collection $properties The list of test properties.
+     * @var TestProperty[]|Collection The list of test properties.
      */
     protected $properties;
 
     /**
-     * @var TestMethod[]|Collection $methods The list of test methods.
+     * @var TestMethod[]|Collection The list of test methods.
      */
     protected $methods;
 
@@ -59,16 +58,16 @@ class TestClass implements Renderable
     public function __construct(ReflectionClass $reflectionClass, string $name)
     {
         $this->reflectionClass = $reflectionClass;
-        $this->name            = $name;
+        $this->name = $name;
 
-        $this->imports    = new Collection();
-        $this->traits     = new Collection();
+        $this->imports = new Collection();
+        $this->traits = new Collection();
         $this->properties = new Collection();
-        $this->methods    = new Collection();
+        $this->methods = new Collection();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function accept(Renderer $renderer): void
     {

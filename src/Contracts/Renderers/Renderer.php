@@ -18,7 +18,6 @@ use PhpUnitGen\Core\Models\TestTrait;
  *
  * An object which can visit and render all Renderable implementations.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT

@@ -11,7 +11,6 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 /**
  * Class BasicTestGenerator.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -19,7 +18,7 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 class BasicTestGenerator implements TestGenerator
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function generate(ReflectionClass $class): TestClass
     {

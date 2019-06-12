@@ -7,7 +7,6 @@ namespace PhpUnitGen\Core\Helpers;
 /**
  * Class Str.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -61,11 +60,11 @@ class Str
      */
     public static function replaceFirst(string $search, string $replace, string $subject): string
     {
-        if (! Str::contains($search, $subject)) {
+        if (! self::contains($search, $subject)) {
             return $subject;
         }
 
-        return preg_replace('/' . preg_quote($search, '/') . '/', $replace, $subject, 1);
+        return preg_replace('/'.preg_quote($search, '/').'/', $replace, $subject, 1);
     }
 
     /**
