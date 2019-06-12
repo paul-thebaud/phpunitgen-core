@@ -26,7 +26,7 @@ class TestProperty implements Renderable
     protected $name;
 
     /**
-     * @var string $class The complete name of the class (including namespace).
+     * @var string $class The name of the class (not including namespace).
      */
     protected $class;
 
