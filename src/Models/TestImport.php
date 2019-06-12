@@ -75,6 +75,6 @@ class TestImport implements Renderable
      */
     public function getFinalName(): string
     {
-        return $this->alias ?? Str::shortName($this->name);
+        return $this->alias ?? Str::afterLast('\\', $this->name);
     }
 }
