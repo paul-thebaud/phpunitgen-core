@@ -57,4 +57,16 @@ class TestImportTest extends TestCase
 
         $this->import->accept($renderer);
     }
+
+    public function testItReturnsAliasWhenDefined(): void
+    {
+        $this->assertSame('BarAlias', $this->import->getFinalName());
+    }
+
+    public function testItReturnsShortNameWhenAliasNotDefined(): void
+    {
+        $import = new TestImport($this->class, 'Foo\\Bar\\Baz');
+
+        $this->assertSame('Baz', $import->getFinalName());
+    }
 }

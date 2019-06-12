@@ -6,6 +6,7 @@ namespace PhpUnitGen\Core\Models;
 
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
+use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\Concerns\HasTestClassParent;
 
 /**
@@ -67,5 +68,13 @@ class TestImport implements Renderable
     public function getAlias(): ?string
     {
         return $this->alias;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFinalName(): string
+    {
+        return $this->alias ?? Str::shortName($this->name);
     }
 }
