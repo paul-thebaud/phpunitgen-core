@@ -38,13 +38,14 @@ class TestProviderTest extends TestCase
 
         $class          = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
         $this->method   = new TestMethod($class, 'testFoo');
-        $this->provider = new TestProvider($this->method, [['expected', 'actual']]);
+        $this->provider = new TestProvider($this->method, 'fooProvider', [['expected', 'actual']]);
     }
 
     public function testItConstructs(): void
     {
         $this->assertSame($this->method, $this->provider->getTestMethod());
         $this->assertSame($this->provider, $this->method->getProvider());
+        $this->assertSame('fooProvider', $this->provider->getName());
         $this->assertSame([['expected', 'actual']], $this->provider->getData());
     }
 

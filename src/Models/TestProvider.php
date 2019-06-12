@@ -21,6 +21,11 @@ class TestProvider implements Renderable
     use HasTestMethodParent;
 
     /**
+     * @var string $name The name of the provider method.
+     */
+    protected $name;
+
+    /**
      * @var array $data The data this provider provides.
      */
     protected $data;
@@ -29,12 +34,14 @@ class TestProvider implements Renderable
      * TestProvider constructor.
      *
      * @param TestMethod $testMethod
+     * @param string     $name
      * @param array      $data
      */
-    public function __construct(TestMethod $testMethod, array $data)
+    public function __construct(TestMethod $testMethod, string $name, array $data)
     {
         $this->testMethod = $testMethod->setProvider($this);
 
+        $this->name = $name;
         $this->data = $data;
     }
 
@@ -44,6 +51,14 @@ class TestProvider implements Renderable
     public function accept(Renderer $renderer): void
     {
         $renderer->visitTestProvider($this);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     /**
