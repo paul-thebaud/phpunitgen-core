@@ -20,24 +20,24 @@ use Tests\PhpUnitGen\Core\TestCase;
 class TestStatementTest extends TestCase
 {
     /**
-     * @var TestMethod $method
+     * @var TestMethod
      */
     protected $method;
 
     /**
-     * @var TestStatement $statement
+     * @var TestStatement
      */
     protected $statement;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $class           = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $this->method    = new TestMethod($class, 'testFoo');
+        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $this->method = new TestMethod($class, 'testFoo');
         $this->statement = new TestStatement($this->method, '/** @todo */');
     }
 

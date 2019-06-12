@@ -17,7 +17,6 @@ use Roave\BetterReflection\Reflection\ReflectionParameter;
  *
  * The mock generator for Mockery.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -27,7 +26,7 @@ class MockeryMockGenerator implements MockGenerator
     use CreatesTestImports;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function generateProperty(TestClass $class, ReflectionParameter $parameter): void
     {
@@ -38,13 +37,13 @@ class MockeryMockGenerator implements MockGenerator
 
         new TestProperty(
             $class,
-            $parameter->getName() . 'Mock',
+            $parameter->getName().'Mock',
             $this->createTestImport($class, 'Mockery\\Mock')
         );
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function generateStatement(TestMethod $method, ReflectionParameter $parameter): void
     {
@@ -54,7 +53,7 @@ class MockeryMockGenerator implements MockGenerator
         }
 
         $mockeryImport = $this->createTestImport($method->getTestClass(), 'Mockery');
-        $classImport   = $this->createTestImport($method->getTestClass(), (string) $type);
+        $classImport = $this->createTestImport($method->getTestClass(), (string) $type);
 
         new TestStatement(
             $method,

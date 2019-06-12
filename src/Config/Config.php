@@ -9,7 +9,6 @@ use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 /**
  * Class Config.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -17,32 +16,32 @@ use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 class Config
 {
     /**
-     * @var bool $automaticTests If instantiation and tests (getter, setter...) should be generated.
+     * @var bool If instantiation and tests (getter, setter...) should be generated.
      */
     protected $automaticTests = true;
 
     /**
-     * @var string $mockWith The generator should be used to generate mock construction.
+     * @var string The generator should be used to generate mock construction.
      */
     protected $mockWith;
 
     /**
-     * @var string $generateWith The generator should be used to test class.
+     * @var string The generator should be used to test class.
      */
     protected $generateWith;
 
     /**
-     * @var string $baseNamespace The base namespace of source code.
+     * @var string The base namespace of source code.
      */
     protected $baseNamespace = '';
 
     /**
-     * @var string $baseTestNamespace The base namespace for the test class.
+     * @var string The base namespace for the test class.
      */
     protected $baseTestNamespace = 'Tests\\';
 
     /**
-     * @var array $phpDocumentation The PHP documentation for the test class.
+     * @var array The PHP documentation for the test class.
      */
     protected $phpDocumentation = [];
 

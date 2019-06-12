@@ -22,23 +22,23 @@ use Tests\PhpUnitGen\Core\TestCase;
 class TestMethodTest extends TestCase
 {
     /**
-     * @var TestClass $class
+     * @var TestClass
      */
     protected $class;
 
     /**
-     * @var TestMethod $method
+     * @var TestMethod
      */
     protected $method;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->class  = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $this->class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
         $this->method = new TestMethod($this->class, 'testFoo', 'protected');
     }
 

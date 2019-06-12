@@ -17,7 +17,6 @@ use Roave\BetterReflection\Reflection\ReflectionParameter;
  *
  * The mock generator for PHPUnit.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -27,7 +26,7 @@ class PhpUnitMockGenerator implements MockGenerator
     use CreatesTestImports;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function generateProperty(TestClass $class, ReflectionParameter $parameter): void
     {
@@ -38,13 +37,13 @@ class PhpUnitMockGenerator implements MockGenerator
 
         new TestProperty(
             $class,
-            $parameter->getName() . 'Mock',
+            $parameter->getName().'Mock',
             $this->createTestImport($class, 'PHPUnit\\Framework\\MockObject\\MockObject')
         );
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function generateStatement(TestMethod $method, ReflectionParameter $parameter): void
     {

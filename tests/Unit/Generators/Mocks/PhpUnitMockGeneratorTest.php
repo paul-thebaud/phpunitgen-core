@@ -22,12 +22,12 @@ use Tests\PhpUnitGen\Core\TestCase;
 class PhpUnitMockGeneratorTest extends TestCase
 {
     /**
-     * @var PhpUnitMockGenerator $phpunitMockGenerator
+     * @var PhpUnitMockGenerator
      */
     protected $phpunitMockGenerator;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
@@ -57,7 +57,7 @@ class PhpUnitMockGeneratorTest extends TestCase
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
 
         $parameter = Mockery::mock(ReflectionParameter::class);
-        $type      = Mockery::mock(ReflectionType::class);
+        $type = Mockery::mock(ReflectionType::class);
 
         $parameter->shouldReceive('getType')
             ->once()
@@ -79,7 +79,7 @@ class PhpUnitMockGeneratorTest extends TestCase
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
 
         $parameter = Mockery::mock(ReflectionParameter::class);
-        $type      = Mockery::mock(ReflectionType::class);
+        $type = Mockery::mock(ReflectionType::class);
 
         $parameter->shouldReceive('getType')
             ->once()
@@ -112,7 +112,7 @@ class PhpUnitMockGeneratorTest extends TestCase
 
     public function testItGenerateStatementWhenNoType(): void
     {
-        $class  = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
         $method = new TestMethod($class, 'setUp', 'protected');
 
         $parameter = Mockery::mock(ReflectionParameter::class);
@@ -130,11 +130,11 @@ class PhpUnitMockGeneratorTest extends TestCase
 
     public function testItGenerateStatementWhenBuiltInType(): void
     {
-        $class  = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
         $method = new TestMethod($class, 'setUp', 'protected');
 
         $parameter = Mockery::mock(ReflectionParameter::class);
-        $type      = Mockery::mock(ReflectionType::class);
+        $type = Mockery::mock(ReflectionType::class);
 
         $parameter->shouldReceive('getType')
             ->once()
@@ -154,11 +154,11 @@ class PhpUnitMockGeneratorTest extends TestCase
 
     public function testItGenerateStatementWhenNotBuiltInType(): void
     {
-        $class  = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
         $method = new TestMethod($class, 'setUp', 'protected');
 
         $parameter = Mockery::mock(ReflectionParameter::class);
-        $type      = Mockery::mock(ReflectionType::class);
+        $type = Mockery::mock(ReflectionType::class);
 
         $parameter->shouldReceive('getType')
             ->once()
@@ -185,7 +185,7 @@ class PhpUnitMockGeneratorTest extends TestCase
 
         $this->assertSame($method, $statement->getTestMethod());
         $this->assertSame(
-            "\$this->barMock = \$this->getMockBuilder(Bar::class)->getMock();",
+            '$this->barMock = $this->getMockBuilder(Bar::class)->getMock();',
             $statement->getStatement()
         );
         $this->assertTrue(

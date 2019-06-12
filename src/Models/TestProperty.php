@@ -11,7 +11,6 @@ use PhpUnitGen\Core\Models\Concerns\HasTestClassParent;
 /**
  * Class TestProperty.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -21,17 +20,17 @@ class TestProperty implements Renderable
     use HasTestClassParent;
 
     /**
-     * @var string $name The name of the property.
+     * @var string The name of the property.
      */
     protected $name;
 
     /**
-     * @var string $class The name of the class (not including namespace).
+     * @var string The name of the class (not including namespace).
      */
     protected $class;
 
     /**
-     * @var bool $isTestedClass If this property corresponds to the tested class instance.
+     * @var bool If this property corresponds to the tested class instance.
      */
     protected $isTestedClass;
 
@@ -51,13 +50,13 @@ class TestProperty implements Renderable
     ) {
         $this->testClass = $testClass->addProperty($this);
 
-        $this->name          = $name;
-        $this->class         = $class;
+        $this->name = $name;
+        $this->class = $class;
         $this->isTestedClass = $isTestedClass;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function accept(Renderer $renderer): void
     {
