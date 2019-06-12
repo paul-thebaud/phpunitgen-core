@@ -6,6 +6,7 @@ namespace PhpUnitGen\Core\Models;
 
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
+use PhpUnitGen\Core\Helpers\Str;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tightenco\Collect\Support\Collection;
 
@@ -88,6 +89,26 @@ class TestClass implements Renderable
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNamespace(): ?string
+    {
+        if (! Str::contains('\\', $this->name)) {
+            return null;
+        }
+
+        return Str::beforeLast('\\', $this->name);
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortName(): string
+    {
+        return Str::afterLast('\\', $this->name);
     }
 
     /**

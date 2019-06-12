@@ -39,18 +39,28 @@ class TestClassTest extends TestCase
         parent::setUp();
 
         $this->reflectionClass = Mockery::mock(ReflectionClass::class);
-        $this->class           = new TestClass($this->reflectionClass, 'FooTest');
+        $this->class           = new TestClass($this->reflectionClass, 'Bar\\FooTest');
     }
 
     public function testItConstructs(): void
     {
         $this->assertSame($this->reflectionClass, $this->class->getReflectionClass());
-        $this->assertSame('FooTest', $this->class->getName());
+        $this->assertSame('Bar\\FooTest', $this->class->getName());
+        $this->assertSame('Bar', $this->class->getNamespace());
+        $this->assertSame('FooTest', $this->class->getShortName());
 
         $this->assertEmpty($this->class->getImports());
         $this->assertEmpty($this->class->getTraits());
         $this->assertEmpty($this->class->getProperties());
         $this->assertEmpty($this->class->getMethods());
+    }
+
+    public function testItGetNamesWhenNoNamespace(): void
+    {
+        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+
+        $this->assertNull($class->getNamespace());
+        $this->assertSame('FooTest', $class->getShortName());
     }
 
     public function testItAcceptsRenderer(): void
