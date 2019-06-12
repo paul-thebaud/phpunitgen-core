@@ -27,13 +27,10 @@ class TestStatement implements Renderable
     /**
      * TestStatement constructor.
      *
-     * @param TestMethod $testMethod
-     * @param string     $statement
+     * @param string $statement
      */
-    public function __construct(TestMethod $testMethod, string $statement)
+    public function __construct(string $statement)
     {
-        $this->testMethod = $testMethod->addStatement($this);
-
         $this->statement = $statement;
     }
 

@@ -27,4 +27,16 @@ trait HasTestMethodParent
     {
         return $this->testMethod;
     }
+
+    /**
+     * @param TestMethod $testMethod
+     *
+     * @return static
+     */
+    public function setTestMethod(TestMethod $testMethod): self
+    {
+        $this->testMethod = $testMethod;
+
+        return $this;
+    }
 }

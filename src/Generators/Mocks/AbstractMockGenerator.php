@@ -35,11 +35,10 @@ abstract class AbstractMockGenerator implements MockGenerator
             return;
         }
 
-        new TestProperty(
-            $class,
-            $parameter->getName().'Mock',
+        $class->addProperty(new TestProperty(
+            $parameter->getName() . 'Mock',
             $this->createTestImport($class, $this->getMockClass())
-        );
+        ));
     }
 
     /**
@@ -54,10 +53,9 @@ abstract class AbstractMockGenerator implements MockGenerator
 
         $classImport = $this->createTestImport($method->getTestClass(), (string) $type);
 
-        new TestStatement(
-            $method,
+        $method->addStatement(new TestStatement(
             "\$this->{$parameter->getName()}Mock = {$this->getMockCreationLine($method->getTestClass(), $classImport)}"
-        );
+        ));
     }
 
     /**

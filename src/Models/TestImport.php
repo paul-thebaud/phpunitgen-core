@@ -33,14 +33,11 @@ class TestImport implements Renderable
     /**
      * TestImport constructor.
      *
-     * @param TestClass   $testClass
      * @param string      $name
      * @param string|null $alias
      */
-    public function __construct(TestClass $testClass, string $name, ?string $alias = null)
+    public function __construct(string $name, ?string $alias = null)
     {
-        $this->testClass = $testClass->addImport($this);
-
         $this->name = $name;
         $this->alias = $alias;
     }

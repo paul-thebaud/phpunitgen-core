@@ -32,14 +32,11 @@ class TestParameter implements Renderable
     /**
      * TestParameter constructor.
      *
-     * @param TestMethod  $testMethod
      * @param string      $name
      * @param string|null $type
      */
-    public function __construct(TestMethod $testMethod, string $name, ?string $type = null)
+    public function __construct(string $name, ?string $type = null)
     {
-        $this->testMethod = $testMethod->addParameter($this);
-
         $this->name = $name;
         $this->type = $type;
     }

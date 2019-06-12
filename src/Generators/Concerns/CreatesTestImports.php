@@ -52,6 +52,9 @@ trait CreatesTestImports
 
         $alias = Str::afterLast('\\', $class) === $shortName ? null : $shortName;
 
-        return (new TestImport($testClass, $class, $alias))->getFinalName();
+        $import = new TestImport($class, $alias);
+        $testClass->addImport($import);
+
+        return $import->getFinalName();
     }
 }

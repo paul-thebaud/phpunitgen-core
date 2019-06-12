@@ -125,7 +125,7 @@ class TestClass implements Renderable
      */
     public function addImport(TestImport $import): self
     {
-        $this->imports->add($import);
+        $this->imports->add($import->setTestClass($this));
 
         return $this;
     }
@@ -145,7 +145,7 @@ class TestClass implements Renderable
      */
     public function addTrait(TestTrait $trait): self
     {
-        $this->traits->add($trait);
+        $this->traits->add($trait->setTestClass($this));
 
         return $this;
     }
@@ -165,7 +165,7 @@ class TestClass implements Renderable
      */
     public function addProperty(TestProperty $property): self
     {
-        $this->properties->add($property);
+        $this->properties->add($property->setTestClass($this));
 
         return $this;
     }
@@ -185,7 +185,7 @@ class TestClass implements Renderable
      */
     public function addMethod(TestMethod $method): self
     {
-        $this->methods->add($method);
+        $this->methods->add($method->setTestClass($this));
 
         return $this;
     }

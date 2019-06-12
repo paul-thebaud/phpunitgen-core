@@ -63,17 +63,13 @@ class TestMethod implements Renderable
     /**
      * TestMethod constructor.
      *
-     * @param TestClass $testClass
-     * @param string    $name
-     * @param string    $visibility
+     * @param string $name
+     * @param string $visibility
      */
     public function __construct(
-        TestClass $testClass,
         string $name,
         string $visibility = self::VISIBILITY_PUBLIC
     ) {
-        $this->testClass = $testClass->addMethod($this);
-
         $this->name = $name;
         $this->visibility = $visibility;
 
@@ -120,7 +116,7 @@ class TestMethod implements Renderable
      */
     public function setProvider(?TestProvider $provider): self
     {
-        $this->provider = $provider;
+        $this->provider = $provider ? $provider->setTestMethod($this) : null;
 
         return $this;
     }
@@ -140,7 +136,7 @@ class TestMethod implements Renderable
      */
     public function addParameter(TestParameter $parameter): self
     {
-        $this->parameters->add($parameter);
+        $this->parameters->add($parameter->setTestMethod($this));
 
         return $this;
     }
@@ -160,7 +156,7 @@ class TestMethod implements Renderable
      */
     public function addStatement(TestStatement $statement): self
     {
-        $this->statements->add($statement);
+        $this->statements->add($statement->setTestMethod($this));
 
         return $this;
     }

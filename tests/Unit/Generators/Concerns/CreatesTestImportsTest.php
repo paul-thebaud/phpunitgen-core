@@ -43,7 +43,7 @@ class CreatesTestImportsTest extends TestCase
 
     public function testItReturnsAlreadyImportedClassWithoutAlias(): void
     {
-        new TestImport($this->class, 'Foo\\Bar\\Baz');
+        $this->class->addImport(new TestImport('Foo\\Bar\\Baz'));
 
         $class = $this->callProtectedMethod(
             $this->createsTestImports,
@@ -58,7 +58,7 @@ class CreatesTestImportsTest extends TestCase
 
     public function testItReturnsAlreadyImportedClassWithAlias(): void
     {
-        new TestImport($this->class, 'Foo\\Bar\\Baz', 'BazAlias');
+        $this->class->addImport(new TestImport('Foo\\Bar\\Baz', 'BazAlias'));
 
         $class = $this->callProtectedMethod(
             $this->createsTestImports,
@@ -86,7 +86,7 @@ class CreatesTestImportsTest extends TestCase
 
     public function testItReturnsNotImportedClassWithAliasing(): void
     {
-        new TestImport($this->class, 'Foo\\Bar\\BazModel', 'Baz');
+        $this->class->addImport(new TestImport('Foo\\Bar\\BazModel', 'Baz'));
 
         $class = $this->callProtectedMethod(
             $this->createsTestImports,
@@ -101,8 +101,8 @@ class CreatesTestImportsTest extends TestCase
 
     public function testItReturnsNotImportedClassWithDeepAliasing(): void
     {
-        new TestImport($this->class, 'Foo\\Bar\\BazFoo', 'Baz');
-        new TestImport($this->class, 'Foo\\Bar\\BazBar', 'BazAlias');
+        $this->class->addImport(new TestImport('Foo\\Bar\\BazFoo', 'Baz'));
+        $this->class->addImport(new TestImport('Foo\\Bar\\BazBar', 'BazAlias'));
 
         $class = $this->callProtectedMethod(
             $this->createsTestImports,

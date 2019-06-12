@@ -6,9 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
-use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -18,11 +16,6 @@ use Tests\PhpUnitGen\Core\TestCase;
  */
 class TestImportTest extends TestCase
 {
-    /**
-     * @var TestClass
-     */
-    protected $class;
-
     /**
      * @var TestImport
      */
@@ -35,14 +28,11 @@ class TestImportTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $this->import = new TestImport($this->class, 'Bar', 'BarAlias');
+        $this->import = new TestImport('Bar', 'BarAlias');
     }
 
     public function testItConstructs(): void
     {
-        $this->assertSame($this->class, $this->import->getTestClass());
-        $this->assertTrue($this->class->getImports()->contains($this->import));
         $this->assertSame('Bar', $this->import->getName());
         $this->assertSame('BarAlias', $this->import->getAlias());
     }
@@ -65,7 +55,7 @@ class TestImportTest extends TestCase
 
     public function testItReturnsShortNameWhenAliasNotDefined(): void
     {
-        $import = new TestImport($this->class, 'Foo\\Bar\\Baz');
+        $import = new TestImport('Foo\\Bar\\Baz');
 
         $this->assertSame('Baz', $import->getFinalName());
     }

@@ -6,9 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
-use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestTrait;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -18,11 +16,6 @@ use Tests\PhpUnitGen\Core\TestCase;
  */
 class TestTraitTest extends TestCase
 {
-    /**
-     * @var TestClass
-     */
-    protected $class;
-
     /**
      * @var TestTrait
      */
@@ -35,14 +28,11 @@ class TestTraitTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $this->trait = new TestTrait($this->class, 'Bar');
+        $this->trait = new TestTrait('Bar');
     }
 
     public function testItConstructs(): void
     {
-        $this->assertSame($this->class, $this->trait->getTestClass());
-        $this->assertTrue($this->class->getTraits()->contains($this->trait));
         $this->assertSame('Bar', $this->trait->getName());
     }
 

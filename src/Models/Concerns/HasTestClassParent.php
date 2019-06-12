@@ -27,4 +27,16 @@ trait HasTestClassParent
     {
         return $this->testClass;
     }
+
+    /**
+     * @param TestClass $testClass
+     *
+     * @return static
+     */
+    public function setTestClass(TestClass $testClass): self
+    {
+        $this->testClass = $testClass;
+
+        return $this;
+    }
 }

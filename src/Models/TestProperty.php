@@ -30,29 +30,17 @@ class TestProperty implements Renderable
     protected $class;
 
     /**
-     * @var bool If this property corresponds to the tested class instance.
-     */
-    protected $isTestedClass;
-
-    /**
      * TestProperty constructor.
      *
-     * @param TestClass $testClass
-     * @param string    $name
-     * @param string    $class
-     * @param bool      $isTestedClass
+     * @param string $name
+     * @param string $class
      */
     public function __construct(
-        TestClass $testClass,
         string $name,
-        string $class,
-        bool $isTestedClass = false
+        string $class
     ) {
-        $this->testClass = $testClass->addProperty($this);
-
         $this->name = $name;
         $this->class = $class;
-        $this->isTestedClass = $isTestedClass;
     }
 
     /**
@@ -77,13 +65,5 @@ class TestProperty implements Renderable
     public function getClass(): string
     {
         return $this->class;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isTestedClass(): bool
-    {
-        return $this->isTestedClass;
     }
 }

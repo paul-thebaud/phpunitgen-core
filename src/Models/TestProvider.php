@@ -32,14 +32,11 @@ class TestProvider implements Renderable
     /**
      * TestProvider constructor.
      *
-     * @param TestMethod $testMethod
-     * @param string     $name
-     * @param array      $data
+     * @param string $name
+     * @param array  $data
      */
-    public function __construct(TestMethod $testMethod, string $name, array $data)
+    public function __construct(string $name, array $data)
     {
-        $this->testMethod = $testMethod->setProvider($this);
-
         $this->name = $name;
         $this->data = $data;
     }

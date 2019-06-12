@@ -6,10 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
-use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestStatement;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -19,11 +16,6 @@ use Tests\PhpUnitGen\Core\TestCase;
  */
 class TestStatementTest extends TestCase
 {
-    /**
-     * @var TestMethod
-     */
-    protected $method;
-
     /**
      * @var TestStatement
      */
@@ -36,15 +28,11 @@ class TestStatementTest extends TestCase
     {
         parent::setUp();
 
-        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $this->method = new TestMethod($class, 'testFoo');
-        $this->statement = new TestStatement($this->method, '/** @todo */');
+        $this->statement = new TestStatement('/** @todo */');
     }
 
     public function testItConstructs(): void
     {
-        $this->assertSame($this->method, $this->statement->getTestMethod());
-        $this->assertTrue($this->method->getStatements()->contains($this->statement));
         $this->assertSame('/** @todo */', $this->statement->getStatement());
     }
 

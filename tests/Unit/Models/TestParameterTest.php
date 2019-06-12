@@ -6,10 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
-use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestParameter;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -19,11 +16,6 @@ use Tests\PhpUnitGen\Core\TestCase;
  */
 class TestParameterTest extends TestCase
 {
-    /**
-     * @var TestMethod
-     */
-    protected $method;
-
     /**
      * @var TestParameter
      */
@@ -36,15 +28,11 @@ class TestParameterTest extends TestCase
     {
         parent::setUp();
 
-        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $this->method = new TestMethod($class, 'testFoo');
-        $this->parameter = new TestParameter($this->method, 'expected', 'string');
+        $this->parameter = new TestParameter('expected', 'string');
     }
 
     public function testItConstructs(): void
     {
-        $this->assertSame($this->method, $this->parameter->getTestMethod());
-        $this->assertTrue($this->method->getParameters()->contains($this->parameter));
         $this->assertSame('expected', $this->parameter->getName());
         $this->assertSame('string', $this->parameter->getType());
     }

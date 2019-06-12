@@ -27,13 +27,10 @@ class TestTrait implements Renderable
     /**
      * TestTrait constructor.
      *
-     * @param TestClass $testClass
-     * @param string    $name
+     * @param string $name
      */
-    public function __construct(TestClass $testClass, string $name)
+    public function __construct(string $name)
     {
-        $this->testClass = $testClass->addTrait($this);
-
         $this->name = $name;
     }
 

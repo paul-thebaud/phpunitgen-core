@@ -6,9 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
-use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestProperty;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -18,11 +16,6 @@ use Tests\PhpUnitGen\Core\TestCase;
  */
 class TestPropertyTest extends TestCase
 {
-    /**
-     * @var TestClass
-     */
-    protected $class;
-
     /**
      * @var TestProperty
      */
@@ -35,17 +28,13 @@ class TestPropertyTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $this->property = new TestProperty($this->class, 'foo', 'Foo', true);
+        $this->property = new TestProperty('foo', 'Foo');
     }
 
     public function testItConstructs(): void
     {
-        $this->assertSame($this->class, $this->property->getTestClass());
-        $this->assertTrue($this->class->getProperties()->contains($this->property));
         $this->assertSame('foo', $this->property->getName());
         $this->assertSame('Foo', $this->property->getClass());
-        $this->assertTrue($this->property->isTestedClass());
     }
 
     public function testItAcceptsRenderer(): void

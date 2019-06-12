@@ -6,10 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
-use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestProvider;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -19,11 +16,6 @@ use Tests\PhpUnitGen\Core\TestCase;
  */
 class TestProviderTest extends TestCase
 {
-    /**
-     * @var TestMethod
-     */
-    protected $method;
-
     /**
      * @var TestProvider
      */
@@ -36,15 +28,11 @@ class TestProviderTest extends TestCase
     {
         parent::setUp();
 
-        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $this->method = new TestMethod($class, 'testFoo');
-        $this->provider = new TestProvider($this->method, 'fooProvider', [['expected', 'actual']]);
+        $this->provider = new TestProvider('fooProvider', [['expected', 'actual']]);
     }
 
     public function testItConstructs(): void
     {
-        $this->assertSame($this->method, $this->provider->getTestMethod());
-        $this->assertSame($this->provider, $this->method->getProvider());
         $this->assertSame('fooProvider', $this->provider->getName());
         $this->assertSame([['expected', 'actual']], $this->provider->getData());
     }

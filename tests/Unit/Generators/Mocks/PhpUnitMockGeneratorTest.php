@@ -113,7 +113,8 @@ class PhpUnitMockGeneratorTest extends TestCase
     public function testItGenerateStatementWhenNoType(): void
     {
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $method = new TestMethod($class, 'setUp', 'protected');
+        $method = new TestMethod('setUp', 'protected');
+        $class->addMethod($method);
 
         $parameter = Mockery::mock(ReflectionParameter::class);
 
@@ -131,7 +132,8 @@ class PhpUnitMockGeneratorTest extends TestCase
     public function testItGenerateStatementWhenBuiltInType(): void
     {
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $method = new TestMethod($class, 'setUp', 'protected');
+        $method = new TestMethod('setUp', 'protected');
+        $class->addMethod($method);
 
         $parameter = Mockery::mock(ReflectionParameter::class);
         $type = Mockery::mock(ReflectionType::class);
@@ -155,7 +157,8 @@ class PhpUnitMockGeneratorTest extends TestCase
     public function testItGenerateStatementWhenNotBuiltInType(): void
     {
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $method = new TestMethod($class, 'setUp', 'protected');
+        $method = new TestMethod('setUp', 'protected');
+        $class->addMethod($method);
 
         $parameter = Mockery::mock(ReflectionParameter::class);
         $type = Mockery::mock(ReflectionType::class);

@@ -76,45 +76,37 @@ class TestClassTest extends TestCase
 
     public function testItAddsImport(): void
     {
-        $import = Mockery::mock(TestImport::class);
-
-        $this->assertFalse($this->class->getImports()->contains($import));
+        $import = new TestImport('Foo');
 
         $this->class->addImport($import);
 
-        $this->assertTrue($this->class->getImports()->contains($import));
+        $this->assertSame($this->class, $import->getTestClass());
     }
 
     public function testItAddsTrait(): void
     {
-        $trait = Mockery::mock(TestTrait::class);
-
-        $this->assertFalse($this->class->getTraits()->contains($trait));
+        $trait = new TestTrait('Foo');
 
         $this->class->addTrait($trait);
 
-        $this->assertTrue($this->class->getTraits()->contains($trait));
+        $this->assertSame($this->class, $trait->getTestClass());
     }
 
     public function testItAddsProperty(): void
     {
-        $property = Mockery::mock(TestProperty::class);
-
-        $this->assertFalse($this->class->getProperties()->contains($property));
+        $property = new TestProperty('foo', 'Foo');
 
         $this->class->addProperty($property);
 
-        $this->assertTrue($this->class->getProperties()->contains($property));
+        $this->assertSame($this->class, $property->getTestClass());
     }
 
     public function testItAddsMethod(): void
     {
-        $method = Mockery::mock(TestMethod::class);
-
-        $this->assertFalse($this->class->getMethods()->contains($method));
+        $method = new TestMethod('testFoo');
 
         $this->class->addMethod($method);
 
-        $this->assertTrue($this->class->getMethods()->contains($method));
+        $this->assertSame($this->class, $method->getTestClass());
     }
 }
