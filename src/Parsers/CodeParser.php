@@ -16,7 +16,6 @@ use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
 /**
  * Class CodeParser.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -24,7 +23,7 @@ use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
 class CodeParser implements CodeParserContract
 {
     /**
-     * @var Locator $astLocator
+     * @var Locator
      */
     protected $astLocator;
 
@@ -39,7 +38,7 @@ class CodeParser implements CodeParserContract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function parse(Source $source): ReflectionClass
     {
@@ -47,7 +46,7 @@ class CodeParser implements CodeParserContract
             new StringSourceLocator($source->toString(), $this->astLocator)
         );
 
-        $classes      = $reflector->getAllClasses();
+        $classes = $reflector->getAllClasses();
         $classesCount = count($classes);
         if ($classesCount !== 1) {
             throw new InvalidArgumentException(

@@ -26,12 +26,12 @@ use Tests\PhpUnitGen\Core\TestCase;
 class CoreServiceProviderTest extends TestCase
 {
     /**
-     * @var Container $container
+     * @var Container
      */
     protected $container;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {

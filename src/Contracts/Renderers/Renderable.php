@@ -9,7 +9,6 @@ namespace PhpUnitGen\Core\Contracts\Renderers;
  *
  * An object which can be visited and rendered as generated test code by Renderer implementation.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT

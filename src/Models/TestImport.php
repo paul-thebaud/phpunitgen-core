@@ -12,7 +12,6 @@ use PhpUnitGen\Core\Models\Concerns\HasTestClassParent;
 /**
  * Class TestImport.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -22,12 +21,12 @@ class TestImport implements Renderable
     use HasTestClassParent;
 
     /**
-     * @var string $name The complete name of the class (including namespace).
+     * @var string The complete name of the class (including namespace).
      */
     protected $name;
 
     /**
-     * @var string|null $alias The alias of this import.
+     * @var string|null The alias of this import.
      */
     protected $alias;
 
@@ -42,12 +41,12 @@ class TestImport implements Renderable
     {
         $this->testClass = $testClass->addImport($this);
 
-        $this->name  = $name;
+        $this->name = $name;
         $this->alias = $alias;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function accept(Renderer $renderer): void
     {

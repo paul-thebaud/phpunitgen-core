@@ -9,7 +9,6 @@ use PhpUnitGen\Core\Contracts\Parsers\Source;
 /**
  * Class StringSource.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -17,7 +16,7 @@ use PhpUnitGen\Core\Contracts\Parsers\Source;
 class StringSource implements Source
 {
     /**
-     * @var string $code The source code.
+     * @var string The source code.
      */
     protected $code;
 
@@ -32,7 +31,7 @@ class StringSource implements Source
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function toString(): string
     {

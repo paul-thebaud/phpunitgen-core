@@ -12,7 +12,6 @@ use Tightenco\Collect\Support\Collection;
 /**
  * Class TestMethod.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -37,27 +36,27 @@ class TestMethod implements Renderable
     public const VISIBILITY_PRIVATE = 'private';
 
     /**
-     * @var string $name The name of the method.
+     * @var string The name of the method.
      */
     protected $name;
 
     /**
-     * @var string $visibility The visibility of the method (public, protected or private).
+     * @var string The visibility of the method (public, protected or private).
      */
     protected $visibility;
 
     /**
-     * @var TestProvider|null $provider The data provider.
+     * @var TestProvider|null The data provider.
      */
     protected $provider;
 
     /**
-     * @var TestParameter[]|Collection $parameters The list of parameters.
+     * @var TestParameter[]|Collection The list of parameters.
      */
     protected $parameters;
 
     /**
-     * @var TestStatement[]|Collection $statements The list of statements.
+     * @var TestStatement[]|Collection The list of statements.
      */
     protected $statements;
 
@@ -75,7 +74,7 @@ class TestMethod implements Renderable
     ) {
         $this->testClass = $testClass->addMethod($this);
 
-        $this->name       = $name;
+        $this->name = $name;
         $this->visibility = $visibility;
 
         $this->parameters = new Collection();
@@ -83,7 +82,7 @@ class TestMethod implements Renderable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function accept(Renderer $renderer): void
     {

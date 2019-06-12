@@ -11,7 +11,6 @@ use PhpUnitGen\Core\Models\Concerns\HasTestMethodParent;
 /**
  * Class TestParameter.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -21,12 +20,12 @@ class TestProvider implements Renderable
     use HasTestMethodParent;
 
     /**
-     * @var string $name The name of the provider method.
+     * @var string The name of the provider method.
      */
     protected $name;
 
     /**
-     * @var array $data The data this provider provides.
+     * @var array The data this provider provides.
      */
     protected $data;
 
@@ -46,7 +45,7 @@ class TestProvider implements Renderable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function accept(Renderer $renderer): void
     {

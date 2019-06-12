@@ -19,23 +19,23 @@ use Tests\PhpUnitGen\Core\TestCase;
 class TestPropertyTest extends TestCase
 {
     /**
-     * @var TestClass $class
+     * @var TestClass
      */
     protected $class;
 
     /**
-     * @var TestProperty $property
+     * @var TestProperty
      */
     protected $property;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->class    = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $this->class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
         $this->property = new TestProperty($this->class, 'foo', 'Foo', true);
     }
 

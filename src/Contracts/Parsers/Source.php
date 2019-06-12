@@ -9,7 +9,6 @@ namespace PhpUnitGen\Core\Contracts\Parsers;
  *
  * An object which contains the source to parse for CodeParser.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT

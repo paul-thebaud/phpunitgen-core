@@ -20,24 +20,24 @@ use Tests\PhpUnitGen\Core\TestCase;
 class TestProviderTest extends TestCase
 {
     /**
-     * @var TestMethod $method
+     * @var TestMethod
      */
     protected $method;
 
     /**
-     * @var TestProvider $provider
+     * @var TestProvider
      */
     protected $provider;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $class          = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $this->method   = new TestMethod($class, 'testFoo');
+        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $this->method = new TestMethod($class, 'testFoo');
         $this->provider = new TestProvider($this->method, 'fooProvider', [['expected', 'actual']]);
     }
 

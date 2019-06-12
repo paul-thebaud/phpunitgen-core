@@ -22,24 +22,24 @@ use Tests\PhpUnitGen\Core\TestCase;
 class TestClassTest extends TestCase
 {
     /**
-     * @var Mockery\Mock $reflectionClass
+     * @var Mockery\Mock
      */
     protected $reflectionClass;
 
     /**
-     * @var TestClass $class
+     * @var TestClass
      */
     protected $class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->reflectionClass = Mockery::mock(ReflectionClass::class);
-        $this->class           = new TestClass($this->reflectionClass, 'Bar\\FooTest');
+        $this->class = new TestClass($this->reflectionClass, 'Bar\\FooTest');
     }
 
     public function testItConstructs(): void
