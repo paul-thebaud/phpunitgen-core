@@ -7,6 +7,8 @@ namespace PhpUnitGen\Core\Helpers;
 /**
  * Class Str.
  *
+ * @internal
+ *
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
