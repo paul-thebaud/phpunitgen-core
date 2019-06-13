@@ -6,6 +6,7 @@ namespace PhpUnitGen\Core\Models;
 
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
+use PhpUnitGen\Core\Models\Concerns\HasTestDocumentation;
 use PhpUnitGen\Core\Models\Concerns\HasTestMethodParent;
 
 /**
@@ -18,6 +19,7 @@ use PhpUnitGen\Core\Models\Concerns\HasTestMethodParent;
 class TestProvider implements Renderable
 {
     use HasTestMethodParent;
+    use HasTestDocumentation;
 
     /**
      * @var string The name of the provider method.

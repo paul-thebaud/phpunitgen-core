@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Contracts\Renderers;
 
 use PhpUnitGen\Core\Models\TestClass;
+use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestParameter;
@@ -79,4 +80,11 @@ interface Renderer
      * @param TestStatement $statement
      */
     public function visitTestStatement(TestStatement $statement): void;
+
+    /**
+     * Visit and render a test documentation.
+     *
+     * @param TestDocumentation $documentation
+     */
+    public function visitTestDocumentation(TestDocumentation $documentation): void;
 }

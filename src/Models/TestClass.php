@@ -7,6 +7,7 @@ namespace PhpUnitGen\Core\Models;
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\Helpers\Str;
+use PhpUnitGen\Core\Models\Concerns\HasTestDocumentation;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tightenco\Collect\Support\Collection;
 
@@ -19,6 +20,8 @@ use Tightenco\Collect\Support\Collection;
  */
 class TestClass implements Renderable
 {
+    use HasTestDocumentation;
+
     /**
      * @var ReflectionClass The class for which this test class is created.
      */

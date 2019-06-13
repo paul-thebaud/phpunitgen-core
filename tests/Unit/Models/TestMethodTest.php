@@ -6,6 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
+use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestParameter;
 use PhpUnitGen\Core\Models\TestProvider;
@@ -76,5 +77,14 @@ class TestMethodTest extends TestCase
         $this->method->addStatement($statement);
 
         $this->assertSame($this->method, $statement->getTestMethod());
+    }
+
+    public function testItHasDocumentation(): void
+    {
+        $documentation = new TestDocumentation();
+
+        $this->method->setDocumentation($documentation);
+
+        $this->assertSame($documentation, $this->method->getDocumentation());
     }
 }

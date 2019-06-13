@@ -7,6 +7,7 @@ namespace PhpUnitGen\Core\Models;
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\Models\Concerns\HasTestClassParent;
+use PhpUnitGen\Core\Models\Concerns\HasTestDocumentation;
 
 /**
  * Class TestProperty.
@@ -18,6 +19,7 @@ use PhpUnitGen\Core\Models\Concerns\HasTestClassParent;
 class TestProperty implements Renderable
 {
     use HasTestClassParent;
+    use HasTestDocumentation;
 
     /**
      * @var string The name of the property.

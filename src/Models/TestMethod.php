@@ -7,6 +7,7 @@ namespace PhpUnitGen\Core\Models;
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\Models\Concerns\HasTestClassParent;
+use PhpUnitGen\Core\Models\Concerns\HasTestDocumentation;
 use Tightenco\Collect\Support\Collection;
 
 /**
@@ -19,6 +20,7 @@ use Tightenco\Collect\Support\Collection;
 class TestMethod implements Renderable
 {
     use HasTestClassParent;
+    use HasTestDocumentation;
 
     /**
      * The public visibility.

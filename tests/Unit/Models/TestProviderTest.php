@@ -6,6 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
+use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestProvider;
 use Tests\PhpUnitGen\Core\TestCase;
 
@@ -46,5 +47,14 @@ class TestProviderTest extends TestCase
             ->with($this->provider);
 
         $this->provider->accept($renderer);
+    }
+
+    public function testItHasDocumentation(): void
+    {
+        $documentation = new TestDocumentation();
+
+        $this->provider->setDocumentation($documentation);
+
+        $this->assertSame($documentation, $this->provider->getDocumentation());
     }
 }

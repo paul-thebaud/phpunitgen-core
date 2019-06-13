@@ -6,6 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
+use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestProperty;
 use Tests\PhpUnitGen\Core\TestCase;
 
@@ -46,5 +47,14 @@ class TestPropertyTest extends TestCase
             ->with($this->property);
 
         $this->property->accept($renderer);
+    }
+
+    public function testItHasDocumentation(): void
+    {
+        $documentation = new TestDocumentation();
+
+        $this->property->setDocumentation($documentation);
+
+        $this->assertSame($documentation, $this->property->getDocumentation());
     }
 }
