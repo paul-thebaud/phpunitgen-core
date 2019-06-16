@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use Mockery;
-use PhpUnitGen\Core\Generators\Concerns\CreatesTestImports;
-use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
+use PhpUnitGen\Core\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
- * Class CreatesTestImportsTest.
+ * Class ImportFactoryTest.
  *
- * @covers \PhpUnitGen\Core\Generators\Concerns\CreatesTestImports
+ * @covers \PhpUnitGen\Core\Generators\Factories\ImportFactory
  */
-class CreatesTestImportsTest extends TestCase
+class ImportFactoryTest extends TestCase
 {
     /**
      * @var TestClass
@@ -25,9 +24,9 @@ class CreatesTestImportsTest extends TestCase
     protected $class;
 
     /**
-     * @var CreatesTestImports
+     * @var ImportFactory
      */
-    protected $createsTestImports;
+    protected $importFactory;
 
     /**
      * {@inheritdoc}
@@ -36,7 +35,7 @@ class CreatesTestImportsTest extends TestCase
     {
         parent::setUp();
 
-        $this->createsTestImports = new MockeryMockGenerator();
+        $this->importFactory = new ImportFactory();
 
         $this->class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
     }
@@ -45,14 +44,9 @@ class CreatesTestImportsTest extends TestCase
     {
         $this->class->addImport(new TestImport('Foo\\Bar\\Baz'));
 
-        $class = $this->callProtectedMethod(
-            $this->createsTestImports,
-            'createTestImport',
-            $this->class,
-            'Foo\\Bar\\Baz'
-        );
+        $import = $this->importFactory->create($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('Baz', $class);
+        $this->assertSame('Baz', $import->getFinalName());
         $this->assertCount(1, $this->class->getImports());
     }
 
@@ -60,27 +54,17 @@ class CreatesTestImportsTest extends TestCase
     {
         $this->class->addImport(new TestImport('Foo\\Bar\\Baz', 'BazAlias'));
 
-        $class = $this->callProtectedMethod(
-            $this->createsTestImports,
-            'createTestImport',
-            $this->class,
-            'Foo\\Bar\\Baz'
-        );
+        $import = $this->importFactory->create($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('BazAlias', $class);
+        $this->assertSame('BazAlias', $import->getFinalName());
         $this->assertCount(1, $this->class->getImports());
     }
 
     public function testItReturnsNotImportedClassWithoutAliasing(): void
     {
-        $class = $this->callProtectedMethod(
-            $this->createsTestImports,
-            'createTestImport',
-            $this->class,
-            'Foo\\Bar\\Baz'
-        );
+        $import = $this->importFactory->create($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('Baz', $class);
+        $this->assertSame('Baz', $import->getFinalName());
         $this->assertCount(1, $this->class->getImports());
     }
 
@@ -88,14 +72,9 @@ class CreatesTestImportsTest extends TestCase
     {
         $this->class->addImport(new TestImport('Foo\\Bar\\BazModel', 'Baz'));
 
-        $class = $this->callProtectedMethod(
-            $this->createsTestImports,
-            'createTestImport',
-            $this->class,
-            'Foo\\Bar\\Baz'
-        );
+        $import = $this->importFactory->create($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('BazAlias', $class);
+        $this->assertSame('BazAlias', $import->getFinalName());
         $this->assertCount(2, $this->class->getImports());
     }
 
@@ -104,14 +83,9 @@ class CreatesTestImportsTest extends TestCase
         $this->class->addImport(new TestImport('Foo\\Bar\\BazFoo', 'Baz'));
         $this->class->addImport(new TestImport('Foo\\Bar\\BazBar', 'BazAlias'));
 
-        $class = $this->callProtectedMethod(
-            $this->createsTestImports,
-            'createTestImport',
-            $this->class,
-            'Foo\\Bar\\Baz'
-        );
+        $import = $this->importFactory->create($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('BazAliasAlias', $class);
+        $this->assertSame('BazAliasAlias', $import->getFinalName());
         $this->assertCount(3, $this->class->getImports());
     }
 }

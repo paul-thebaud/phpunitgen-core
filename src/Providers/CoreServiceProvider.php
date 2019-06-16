@@ -13,6 +13,7 @@ use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\BasicTestGenerator;
+use PhpUnitGen\Core\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Generators\Mocks\PhpUnitMockGenerator;
 use PhpUnitGen\Core\Parsers\CodeParser;
@@ -104,9 +105,11 @@ class CoreServiceProvider extends AbstractServiceProvider
             ->add(CodeParserContract::class, CodeParser::class)
             ->addArgument(BetterReflection::class);
 
+        /*
         $this->getContainer()
             ->add(RendererContract::class, Renderer::class)
             ->addArgument(Config::class);
+        */
 
         return $this;
     }
@@ -135,10 +138,12 @@ class CoreServiceProvider extends AbstractServiceProvider
     {
         return $this
             ->addMockGeneratorResolver('phpunit', function (Container $container) {
-                $container->add(MockGeneratorContract::class, PhpUnitMockGenerator::class);
+                $container->add(MockGeneratorContract::class, PhpUnitMockGenerator::class)
+                    ->addArgument(ImportFactory::class);
             })
             ->addMockGeneratorResolver('mockery', function (Container $container) {
-                $container->add(MockGeneratorContract::class, MockeryMockGenerator::class);
+                $container->add(MockGeneratorContract::class, MockeryMockGenerator::class)
+                    ->addArgument(ImportFactory::class);
             });
     }
 

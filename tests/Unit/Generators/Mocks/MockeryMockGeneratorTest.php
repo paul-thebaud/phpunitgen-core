@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use Mockery;
+use Mockery\Mock;
+use PhpUnitGen\Core\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestMethod;
+use PhpUnitGen\Core\Models\TestProperty;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflection\ReflectionType;
@@ -22,6 +25,11 @@ use Tests\PhpUnitGen\Core\TestCase;
 class MockeryMockGeneratorTest extends TestCase
 {
     /**
+     * @var ImportFactory|Mock
+     */
+    protected $importFactory;
+
+    /**
      * @var MockeryMockGenerator
      */
     protected $mockeryMockGenerator;
@@ -33,12 +41,15 @@ class MockeryMockGeneratorTest extends TestCase
     {
         parent::setUp();
 
-        $this->mockeryMockGenerator = new MockeryMockGenerator();
+        $this->importFactory = Mockery::mock(ImportFactory::class);
+        $this->mockeryMockGenerator = new MockeryMockGenerator($this->importFactory);
     }
 
-    public function testItGeneratePropertyWhenNoType(): void
+    public function testItDoesNotGenerateForParameterWhenNoType(): void
     {
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $method = new TestMethod('setUp');
+        $method->setTestClass($class);
 
         $parameter = Mockery::mock(ReflectionParameter::class);
 
@@ -47,20 +58,22 @@ class MockeryMockGeneratorTest extends TestCase
             ->withNoArgs()
             ->andReturnNull();
 
-        $this->mockeryMockGenerator->generateProperty($class, $parameter);
+        $this->importFactory->shouldReceive('create')->never();
 
-        $this->assertEmpty($class->getImports());
+        $this->mockeryMockGenerator->generateForParameter($method, $parameter);
     }
 
-    public function testItGeneratePropertyWhenBuiltInType(): void
+    public function testItDoesNotGenerateForParameterWhenBuiltInType(): void
     {
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $method = new TestMethod('setUp');
+        $method->setTestClass($class);
 
         $parameter = Mockery::mock(ReflectionParameter::class);
         $type = Mockery::mock(ReflectionType::class);
 
         $parameter->shouldReceive('getType')
-            ->once()
+            ->twice()
             ->withNoArgs()
             ->andReturn($type);
 
@@ -69,102 +82,22 @@ class MockeryMockGeneratorTest extends TestCase
             ->withNoArgs()
             ->andReturnTrue();
 
-        $this->mockeryMockGenerator->generateProperty($class, $parameter);
+        $this->importFactory->shouldReceive('create')->never();
 
-        $this->assertEmpty($class->getImports());
+        $this->mockeryMockGenerator->generateForParameter($method, $parameter);
     }
 
-    public function testItGeneratePropertyWhenNotBuiltInType(): void
+    public function testItGenerateForParameterWhenNotBuiltInType(): void
     {
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
+        $method = new TestMethod('setUp');
+        $method->setTestClass($class);
 
         $parameter = Mockery::mock(ReflectionParameter::class);
         $type = Mockery::mock(ReflectionType::class);
 
         $parameter->shouldReceive('getType')
-            ->once()
-            ->withNoArgs()
-            ->andReturn($type);
-
-        $type->shouldReceive('isBuiltin')
-            ->once()
-            ->withNoArgs()
-            ->andReturnFalse();
-
-        $parameter->shouldReceive('getName')
-            ->once()
-            ->withNoArgs()
-            ->andReturn('bar');
-
-        $this->mockeryMockGenerator->generateProperty($class, $parameter);
-        $property = $class->getProperties()->first();
-
-        $this->assertSame($class, $property->getTestClass());
-        $this->assertSame('barMock', $property->getName());
-        $this->assertSame('Mock', $property->getClass());
-        $this->assertTrue(
-            $class->getImports()->contains(function (TestImport $import) {
-                return $import->getName() === 'Mockery\\Mock'
-                    && $import->getAlias() === null;
-            })
-        );
-    }
-
-    public function testItGenerateStatementWhenNoType(): void
-    {
-        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $method = new TestMethod('setUp', 'protected');
-        $class->addMethod($method);
-
-        $parameter = Mockery::mock(ReflectionParameter::class);
-
-        $parameter->shouldReceive('getType')
-            ->once()
-            ->withNoArgs()
-            ->andReturnNull();
-
-        $this->mockeryMockGenerator->generateStatement($method, $parameter);
-
-        $this->assertEmpty($class->getImports());
-        $this->assertEmpty($method->getStatements());
-    }
-
-    public function testItGenerateStatementWhenBuiltInType(): void
-    {
-        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $method = new TestMethod('setUp', 'protected');
-        $class->addMethod($method);
-
-        $parameter = Mockery::mock(ReflectionParameter::class);
-        $type = Mockery::mock(ReflectionType::class);
-
-        $parameter->shouldReceive('getType')
-            ->once()
-            ->withNoArgs()
-            ->andReturn($type);
-
-        $type->shouldReceive('isBuiltin')
-            ->once()
-            ->withNoArgs()
-            ->andReturnTrue();
-
-        $this->mockeryMockGenerator->generateStatement($method, $parameter);
-
-        $this->assertEmpty($class->getImports());
-        $this->assertEmpty($method->getStatements());
-    }
-
-    public function testItGenerateStatementWhenNotBuiltInType(): void
-    {
-        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $method = new TestMethod('setUp', 'protected');
-        $class->addMethod($method);
-
-        $parameter = Mockery::mock(ReflectionParameter::class);
-        $type = Mockery::mock(ReflectionType::class);
-
-        $parameter->shouldReceive('getType')
-            ->once()
+            ->times(4)
             ->withNoArgs()
             ->andReturn($type);
 
@@ -179,29 +112,37 @@ class MockeryMockGeneratorTest extends TestCase
             ->andReturn('bar');
 
         $type->shouldReceive('__toString')
-            ->once()
+            ->twice()
             ->withNoArgs()
             ->andReturn('Bar');
 
-        $this->mockeryMockGenerator->generateStatement($method, $parameter);
-        $statement = $method->getStatements()->first();
+        $this->importFactory->shouldReceive('create')
+            ->once()
+            ->with($class, 'Mockery\\Mock')
+            ->andReturn(new TestImport('Mockery\\Mock'));
+        $this->importFactory->shouldReceive('create')
+            ->once()
+            ->with($class, 'Mockery')
+            ->andReturn(new TestImport('Mockery'));
+        $this->importFactory->shouldReceive('create')
+            ->once()
+            ->with($class, 'Bar')
+            ->andReturn(new TestImport('Bar'));
 
-        $this->assertSame($method, $statement->getTestMethod());
+        $this->mockeryMockGenerator->generateForParameter($method, $parameter);
+
+        /** @var TestProperty $property */
+        $property = $class->getProperties()->first();
+
+        $this->assertSame($class, $property->getTestClass());
+        $this->assertSame('barMock', $property->getName());
+        $this->assertCount(1, $property->getDocumentation()->getLines());
+        $this->assertSame('@var Mock|Bar', $property->getDocumentation()->getLines()->first());
+        $this->assertCount(1, $method->getStatements());
+        $this->assertCount(1, $method->getStatements()->first()->getLines());
         $this->assertSame(
             '$this->barMock = Mockery::mock(Bar::class);',
-            $statement->getStatement()
-        );
-        $this->assertTrue(
-            $class->getImports()->contains(function (TestImport $import) {
-                return $import->getName() === 'Bar'
-                    && $import->getAlias() === null;
-            })
-        );
-        $this->assertTrue(
-            $class->getImports()->contains(function (TestImport $import) {
-                return $import->getName() === 'Mockery'
-                    && $import->getAlias() === null;
-            })
+            $method->getStatements()->first()->getLines()->first()
         );
     }
 }

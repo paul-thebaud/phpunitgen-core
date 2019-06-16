@@ -6,6 +6,7 @@ namespace PhpUnitGen\Core\Contracts\Generators;
 
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
+use PhpUnitGen\Core\Models\TestStatement;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 /**
@@ -20,18 +21,20 @@ use Roave\BetterReflection\Reflection\ReflectionParameter;
 interface MockGenerator
 {
     /**
-     * Generate the mock property for the given parameter.
-     *
-     * @param TestClass           $class
-     * @param ReflectionParameter $parameter
-     */
-    public function generateProperty(TestClass $class, ReflectionParameter $parameter): void;
-
-    /**
-     * Generate the mock creation statement for the given parameter.
+     * Generate the mock property and instantiation statement for the given constructor parameter and setUp method.
      *
      * @param TestMethod          $method
      * @param ReflectionParameter $parameter
      */
-    public function generateStatement(TestMethod $method, ReflectionParameter $parameter): void;
+    public function generateForParameter(TestMethod $method, ReflectionParameter $parameter): void;
+
+    /**
+     * Generate the mock instantiation statement without affectation to a property. Returns null if it cannot be mocked.
+     *
+     * @param TestClass           $class
+     * @param ReflectionParameter $parameter
+     *
+     * @return TestStatement|null
+     */
+    public function generateStatement(TestClass $class, ReflectionParameter $parameter): ?TestStatement;
 }

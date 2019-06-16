@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Generators\Mocks;
 
 use PhpUnitGen\Core\Models\TestClass;
+use PhpUnitGen\Core\Models\TestStatement;
 
 /**
  * Class MockeryMockGenerator.
@@ -28,10 +29,11 @@ class MockeryMockGenerator extends AbstractMockGenerator
     /**
      * {@inheritdoc}
      */
-    protected function getMockCreationLine(TestClass $testClass, string $class): string
+    protected function mockCreationStatement(TestClass $class, string $type): TestStatement
     {
-        $mockeryImport = $this->createTestImport($testClass, 'Mockery');
+        // Mockery must be imported to mock classes.
+        $mockeryType = $this->importFactory->create($class, 'Mockery');
 
-        return "{$mockeryImport}::mock({$class}::class);";
+        return new TestStatement("{$mockeryType->getFinalName()}::mock({$type}::class);");
     }
 }

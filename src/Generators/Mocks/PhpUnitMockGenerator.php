@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Generators\Mocks;
 
 use PhpUnitGen\Core\Models\TestClass;
+use PhpUnitGen\Core\Models\TestStatement;
 
 /**
  * Class PhpUnitMockGenerator.
@@ -26,10 +27,15 @@ class PhpUnitMockGenerator extends AbstractMockGenerator
     }
 
     /**
-     * {@inheritdoc}
+     * Get the mock creation statement for the given test class and reflection parameter.
+     *
+     * @param TestClass $class
+     * @param string    $type
+     *
+     * @return TestStatement
      */
-    protected function getMockCreationLine(TestClass $testClass, string $class): string
+    protected function mockCreationStatement(TestClass $class, string $type): TestStatement
     {
-        return "\$this->getMockBuilder({$class}::class)->getMock();";
+        return new TestStatement("\$this->getMock({$type}::class);");
     }
 }
