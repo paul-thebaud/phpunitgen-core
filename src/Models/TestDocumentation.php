@@ -6,7 +6,7 @@ namespace PhpUnitGen\Core\Models;
 
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
-use Tightenco\Collect\Support\Collection;
+use PhpUnitGen\Core\Models\Concerns\HasLines;
 
 /**
  * Class TestDocumentation.
@@ -17,19 +17,16 @@ use Tightenco\Collect\Support\Collection;
  */
 class TestDocumentation implements Renderable
 {
-    /**
-     * @var string[]|Collection The line of the documentation block.
-     */
-    protected $lines;
+    use HasLines;
 
     /**
      * TestDocumentation constructor.
      *
-     * @param Collection|null $lines
+     * @param string|null $firstLine
      */
-    public function __construct(Collection $lines = null)
+    public function __construct(?string $firstLine = null)
     {
-        $this->lines = $lines ?? new Collection();
+        $this->initializeLines($firstLine);
     }
 
     /**
@@ -38,25 +35,5 @@ class TestDocumentation implements Renderable
     public function accept(Renderer $renderer): void
     {
         $renderer->visitTestDocumentation($this);
-    }
-
-    /**
-     * @return string[]|Collection
-     */
-    public function getLines(): Collection
-    {
-        return $this->lines;
-    }
-
-    /**
-     * @param string $line
-     *
-     * @return static
-     */
-    public function addLine(string $line): self
-    {
-        $this->lines->add($line);
-
-        return $this;
     }
 }

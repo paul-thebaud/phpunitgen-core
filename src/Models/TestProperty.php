@@ -27,22 +27,13 @@ class TestProperty implements Renderable
     protected $name;
 
     /**
-     * @var string The name of the class (not including namespace).
-     */
-    protected $class;
-
-    /**
      * TestProperty constructor.
      *
      * @param string $name
-     * @param string $class
      */
-    public function __construct(
-        string $name,
-        string $class
-    ) {
+    public function __construct(string $name)
+    {
         $this->name = $name;
-        $this->class = $class;
     }
 
     /**
@@ -59,13 +50,5 @@ class TestProperty implements Renderable
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClass(): string
-    {
-        return $this->class;
     }
 }

@@ -6,6 +6,7 @@ namespace PhpUnitGen\Core\Models;
 
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
+use PhpUnitGen\Core\Models\Concerns\HasLines;
 use PhpUnitGen\Core\Models\Concerns\HasTestMethodParent;
 
 /**
@@ -17,21 +18,17 @@ use PhpUnitGen\Core\Models\Concerns\HasTestMethodParent;
  */
 class TestStatement implements Renderable
 {
+    use HasLines;
     use HasTestMethodParent;
-
-    /**
-     * @var string The statement.
-     */
-    protected $statement;
 
     /**
      * TestStatement constructor.
      *
-     * @param string $statement
+     * @param string|null $firstLine
      */
-    public function __construct(string $statement)
+    public function __construct(string $firstLine = null)
     {
-        $this->statement = $statement;
+        $this->initializeLines($firstLine);
     }
 
     /**
@@ -40,13 +37,5 @@ class TestStatement implements Renderable
     public function accept(Renderer $renderer): void
     {
         $renderer->visitTestStatement($this);
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatement(): string
-    {
-        return $this->statement;
     }
 }

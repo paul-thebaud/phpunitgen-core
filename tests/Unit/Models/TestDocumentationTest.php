@@ -8,7 +8,6 @@ use Mockery;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use Tests\PhpUnitGen\Core\TestCase;
-use Tightenco\Collect\Support\Collection;
 
 /**
  * Class TestDocumentationTest.
@@ -29,7 +28,7 @@ class TestDocumentationTest extends TestCase
     {
         parent::setUp();
 
-        $this->documentation = new TestDocumentation(new Collection(['@covers Foo']));
+        $this->documentation = new TestDocumentation('@covers Foo');
     }
 
     public function testItConstructs(): void
@@ -52,11 +51,52 @@ class TestDocumentationTest extends TestCase
 
     public function testItAddsLine(): void
     {
-        $this->documentation->addLine('@author John Doe');
+        $this->assertSame(1, $this->documentation->getLines()->count());
 
-        $this->assertSame([
-            '@covers Foo',
-            '@author John Doe',
-        ], $this->documentation->getLines()->toArray());
+        $this->documentation->addLine('@covers Bar');
+
+        $this->assertSame(2, $this->documentation->getLines()->count());
+        $this->assertSame('@covers Bar', $this->documentation->getLines()->last());
+    }
+
+    public function testItRemovesLine(): void
+    {
+        $this->assertSame(1, $this->documentation->getLines()->count());
+
+        $this->documentation->removeLine();
+
+        $this->assertSame(0, $this->documentation->getLines()->count());
+    }
+
+    public function testItPrepends(): void
+    {
+        $this->documentation->prepend('@author bar ');
+
+        $this->assertSame('@author bar @covers Foo', $this->documentation->getLines()->last());
+    }
+
+    public function testItAppends(): void
+    {
+        $this->documentation->append(' @author bar');
+
+        $this->assertSame('@covers Foo @author bar', $this->documentation->getLines()->last());
+    }
+
+    public function testItPrependsWhenCustomKey(): void
+    {
+        $this->documentation->addLine('new line which wont be updated');
+
+        $this->documentation->prepend('@author bar ', 0);
+
+        $this->assertSame('@author bar @covers Foo', $this->documentation->getLines()->first());
+    }
+
+    public function testItAppendsWhenCustomKey(): void
+    {
+        $this->documentation->addLine('new line which wont be updated');
+
+        $this->documentation->append(' @author bar', 0);
+
+        $this->assertSame('@covers Foo @author bar', $this->documentation->getLines()->first());
     }
 }

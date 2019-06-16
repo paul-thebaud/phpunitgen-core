@@ -29,13 +29,12 @@ class TestPropertyTest extends TestCase
     {
         parent::setUp();
 
-        $this->property = new TestProperty('foo', 'Foo');
+        $this->property = new TestProperty('foo');
     }
 
     public function testItConstructs(): void
     {
         $this->assertSame('foo', $this->property->getName());
-        $this->assertSame('Foo', $this->property->getClass());
     }
 
     public function testItAcceptsRenderer(): void
