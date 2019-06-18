@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Renderers;
 
-use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
@@ -20,7 +19,6 @@ use Tightenco\Collect\Support\Collection;
 /**
  * Class Renderer.
  *
- * @package PhpUnitGen\Core
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
@@ -28,29 +26,20 @@ use Tightenco\Collect\Support\Collection;
 class Renderer implements RendererContract
 {
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var int $indentation
+     * @var int The current indentation for new lines.
      */
     protected $indentation;
 
     /**
-     * @var RenderedLine[]|Collection $lines
+     * @var RenderedLine[]|Collection The lines to render.
      */
     protected $lines;
 
     /**
      * Renderer constructor.
-     *
-     * @param Config $config
      */
-    public function __construct(Config $config)
+    public function __construct()
     {
-        $this->config = $config;
-
         $this->indentation = 0;
         $this->lines = new Collection();
     }
