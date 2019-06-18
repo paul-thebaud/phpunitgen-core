@@ -23,6 +23,7 @@
     <logging>
         <log type="coverage-text" target="php://stdout"/>
         <log type="coverage-clover" target=".coverage/phpunit-clover.xml"/>
+        <log type="coverage-html" target=".coverage/phpunit"/>
     </logging>
 
 </phpunit>
