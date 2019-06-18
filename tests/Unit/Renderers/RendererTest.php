@@ -346,14 +346,22 @@ class FooTest extends TestCase
         );
     }
 
-    public function testItRendersProviderWithData(): void
+    public function testItRendersProviderWithDataAndDocumentation(): void
     {
-        $this->renderer->visitTestProvider(new TestProvider('sumDataProvider', [
+        $provider = new TestProvider('sumDataProvider', [
             ['0', '0', '0'],
             ['0', '5', '5'],
             ['5', '0', '5'],
             ['5', '5', '10'],
-        ]));
+        ]);
+
+        $documentation = Mockery::mock(TestDocumentation::class);
+        $documentation->shouldReceive('accept')
+            ->once()
+            ->with($this->renderer);
+        $provider->setDocumentation($documentation);
+
+        $this->renderer->visitTestProvider($provider);
 
         $this->assertCount(10, $this->renderer->getLines());
         $this->assertSame(
