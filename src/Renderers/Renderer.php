@@ -45,7 +45,7 @@ class Renderer implements RendererContract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRendered(): string
     {
