@@ -10,12 +10,14 @@ use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
+use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\BasicTestGenerator;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Generators\Mocks\PhpUnitMockGenerator;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Providers\CoreServiceProvider;
+use PhpUnitGen\Core\Renderers\Renderer;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -54,6 +56,10 @@ class CoreServiceProviderTest extends TestCase
         $this->assertInstanceOf(
             CodeParser::class,
             $this->container->get(CodeParserContract::class)
+        );
+        $this->assertInstanceOf(
+            Renderer::class,
+            $this->container->get(RendererContract::class)
         );
     }
 
