@@ -26,6 +26,13 @@ use PhpUnitGen\Core\Models\TestTrait;
 interface Renderer
 {
     /**
+     * Get the rendered content after visiting objects.
+     *
+     * @return string
+     */
+    public function getRendered(): string;
+
+    /**
      * Visit and render a test import.
      *
      * @param TestImport $import
