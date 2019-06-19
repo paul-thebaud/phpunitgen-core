@@ -39,6 +39,10 @@ class TestMethodTest extends TestCase
     {
         $this->assertSame('testFoo', $this->method->getName());
         $this->assertSame('protected', $this->method->getVisibility());
+
+        $this->assertNull($this->method->getProvider());
+        $this->assertEmpty($this->method->getParameters());
+        $this->assertEmpty($this->method->getStatements());
     }
 
     public function testItAcceptsRenderer(): void

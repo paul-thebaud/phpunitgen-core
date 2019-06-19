@@ -27,15 +27,15 @@ class TestProvider implements Renderable
     protected $name;
 
     /**
-     * @var array The data this provider provides.
+     * @var array[] The data this provider provides.
      */
     protected $data;
 
     /**
      * TestProvider constructor.
      *
-     * @param string $name
-     * @param array  $data
+     * @param string  $name
+     * @param array[] $data
      */
     public function __construct(string $name, array $data)
     {
@@ -60,7 +60,7 @@ class TestProvider implements Renderable
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getData(): array
     {

@@ -16,24 +16,24 @@ use PhpUnitGen\Core\Models\TestDocumentation;
 trait HasTestDocumentation
 {
     /**
-     * @var TestDocumentation The test documentation.
+     * @var TestDocumentation|null The test documentation.
      */
     protected $documentation;
 
     /**
-     * @return TestDocumentation
+     * @return TestDocumentation|null
      */
-    public function getDocumentation(): TestDocumentation
+    public function getDocumentation(): ?TestDocumentation
     {
         return $this->documentation;
     }
 
     /**
-     * @param TestDocumentation $documentation
+     * @param TestDocumentation|null $documentation
      *
      * @return static
      */
-    public function setDocumentation(TestDocumentation $documentation): self
+    public function setDocumentation(?TestDocumentation $documentation): self
     {
         $this->documentation = $documentation;
 

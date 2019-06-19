@@ -105,11 +105,8 @@ class CoreServiceProvider extends AbstractServiceProvider
             ->add(CodeParserContract::class, CodeParser::class)
             ->addArgument(BetterReflection::class);
 
-        /*
         $this->getContainer()
-            ->add(RendererContract::class, Renderer::class)
-            ->addArgument(Config::class);
-        */
+            ->add(RendererContract::class, Renderer::class);
 
         return $this;
     }

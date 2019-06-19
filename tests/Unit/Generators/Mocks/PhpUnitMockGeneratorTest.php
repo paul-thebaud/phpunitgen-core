@@ -20,6 +20,7 @@ use Tests\PhpUnitGen\Core\TestCase;
 /**
  * Class PhpUnitMockGeneratorTest.
  *
+ * @covers \PhpUnitGen\Core\Generators\Mocks\AbstractMockGenerator
  * @covers \PhpUnitGen\Core\Generators\Mocks\PhpUnitMockGenerator
  */
 class PhpUnitMockGeneratorTest extends TestCase
