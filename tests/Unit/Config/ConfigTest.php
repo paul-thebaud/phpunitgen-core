@@ -39,6 +39,7 @@ class ConfigTest extends TestCase
             'generateWith'      => 'basic',
             'baseNamespace'     => 'App\\',
             'baseTestNamespace' => '',
+            'excludedMethods'   => ['__toString'],
             'phpDocumentation'  => ['author' => 'John Doe'],
         ]);
 
@@ -47,6 +48,7 @@ class ConfigTest extends TestCase
         $this->assertSame('basic', $config->getGenerateWith());
         $this->assertSame('App\\', $config->getBaseNamespace());
         $this->assertSame('', $config->getBaseTestNamespace());
+        $this->assertSame(['__toString'], $config->getExcludedMethods());
         $this->assertSame(['author' => 'John Doe'], $config->getPhpDocumentation());
     }
 
@@ -83,6 +85,13 @@ class ConfigTest extends TestCase
         $config = new Config(['baseTestNamespace' => null]);
 
         $this->assertSame('', $config->getBaseTestNamespace());
+    }
+
+    public function testItCastOnGetExcludedMethods(): void
+    {
+        $config = new Config(['excludedMethods' => null]);
+
+        $this->assertSame([], $config->getExcludedMethods());
     }
 
     public function testItCastOnGetPhpDocumentation(): void

@@ -41,7 +41,15 @@ class Config
     protected $baseTestNamespace = 'Tests\\';
 
     /**
-     * @var array The PHP documentation for the test class.
+     * @var string[] The excluded methods.
+     */
+    protected $excludedMethods = [
+        '__construct',
+        '__destruct',
+    ];
+
+    /**
+     * @var string[] The PHP documentation for the test class.
      */
     protected $phpDocumentation = [];
 
@@ -104,7 +112,15 @@ class Config
     }
 
     /**
-     * @return array
+     * @return string[]
+     */
+    public function getExcludedMethods(): array
+    {
+        return (array) $this->excludedMethods;
+    }
+
+    /**
+     * @return string[]
      */
     public function getPhpDocumentation(): array
     {
