@@ -91,14 +91,24 @@ class Str
     /**
      * Check if the given string contains with the given search.
      *
-     * @param string $search
-     * @param string $subject
+     * @param string|string[] $searches
+     * @param string          $subject
      *
      * @return bool
      */
-    public static function contains(string $search, string $subject): bool
+    public static function contains($searches, string $subject): bool
     {
-        return strpos($subject, $search) !== false;
+        if (! is_array($searches)) {
+            $searches = [$searches];
+        }
+
+        foreach ($searches as $search) {
+            if (strpos($subject, $search) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

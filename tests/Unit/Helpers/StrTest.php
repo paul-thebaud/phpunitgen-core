@@ -101,13 +101,13 @@ class StrTest extends TestCase
     }
 
     /**
-     * @param bool   $expected
-     * @param string $search
-     * @param string $subject
+     * @param bool            $expected
+     * @param string|string[] $search
+     * @param string          $subject
      *
      * @dataProvider containsProvider
      */
-    public function testContains(bool $expected, string $search, string $subject): void
+    public function testContains(bool $expected, $search, string $subject): void
     {
         $this->assertSame($expected, Str::contains($search, $subject));
     }
@@ -118,6 +118,10 @@ class StrTest extends TestCase
             [false, 'Foo', 'Bar Baz'],
             [true, 'Foo', 'Foo Bar Baz'],
             [true, 'Foo', 'Bar Baz Foo'],
+            [false, ['Foo'], 'Bar Baz'],
+            [false, ['Foo', 'FooBar'], 'Bar Baz'],
+            [true, ['Foo'], 'Foo Bar Baz'],
+            [true, ['FooBar', 'FooBaz', 'Baz'], 'Bar Baz Foo'],
         ];
     }
 
