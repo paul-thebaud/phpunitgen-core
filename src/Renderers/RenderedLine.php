@@ -78,6 +78,10 @@ class RenderedLine
      */
     public function render(): string
     {
+        if ($this->content === '') {
+            return '';
+        }
+
         return str_repeat('    ', $this->indentation).$this->content;
     }
 }
