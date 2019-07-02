@@ -10,11 +10,6 @@ use PhpUnitGen\Core\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Generators\Mocks\PhpUnitMockGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
-use PhpUnitGen\Core\Models\TestMethod;
-use PhpUnitGen\Core\Models\TestProperty;
-use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
-use Roave\BetterReflection\Reflection\ReflectionType;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -46,100 +41,33 @@ class PhpUnitMockGeneratorTest extends TestCase
         $this->phpunitMockGenerator = new PhpUnitMockGenerator($this->importFactory);
     }
 
-    public function testItDoesNotGenerateForParameterWhenNoType(): void
+    public function testGetMockType(): void
     {
-        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $method = new TestMethod('setUp');
-        $method->setTestClass($class);
-
-        $parameter = Mockery::mock(ReflectionParameter::class);
-
-        $parameter->shouldReceive('getType')
-            ->once()
-            ->withNoArgs()
-            ->andReturnNull();
-
-        $this->importFactory->shouldReceive('create')->never();
-
-        $this->phpunitMockGenerator->generateForParameter($method, $parameter);
-    }
-
-    public function testItDoesNotGenerateForParameterWhenBuiltInType(): void
-    {
-        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $method = new TestMethod('setUp');
-        $method->setTestClass($class);
-
-        $parameter = Mockery::mock(ReflectionParameter::class);
-        $type = Mockery::mock(ReflectionType::class);
-
-        $parameter->shouldReceive('getType')
-            ->twice()
-            ->withNoArgs()
-            ->andReturn($type);
-
-        $type->shouldReceive('isBuiltin')
-            ->once()
-            ->withNoArgs()
-            ->andReturnTrue();
-
-        $this->importFactory->shouldReceive('create')->never();
-
-        $this->phpunitMockGenerator->generateForParameter($method, $parameter);
-    }
-
-    public function testItGenerateForParameterWhenNotBuiltInType(): void
-    {
-        $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
-        $method = new TestMethod('setUp');
-        $method->setTestClass($class);
-
-        $parameter = Mockery::mock(ReflectionParameter::class);
-        $type = Mockery::mock(ReflectionType::class);
-
-        $parameter->shouldReceive('getType')
-            ->times(4)
-            ->withNoArgs()
-            ->andReturn($type);
-
-        $type->shouldReceive('isBuiltin')
-            ->once()
-            ->withNoArgs()
-            ->andReturnFalse();
-
-        $parameter->shouldReceive('getName')
-            ->once()
-            ->withNoArgs()
-            ->andReturn('bar');
-
-        $type->shouldReceive('__toString')
-            ->twice()
-            ->withNoArgs()
-            ->andReturn('Bar');
+        $class = Mockery::mock(TestClass::class);
+        $import = Mockery::mock(TestImport::class);
 
         $this->importFactory->shouldReceive('create')
             ->once()
             ->with($class, 'PHPUnit\\Framework\\MockObject\\MockObject')
-            ->andReturn(new TestImport('PHPUnit\\Framework\\MockObject\\MockObject'));
+            ->andReturn($import);
+
+        $this->assertSame($import, $this->phpunitMockGenerator->getMockType($class));
+    }
+
+    public function testGenerateMock(): void
+    {
+        $class = Mockery::mock(TestClass::class);
+        $import = Mockery::mock(TestImport::class);
+
         $this->importFactory->shouldReceive('create')
             ->once()
-            ->with($class, 'Bar')
-            ->andReturn(new TestImport('Bar'));
+            ->with($class, 'Foo')
+            ->andReturn($import);
 
-        $this->phpunitMockGenerator->generateForParameter($method, $parameter);
+        $import->shouldReceive('getFinalName')
+            ->once()
+            ->andReturn('Foo');
 
-        /** @var TestProperty $property */
-        $property = $class->getProperties()->first();
-
-        $this->assertSame($class, $property->getTestClass());
-        $this->assertSame('barMock', $property->getName());
-        $this->assertCount(1, $property->getDocumentation()->getLines());
-        $this->assertSame('@var MockObject|Bar', $property->getDocumentation()->getLines()->first());
-        $this->assertCount(1, $method->getStatements());
-        $this->assertCount(1, $method->getStatements()->first()->getLines());
-        $this->assertSame(
-            '$this->barMock = $this->getMock(Bar::class);',
-            $method->getStatements()->first()->getLines()->first()
-        );
+        $this->assertSame('$this->getMock(Foo::class)', $this->phpunitMockGenerator->generateMock($class, 'Foo'));
     }
 }
