@@ -40,6 +40,27 @@ class StrTest extends TestCase
      * @param string $search
      * @param string $subject
      *
+     * @dataProvider afterFirstProvider
+     */
+    public function testAfterFirst(string $expected, string $search, string $subject): void
+    {
+        $this->assertSame($expected, Str::afterFirst($search, $subject));
+    }
+
+    public function afterFirstProvider(): array
+    {
+        return [
+            ['Foo', '\\', 'Foo'],
+            ['Bar', '\\', 'Foo\\Bar'],
+            ['Bar\\Baz', '\\', 'Foo\\Bar\\Baz'],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $search
+     * @param string $subject
+     *
      * @dataProvider afterLastProvider
      */
     public function testAfterLast(string $expected, string $search, string $subject): void
@@ -126,13 +147,38 @@ class StrTest extends TestCase
     }
 
     /**
+     * @param bool            $expected
+     * @param string|string[] $expression
+     * @param string          $subject
+     *
+     * @dataProvider containsRegexProvider
+     */
+    public function testContainsRegex(bool $expected, $expression, string $subject): void
+    {
+        $this->assertSame($expected, Str::containsRegex($expression, $subject));
+    }
+
+    public function containsRegexProvider(): array
+    {
+        return [
+            [false, 'foo', 'Bar Baz'],
+            [true, 'foo', 'Foo Bar Baz'],
+            [true, 'foo', 'Bar Baz Foo'],
+            [false, ['foo'], 'Bar Baz'],
+            [false, ['foo', 'FooBar'], 'Bar Baz'],
+            [true, ['foo'], 'Foo Bar Baz'],
+            [true, ['foobar', '^[barz ]+foo$', 'Baz'], 'Bar Baz Foo'],
+        ];
+    }
+
+    /**
      * @param bool   $expected
      * @param string $search
      * @param string $subject
      *
      * @dataProvider startsWithProvider
      */
-    public function testStartsWith(bool $expected, string $search, string $subject): void
+    public function testStartsWith(bool $expected, $search, string $subject): void
     {
         $this->assertSame($expected, Str::startsWith($search, $subject));
     }
@@ -143,6 +189,7 @@ class StrTest extends TestCase
             [false, 'Foo', 'Bar Baz'],
             [false, 'Foo', 'Bar Foo Baz'],
             [true, 'Foo', 'Foo Bar Baz'],
+            [true, ['Bar', 'Foo'], 'Foo Bar Baz'],
         ];
     }
 }
