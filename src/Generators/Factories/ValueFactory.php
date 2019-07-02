@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Generators\Factories;
 
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
+use PhpUnitGen\Core\Contracts\Generators\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Models\TestClass;
 use Roave\BetterReflection\Reflection\ReflectionType;
 
@@ -15,7 +16,7 @@ use Roave\BetterReflection\Reflection\ReflectionType;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class ValueFactory
+class ValueFactory implements ValueFactoryContract
 {
     /**
      * @var MockGenerator
@@ -33,12 +34,7 @@ class ValueFactory
     }
 
     /**
-     * Generate a PHP value for the given type.
-     *
-     * @param TestClass           $class
-     * @param ReflectionType|null $reflectionType
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function create(TestClass $class, ?ReflectionType $reflectionType): string
     {
