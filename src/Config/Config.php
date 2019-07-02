@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Config;
 
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
+use Tightenco\Collect\Support\Collection;
 
 /**
  * Class Config.
@@ -23,12 +24,12 @@ class Config
     /**
      * @var string The generator should be used to generate mock construction.
      */
-    protected $mockWith;
+    protected $mockWith = 'mockery';
 
     /**
      * @var string The generator should be used to test class.
      */
-    protected $generateWith;
+    protected $generateWith = 'basic';
 
     /**
      * @var string The base namespace of source code.
@@ -41,7 +42,7 @@ class Config
     protected $baseTestNamespace = 'Tests\\';
 
     /**
-     * @var string[] The excluded methods.
+     * @var string[] The insensitive regex tested methods shouldn't match.
      */
     protected $excludedMethods = [
         '__construct',
@@ -120,10 +121,10 @@ class Config
     }
 
     /**
-     * @return string[]
+     * @return string[]|Collection
      */
-    public function getPhpDocumentation(): array
+    public function getPhpDocumentation(): Collection
     {
-        return (array) $this->phpDocumentation;
+        return new Collection((array) $this->phpDocumentation);
     }
 }

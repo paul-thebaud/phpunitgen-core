@@ -49,7 +49,7 @@ class ConfigTest extends TestCase
         $this->assertSame('App\\', $config->getBaseNamespace());
         $this->assertSame('', $config->getBaseTestNamespace());
         $this->assertSame(['__toString'], $config->getExcludedMethods());
-        $this->assertSame(['author' => 'John Doe'], $config->getPhpDocumentation());
+        $this->assertSame(['author' => 'John Doe'], $config->getPhpDocumentation()->toArray());
     }
 
     public function testItCastOnHasAutomaticTest(): void
@@ -98,6 +98,6 @@ class ConfigTest extends TestCase
     {
         $config = new Config(['phpDocumentation' => null]);
 
-        $this->assertSame([], $config->getPhpDocumentation());
+        $this->assertSame([], $config->getPhpDocumentation()->toArray());
     }
 }
