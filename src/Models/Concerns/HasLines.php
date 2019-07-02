@@ -47,7 +47,7 @@ trait HasLines
      *
      * @return static
      */
-    public function addLine(string $content): self
+    public function addLine(string $content = ''): self
     {
         $this->lines->add($content);
 
