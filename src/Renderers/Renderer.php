@@ -252,7 +252,11 @@ class Renderer implements RendererContract
             $this->addLine('/*');
 
             $lines->each(function (string $line) {
-                $this->addLine(' * '.$line);
+                $this->addLine(' *');
+
+                if ($line !== '') {
+                    $this->append(' '.$line);
+                }
             });
 
             $this->addLine(' */');

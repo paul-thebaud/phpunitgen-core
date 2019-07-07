@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Renderers;
 
 use Mockery;
-use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
@@ -28,11 +27,6 @@ use Tests\PhpUnitGen\Core\TestCase;
 class RendererTest extends TestCase
 {
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
      * @var Renderer
      */
     protected $renderer;
@@ -44,8 +38,7 @@ class RendererTest extends TestCase
     {
         parent::setUp();
 
-        $this->config = Mockery::mock(Config::class);
-        $this->renderer = new Renderer($this->config);
+        $this->renderer = new Renderer();
     }
 
     public function testItRendersWithoutLine(): void
@@ -432,14 +425,16 @@ class FooTest extends TestCase
     public function testItRendersDocumentationWithLines(): void
     {
         $documentation = new TestDocumentation('@covers Foo');
+        $documentation->addLine();
         $documentation->addLine('@author John Doe');
 
         $this->renderer->visitTestDocumentation($documentation);
 
-        $this->assertCount(4, $this->renderer->getLines());
+        $this->assertCount(5, $this->renderer->getLines());
         $this->assertSame(
             '/*
  * @covers Foo
+ *
  * @author John Doe
  */',
             $this->renderer->getRendered()
