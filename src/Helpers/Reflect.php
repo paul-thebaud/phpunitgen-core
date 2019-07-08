@@ -120,11 +120,13 @@ class Reflect
      *
      * @param object $reflectionObject
      *
-     * @return DocBlock
+     * @return DocBlock|null
      */
-    public static function docBlock(object $reflectionObject): DocBlock
+    public static function docBlock(object $reflectionObject): ?DocBlock
     {
-        return self::getDocBlockFactory()->create($reflectionObject);
+        $docComment = $reflectionObject->getDocComment();
+
+        return $docComment !== '' ? self::getDocBlockFactory()->create($docComment) : null;
     }
 
     /**
@@ -136,6 +138,8 @@ class Reflect
      */
     public static function docBlockTags(object $reflectionObject): Collection
     {
-        return new Collection(self::docBlock($reflectionObject)->getTags());
+        $docBlock = self::docBlock($reflectionObject);
+
+        return new Collection($docBlock ? $docBlock->getTags() : []);
     }
 }

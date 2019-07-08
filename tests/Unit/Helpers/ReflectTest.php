@@ -94,7 +94,17 @@ class ReflectTest extends TestCase
         $this->assertSame([], Reflect::parameters($reflectionMethod)->toArray());
     }
 
-    public function testDocBlockWhenDefaultFactory(): void
+    public function testDocBlockWhenDefaultFactoryAndEmptyDocComment(): void
+    {
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionMethod->shouldReceive('getDocComment')
+            ->withNoArgs()
+            ->andReturn('');
+
+        $this->assertNull(Reflect::docBlock($reflectionMethod));
+    }
+
+    public function testDocBlockWhenDefaultFactoryAndNotEmptyDocComment(): void
     {
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionMethod->shouldReceive('getDocComment')
@@ -107,11 +117,15 @@ class ReflectTest extends TestCase
     public function testDocBlockWhenCustomFactory(): void
     {
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionMethod->shouldReceive('getDocComment')
+            ->withNoArgs()
+            ->andReturn('/** @author John Doe */');
+
         $docBlock = new DocBlock();
 
         $docBlockFactory = Mockery::mock(DocBlockFactoryInterface::class);
         $docBlockFactory->shouldReceive('create')
-            ->with($reflectionMethod)
+            ->with('/** @author John Doe */')
             ->andReturn($docBlock);
 
         Reflect::setDocBlockFactory($docBlockFactory);
@@ -121,7 +135,19 @@ class ReflectTest extends TestCase
         Reflect::setDocBlockFactory(null);
     }
 
-    public function testDocBlockTags(): void
+    public function testDocBlockTagsWhenEmptyDocComment(): void
+    {
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionMethod->shouldReceive('getDocComment')
+            ->withNoArgs()
+            ->andReturn('');
+
+        $tags = Reflect::docBlockTags($reflectionMethod);
+
+        $this->assertTrue($tags->isEmpty());
+    }
+
+    public function testDocBlockTagsWhenNotEmptyDocComment(): void
     {
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionMethod->shouldReceive('getDocComment')
@@ -133,6 +159,8 @@ class ReflectTest extends TestCase
 
         $tags = Reflect::docBlockTags($reflectionMethod);
 
+        $this->assertFalse($tags->isEmpty());
+        $this->assertCount(2, $tags);
         $this->assertSame('@author John Doe', $tags->get(0)->render());
         $this->assertSame('@see https://example.com', $tags->get(1)->render());
     }
