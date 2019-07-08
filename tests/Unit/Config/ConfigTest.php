@@ -34,13 +34,14 @@ class ConfigTest extends TestCase
     public function testItConstructWithCompleteConfiguration(): void
     {
         $config = new Config([
-            'automaticTests'    => false,
-            'mockWith'          => 'phpunit',
-            'generateWith'      => 'basic',
-            'baseNamespace'     => 'App\\',
-            'baseTestNamespace' => '',
-            'excludedMethods'   => ['__toString'],
-            'phpDocumentation'  => ['author' => 'John Doe'],
+            'automaticTests'         => false,
+            'mockWith'               => 'phpunit',
+            'generateWith'           => 'basic',
+            'baseNamespace'          => 'App\\',
+            'baseTestNamespace'      => '',
+            'excludedMethods'        => ['__toString'],
+            'mergedPhpDocumentation' => ['author'],
+            'phpDocumentation'       => ['@author John Doe'],
         ]);
 
         $this->assertFalse($config->hasAutomaticTests());
@@ -49,7 +50,8 @@ class ConfigTest extends TestCase
         $this->assertSame('App\\', $config->getBaseNamespace());
         $this->assertSame('', $config->getBaseTestNamespace());
         $this->assertSame(['__toString'], $config->getExcludedMethods());
-        $this->assertSame(['author' => 'John Doe'], $config->getPhpDocumentation()->toArray());
+        $this->assertSame(['author'], $config->getMergedPhpDocumentation());
+        $this->assertSame(['@author John Doe'], $config->getPhpDocumentation());
     }
 
     public function testItCastOnHasAutomaticTest(): void
@@ -94,10 +96,17 @@ class ConfigTest extends TestCase
         $this->assertSame([], $config->getExcludedMethods());
     }
 
+    public function testItCastOnGetMergedPhpDocumentation(): void
+    {
+        $config = new Config(['mergedPhpDocumentation' => null]);
+
+        $this->assertSame([], $config->getMergedPhpDocumentation());
+    }
+
     public function testItCastOnGetPhpDocumentation(): void
     {
         $config = new Config(['phpDocumentation' => null]);
 
-        $this->assertSame([], $config->getPhpDocumentation()->toArray());
+        $this->assertSame([], $config->getPhpDocumentation());
     }
 }

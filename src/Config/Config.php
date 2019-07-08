@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Config;
 
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
-use Tightenco\Collect\Support\Collection;
 
 /**
  * Class Config.
@@ -50,7 +49,15 @@ class Config
     ];
 
     /**
-     * @var string[] The PHP documentation for the test class.
+     * @var string[] The PHP documentation tags that should be included from tested class to test class.
+     */
+    protected $mergedPhpDocumentation = [
+        'author',
+        'license',
+    ];
+
+    /**
+     * @var string[] The PHP documentation lines for the test class.
      */
     protected $phpDocumentation = [];
 
@@ -121,10 +128,18 @@ class Config
     }
 
     /**
-     * @return string[]|Collection
+     * @return string[]
      */
-    public function getPhpDocumentation(): Collection
+    public function getMergedPhpDocumentation(): array
     {
-        return new Collection((array) $this->phpDocumentation);
+        return (array) $this->mergedPhpDocumentation;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPhpDocumentation(): array
+    {
+        return (array) $this->phpDocumentation;
     }
 }
