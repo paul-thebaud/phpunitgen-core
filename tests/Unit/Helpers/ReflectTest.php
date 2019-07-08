@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Helpers;
 
 use Mockery;
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use PhpUnitGen\Core\Helpers\Reflect;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -90,5 +92,48 @@ class ReflectTest extends TestCase
             ->andReturn([]);
 
         $this->assertSame([], Reflect::parameters($reflectionMethod)->toArray());
+    }
+
+    public function testDocBlockWhenDefaultFactory(): void
+    {
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionMethod->shouldReceive('getDocComment')
+            ->withNoArgs()
+            ->andReturn('/** @author John Doe */');
+
+        $this->assertInstanceOf(DocBlock::class, Reflect::docBlock($reflectionMethod));
+    }
+
+    public function testDocBlockWhenCustomFactory(): void
+    {
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $docBlock = new DocBlock();
+
+        $docBlockFactory = Mockery::mock(DocBlockFactoryInterface::class);
+        $docBlockFactory->shouldReceive('create')
+            ->with($reflectionMethod)
+            ->andReturn($docBlock);
+
+        Reflect::setDocBlockFactory($docBlockFactory);
+
+        $this->assertSame($docBlock, Reflect::docBlock($reflectionMethod));
+
+        Reflect::setDocBlockFactory(null);
+    }
+
+    public function testDocBlockTags(): void
+    {
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionMethod->shouldReceive('getDocComment')
+            ->withNoArgs()
+            ->andReturn('/**
+            * @author John Doe
+            * @see https://example.com
+            */');
+
+        $tags = Reflect::docBlockTags($reflectionMethod);
+
+        $this->assertSame('@author John Doe', $tags->get(0)->render());
+        $this->assertSame('@see https://example.com', $tags->get(1)->render());
     }
 }

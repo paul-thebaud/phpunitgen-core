@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Helpers;
 
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -23,6 +26,27 @@ use Tightenco\Collect\Support\Collection;
  */
 class Reflect
 {
+    /**
+     * @var DocBlockFactoryInterface The doc block factory to parse doc blocks.
+     */
+    protected static $docBlockFactory;
+
+    /**
+     * @return DocBlockFactoryInterface
+     */
+    protected static function getDocBlockFactory(): DocBlockFactoryInterface
+    {
+        return self::$docBlockFactory ?? DocBlockFactory::createInstance();
+    }
+
+    /**
+     * @param DocBlockFactoryInterface $docBlockFactory
+     */
+    public static function setDocBlockFactory(?DocBlockFactoryInterface $docBlockFactory): void
+    {
+        self::$docBlockFactory = $docBlockFactory;
+    }
+
     /**
      * Get the immediate methods for the given reflection class.
      *
@@ -45,7 +69,7 @@ class Reflect
      */
     public static function method(ReflectionClass $reflectionClass, string $name): ?ReflectionMethod
     {
-        return static::methods($reflectionClass)
+        return self::methods($reflectionClass)
             ->first(function (ReflectionMethod $reflectionMethod) use ($name) {
                 return $reflectionMethod->getShortName() === $name;
             });
@@ -73,7 +97,7 @@ class Reflect
      */
     public static function property(ReflectionClass $reflectionClass, string $name): ?ReflectionProperty
     {
-        return static::properties($reflectionClass)
+        return self::properties($reflectionClass)
             ->first(function (ReflectionProperty $reflectionProperty) use ($name) {
                 return $reflectionProperty->getName() === $name;
             });
@@ -89,5 +113,29 @@ class Reflect
     public static function parameters(ReflectionMethod $reflectionMethod): Collection
     {
         return new Collection($reflectionMethod->getParameters());
+    }
+
+    /**
+     * Get the doc block object from the given reflection object (might be a class, method...).
+     *
+     * @param object $reflectionObject
+     *
+     * @return DocBlock
+     */
+    public static function docBlock(object $reflectionObject): DocBlock
+    {
+        return self::getDocBlockFactory()->create($reflectionObject);
+    }
+
+    /**
+     * Get the doc block tags from the given reflection object (might be a class, method...).
+     *
+     * @param object $reflectionObject
+     *
+     * @return Collection
+     */
+    public static function docBlockTags(object $reflectionObject): Collection
+    {
+        return new Collection(self::docBlock($reflectionObject)->getTags());
     }
 }
