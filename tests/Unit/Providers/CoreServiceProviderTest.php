@@ -6,15 +6,20 @@ namespace Tests\PhpUnitGen\Core\Unit\Providers;
 
 use League\Container\Container;
 use League\Container\ReflectionContainer;
-use PhpUnitGen\Core\Config\Config;
+use Mockery;
+use PhpUnitGen\Core\Contracts\Config\Config;
+use PhpUnitGen\Core\Contracts\Generators\ImportFactory as ImportFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
+use PhpUnitGen\Core\Contracts\Generators\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
-use PhpUnitGen\Core\Generators\BasicTestGenerator;
+use PhpUnitGen\Core\Generators\Factories\ImportFactory;
+use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Generators\Mocks\PhpUnitMockGenerator;
+use PhpUnitGen\Core\Generators\Tests\BasicTestGenerator;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Providers\CoreServiceProvider;
 use PhpUnitGen\Core\Renderers\Renderer;
@@ -45,10 +50,9 @@ class CoreServiceProviderTest extends TestCase
 
     public function testItProvidesContractsImplementations(): void
     {
-        $config = new Config([
-            'mockWith'     => 'phpunit',
-            'generateWith' => 'basic',
-        ]);
+        $config = Mockery::mock(Config::class);
+        $config->shouldReceive('mockWith')->andReturn('mockery');
+        $config->shouldReceive('generateWith')->andReturn('basic');
 
         $this->container->addServiceProvider(new CoreServiceProvider($config));
 
@@ -58,30 +62,40 @@ class CoreServiceProviderTest extends TestCase
             $this->container->get(CodeParserContract::class)
         );
         $this->assertInstanceOf(
+            ImportFactory::class,
+            $this->container->get(ImportFactoryContract::class)
+        );
+        $this->assertInstanceOf(
             Renderer::class,
             $this->container->get(RendererContract::class)
+        );
+        $this->assertInstanceOf(
+            ValueFactory::class,
+            $this->container->get(ValueFactoryContract::class)
         );
     }
 
     public function testItThrowsAnExceptionWhenResolvingUnknownMockGenerator(): void
     {
+        $config = Mockery::mock(Config::class);
+        $config->shouldReceive('mockWith')->andReturn('unknown');
+        $config->shouldReceive('generateWith')->andReturn('basic');
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('unknown mock generator cannot be resolved');
 
-        $this->container->addServiceProvider(new CoreServiceProvider(new Config([
-            'mockWith'     => 'unknown',
-            'generateWith' => 'basic',
-        ])));
+        $this->container->addServiceProvider(new CoreServiceProvider($config));
 
         $this->container->get(MockGenerator::class);
     }
 
     public function testItProvidesPhpUnitMockGenerator(): void
     {
-        $this->container->addServiceProvider(new CoreServiceProvider(new Config([
-            'mockWith'     => 'phpunit',
-            'generateWith' => 'basic',
-        ])));
+        $config = Mockery::mock(Config::class);
+        $config->shouldReceive('mockWith')->andReturn('phpunit');
+        $config->shouldReceive('generateWith')->andReturn('basic');
+
+        $this->container->addServiceProvider(new CoreServiceProvider($config));
 
         $this->assertInstanceOf(
             PhpUnitMockGenerator::class,
@@ -91,10 +105,11 @@ class CoreServiceProviderTest extends TestCase
 
     public function testItProvidesMockeryMockGenerator(): void
     {
-        $this->container->addServiceProvider(new CoreServiceProvider(new Config([
-            'mockWith'     => 'mockery',
-            'generateWith' => 'basic',
-        ])));
+        $config = Mockery::mock(Config::class);
+        $config->shouldReceive('mockWith')->andReturn('mockery');
+        $config->shouldReceive('generateWith')->andReturn('basic');
+
+        $this->container->addServiceProvider(new CoreServiceProvider($config));
 
         $this->assertInstanceOf(
             MockeryMockGenerator::class,
@@ -104,10 +119,11 @@ class CoreServiceProviderTest extends TestCase
 
     public function testItProvidesCustomMockGenerator(): void
     {
-        $serviceProvider = new CoreServiceProvider(new Config([
-            'mockWith'     => 'custom',
-            'generateWith' => 'basic',
-        ]));
+        $config = Mockery::mock(Config::class);
+        $config->shouldReceive('mockWith')->andReturn('custom');
+        $config->shouldReceive('generateWith')->andReturn('basic');
+
+        $serviceProvider = new CoreServiceProvider($config);
         $serviceProvider->addMockGeneratorResolver('custom', function (Container $container) {
             $container->add(MockGenerator::class, StubMockGenerator::class);
         });
@@ -122,23 +138,25 @@ class CoreServiceProviderTest extends TestCase
 
     public function testItThrowsAnExceptionWhenResolvingUnknownTestGenerator(): void
     {
+        $config = Mockery::mock(Config::class);
+        $config->shouldReceive('mockWith')->andReturn('mockery');
+        $config->shouldReceive('generateWith')->andReturn('unknown');
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('unknown test generator cannot be resolved');
 
-        $this->container->addServiceProvider(new CoreServiceProvider(new Config([
-            'mockWith'     => 'phpunit',
-            'generateWith' => 'unknown',
-        ])));
+        $this->container->addServiceProvider(new CoreServiceProvider($config));
 
         $this->container->get(TestGenerator::class);
     }
 
     public function testItProvidesBasicTestGenerator(): void
     {
-        $this->container->addServiceProvider(new CoreServiceProvider(new Config([
-            'mockWith'     => 'phpunit',
-            'generateWith' => 'basic',
-        ])));
+        $config = Mockery::mock(Config::class);
+        $config->shouldReceive('mockWith')->andReturn('mockery');
+        $config->shouldReceive('generateWith')->andReturn('basic');
+
+        $this->container->addServiceProvider(new CoreServiceProvider($config));
 
         $this->assertInstanceOf(
             BasicTestGenerator::class,
@@ -148,10 +166,11 @@ class CoreServiceProviderTest extends TestCase
 
     public function testItProvidesCustomTestGenerator(): void
     {
-        $serviceProvider = new CoreServiceProvider(new Config([
-            'mockWith'     => 'phpunit',
-            'generateWith' => 'custom',
-        ]));
+        $config = Mockery::mock(Config::class);
+        $config->shouldReceive('mockWith')->andReturn('mockery');
+        $config->shouldReceive('generateWith')->andReturn('custom');
+
+        $serviceProvider = new CoreServiceProvider($config);
         $serviceProvider->addTestGeneratorResolver('custom', function (Container $container) {
             $container->add(TestGenerator::class, StubTestGenerator::class);
         });
