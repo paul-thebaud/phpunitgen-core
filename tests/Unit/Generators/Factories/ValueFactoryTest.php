@@ -41,7 +41,7 @@ class ValueFactoryTest extends TestCase
     protected $valueFactory;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
