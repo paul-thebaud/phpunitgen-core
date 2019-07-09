@@ -15,98 +15,117 @@ use Tests\PhpUnitGen\Core\TestCase;
  */
 class ConfigTest extends TestCase
 {
-    public function testItThrowsAnExceptionWhenKeyIsInvalid(): void
+    public function testWhenDefaultConfiguration(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('configuration key 0 does not exists');
-
-        new Config(['unknownValue']);
+        $this->assertSame([
+            'automaticTests'    => true,
+            'mockWith'          => 'mockery',
+            'generateWith'      => 'basic',
+            'baseNamespace'     => '',
+            'baseTestNamespace' => 'Tests\\',
+            'excludedMethods'   => [
+                '__construct',
+                '__destruct',
+            ],
+            'mergedPhpDoc'      => [
+                'author',
+                'copyright',
+                'license',
+                'version',
+            ],
+            'phpDoc'            => [],
+            'options'           => [],
+        ], Config::make()->toArray());
     }
 
-    public function testItThrowsAnExceptionWhenKeyIsUnknown(): void
+    public function testWhenCompleteConfiguration(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('configuration key unknownKey does not exists');
-
-        new Config(['unknownKey' => 'unknownValue']);
+        $this->assertSame([
+            'automaticTests'    => false,
+            'mockWith'          => 'phpunit',
+            'generateWith'      => 'custom',
+            'baseNamespace'     => 'App\\',
+            'baseTestNamespace' => 'App\\Tests\\',
+            'excludedMethods'   => [],
+            'mergedPhpDoc'      => [],
+            'phpDoc'            => ['@author John Doe'],
+            'options'           => ['custom' => 'option'],
+        ], Config::make([
+            'automaticTests'    => false,
+            'mockWith'          => 'phpunit',
+            'generateWith'      => 'custom',
+            'baseNamespace'     => 'App\\',
+            'baseTestNamespace' => 'App\\Tests\\',
+            'excludedMethods'   => [],
+            'mergedPhpDoc'      => [],
+            'phpDoc'            => ['@author John Doe'],
+            'options'           => ['custom' => 'option'],
+        ])->toArray());
     }
 
-    public function testItConstructWithCompleteConfiguration(): void
+    public function testMissingNullOrInvalidPropertiesAreIgnored(): void
     {
-        $config = new Config([
-            'automaticTests'         => false,
-            'mockWith'               => 'phpunit',
-            'generateWith'           => 'basic',
-            'baseNamespace'          => 'App\\',
-            'baseTestNamespace'      => '',
-            'excludedMethods'        => ['__toString'],
-            'mergedPhpDocumentation' => ['author'],
-            'phpDocumentation'       => ['@author John Doe'],
+        $this->assertSame([], Config::validate([
+            'automaticTests' => null,
+            'unknown'        => 'foo bar',
+        ]));
+    }
+
+    public function testInvalidBoolean(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('configuration property automaticTests must be of type bool');
+
+        $this->assertSame([], Config::validate([
+            'automaticTests' => ['invalid type'],
+        ]));
+    }
+
+    public function testInvalidString(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('configuration property mockWith must be of type string');
+
+        $this->assertSame([], Config::validate([
+            'mockWith' => ['invalid type'],
+        ]));
+    }
+
+    public function testInvalidArray(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('configuration property excludedMethods must be of type array');
+
+        $this->assertSame([], Config::validate([
+            'excludedMethods' => 'invalid type',
+        ]));
+    }
+
+    public function testGetters(): void
+    {
+        $config = Config::make([
+            'automaticTests'    => false,
+            'mockWith'          => 'phpunit',
+            'generateWith'      => 'custom',
+            'baseNamespace'     => 'App\\',
+            'baseTestNamespace' => 'App\\Tests\\',
+            'excludedMethods'   => [],
+            'mergedPhpDoc'      => [],
+            'phpDoc'            => ['@author John Doe'],
+            'options'           => ['custom' => 'option'],
         ]);
 
-        $this->assertFalse($config->hasAutomaticTests());
-        $this->assertSame('phpunit', $config->getMockWith());
-        $this->assertSame('basic', $config->getGenerateWith());
-        $this->assertSame('App\\', $config->getBaseNamespace());
-        $this->assertSame('', $config->getBaseTestNamespace());
-        $this->assertSame(['__toString'], $config->getExcludedMethods());
-        $this->assertSame(['author'], $config->getMergedPhpDocumentation());
-        $this->assertSame(['@author John Doe'], $config->getPhpDocumentation());
-    }
-
-    public function testItCastOnHasAutomaticTest(): void
-    {
-        $config = new Config(['automaticTests' => '']);
-
-        $this->assertFalse($config->hasAutomaticTests());
-    }
-
-    public function testItCastOnGetBaseNamespace(): void
-    {
-        $config = new Config(['baseNamespace' => null]);
-
-        $this->assertSame('', $config->getBaseNamespace());
-    }
-
-    public function testItCastOnGetMockWith(): void
-    {
-        $config = new Config(['mockWith' => null]);
-
-        $this->assertSame('', $config->getMockWith());
-    }
-
-    public function testItCastOnGetGenerateWith(): void
-    {
-        $config = new Config(['generateWith' => null]);
-
-        $this->assertSame('', $config->getGenerateWith());
-    }
-
-    public function testItCastOnGetBaseTestNamespace(): void
-    {
-        $config = new Config(['baseTestNamespace' => null]);
-
-        $this->assertSame('', $config->getBaseTestNamespace());
-    }
-
-    public function testItCastOnGetExcludedMethods(): void
-    {
-        $config = new Config(['excludedMethods' => null]);
-
-        $this->assertSame([], $config->getExcludedMethods());
-    }
-
-    public function testItCastOnGetMergedPhpDocumentation(): void
-    {
-        $config = new Config(['mergedPhpDocumentation' => null]);
-
-        $this->assertSame([], $config->getMergedPhpDocumentation());
-    }
-
-    public function testItCastOnGetPhpDocumentation(): void
-    {
-        $config = new Config(['phpDocumentation' => null]);
-
-        $this->assertSame([], $config->getPhpDocumentation());
+        $this->assertSame(false, $config->hasAutomaticTests());
+        $this->assertSame('phpunit', $config->mockWith());
+        $this->assertSame('custom', $config->generateWith());
+        $this->assertSame('App\\', $config->baseNamespace());
+        $this->assertSame('App\\Tests\\', $config->baseTestNamespace());
+        $this->assertSame([], $config->excludedMethods());
+        $this->assertSame([], $config->mergedPhpDoc());
+        $this->assertSame(['@author John Doe'], $config->phpDoc());
+        $this->assertSame(['custom' => 'option'], $config->options());
+        $this->assertSame('option', $config->getOption('custom'));
+        $this->assertSame(null, $config->getOption('unknown'));
+        $this->assertSame('foo bar', $config->getOption('unknown', 'foo bar'));
     }
 }
