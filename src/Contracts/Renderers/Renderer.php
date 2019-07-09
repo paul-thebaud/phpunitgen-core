@@ -28,9 +28,9 @@ interface Renderer
     /**
      * Get the rendered content after visiting objects.
      *
-     * @return string
+     * @return Rendered
      */
-    public function getRendered(): string;
+    public function getRendered(): Rendered;
 
     /**
      * Visit and render a test import.

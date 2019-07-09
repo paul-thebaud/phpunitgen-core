@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Renderers;
 
+use PhpUnitGen\Core\Contracts\Renderers\Rendered;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
@@ -47,13 +48,15 @@ class Renderer implements RendererContract
     /**
      * {@inheritdoc}
      */
-    public function getRendered(): string
+    public function getRendered(): Rendered
     {
-        return $this->lines
-            ->map(function (RenderedLine $line) {
-                return $line->render();
-            })
-            ->implode("\n");
+        return new RenderedString(
+            $this->lines
+                ->map(function (RenderedLine $line) {
+                    return $line->render();
+                })
+                ->implode("\n")
+        );
     }
 
     /**
