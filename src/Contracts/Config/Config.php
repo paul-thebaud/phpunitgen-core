@@ -51,6 +51,13 @@ interface Config
     public function baseTestNamespace(): string;
 
     /**
+     * Get the test case absolute class name.
+     *
+     * @return string
+     */
+    public function testCase(): string;
+
+    /**
      * Get the case insensitive RegExp (without opening and closing "/") that tested methods shouldn't match.
      *
      * @return array

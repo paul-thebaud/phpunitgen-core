@@ -25,6 +25,7 @@ class Config implements ConfigContract
         'generateWith'      => 'string',
         'baseNamespace'     => 'string',
         'baseTestNamespace' => 'string',
+        'testCase'          => 'string',
         'excludedMethods'   => 'array',
         'mergedPhpDoc'      => 'array',
         'phpDoc'            => 'array',
@@ -133,6 +134,14 @@ class Config implements ConfigContract
     public function baseTestNamespace(): string
     {
         return $this->config['baseTestNamespace'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testCase(): string
+    {
+        return $this->config['testCase'];
     }
 
     /**

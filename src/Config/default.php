@@ -56,6 +56,15 @@ return [
 
     /*
      |--------------------------------------------------------------------------
+     | Test Case.
+     |
+     | The absolute class name to TestCase.
+     |--------------------------------------------------------------------------
+     */
+    'testCase'          => 'PHPUnit\\Framework\\TestCase',
+
+    /*
+     |--------------------------------------------------------------------------
      | Excluded methods.
      |
      | Those methods will not have tests or skeleton generation. This must be an
@@ -101,5 +110,16 @@ return [
      | contains any other useful information for test generation.
      |--------------------------------------------------------------------------
      */
-    'options'           => [],
+    'options'           => [
+        /*
+         |----------------------------------------------------------------------
+         | Laravel Options.
+         |
+         | Those options are used by Laravel Test Generators.
+         |  - "user" is the class of User Eloquent model, since it will be used
+         |    in many tests.
+         |----------------------------------------------------------------------
+         */
+        // 'laravel.user' => 'App\\User',
+    ],
 ];

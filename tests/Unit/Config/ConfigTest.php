@@ -23,6 +23,7 @@ class ConfigTest extends TestCase
             'generateWith'      => 'basic',
             'baseNamespace'     => '',
             'baseTestNamespace' => 'Tests\\',
+            'testCase'          => 'PHPUnit\\Framework\\TestCase',
             'excludedMethods'   => [
                 '__construct',
                 '__destruct',
@@ -46,6 +47,7 @@ class ConfigTest extends TestCase
             'generateWith'      => 'custom',
             'baseNamespace'     => 'App\\',
             'baseTestNamespace' => 'App\\Tests\\',
+            'testCase'          => 'App\\Tests\\TestCase',
             'excludedMethods'   => [],
             'mergedPhpDoc'      => [],
             'phpDoc'            => ['@author John Doe'],
@@ -56,6 +58,7 @@ class ConfigTest extends TestCase
             'generateWith'      => 'custom',
             'baseNamespace'     => 'App\\',
             'baseTestNamespace' => 'App\\Tests\\',
+            'testCase'          => 'App\\Tests\\TestCase',
             'excludedMethods'   => [],
             'mergedPhpDoc'      => [],
             'phpDoc'            => ['@author John Doe'],
@@ -109,6 +112,7 @@ class ConfigTest extends TestCase
             'generateWith'      => 'custom',
             'baseNamespace'     => 'App\\',
             'baseTestNamespace' => 'App\\Tests\\',
+            'testCase'          => 'App\\Tests\\TestCase',
             'excludedMethods'   => [],
             'mergedPhpDoc'      => [],
             'phpDoc'            => ['@author John Doe'],
@@ -120,6 +124,7 @@ class ConfigTest extends TestCase
         $this->assertSame('custom', $config->generateWith());
         $this->assertSame('App\\', $config->baseNamespace());
         $this->assertSame('App\\Tests\\', $config->baseTestNamespace());
+        $this->assertSame('App\\Tests\\TestCase', $config->testCase());
         $this->assertSame([], $config->excludedMethods());
         $this->assertSame([], $config->mergedPhpDoc());
         $this->assertSame(['@author John Doe'], $config->phpDoc());
