@@ -144,7 +144,7 @@ class Str
         $expressions = Arr::wrap($expressions);
 
         foreach ($expressions as $expression) {
-            if (preg_match('/'.preg_quote($expression, '/').'/i', $subject)) {
+            if (preg_match('/'.$expression.'/i', $subject)) {
                 return true;
             }
         }

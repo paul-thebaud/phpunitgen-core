@@ -168,6 +168,7 @@ class StrTest extends TestCase
             [false, ['foo', 'FooBar'], 'Bar Baz'],
             [true, ['foo'], 'Foo Bar Baz'],
             [true, ['foobar', '^[barz ]+foo$', 'Baz'], 'Bar Baz Foo'],
+            [true, ['foobar', '^.*$', 'Baz'], 'Bar Baz Foo'],
         ];
     }
 
