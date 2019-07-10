@@ -17,6 +17,7 @@ use Tests\PhpUnitGen\Core\TestCase;
  * Class TestMethodTest.
  *
  * @covers \PhpUnitGen\Core\Models\TestMethod
+ * @covers \PhpUnitGen\Core\Models\Concerns\HasTestMethodParent
  */
 class TestMethodTest extends TestCase
 {

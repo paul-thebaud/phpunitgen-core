@@ -65,7 +65,7 @@ class Config implements ConfigContract
 
         return new static(
             array_merge(
-                require __DIR__.'/default.php',
+                require __DIR__.'/../../config/phpunitgen.php',
                 $config
             )
         );

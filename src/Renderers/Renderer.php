@@ -303,20 +303,6 @@ class Renderer implements RendererContract
     }
 
     /**
-     * Prepends content to last line.
-     *
-     * @param string $content
-     *
-     * @return static
-     */
-    protected function prepend(string $content): self
-    {
-        $this->lines->last()->prepend($content);
-
-        return $this;
-    }
-
-    /**
      * Appends content to last line.
      *
      * @param string $content

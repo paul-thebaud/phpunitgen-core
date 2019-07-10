@@ -20,6 +20,7 @@ use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Generators\Mocks\PhpUnitMockGenerator;
 use PhpUnitGen\Core\Generators\Tests\BasicTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\PolicyTestGenerator;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Providers\CoreServiceProvider;
 use PhpUnitGen\Core\Renderers\Renderer;
@@ -89,32 +90,32 @@ class CoreServiceProviderTest extends TestCase
         $this->container->get(MockGenerator::class);
     }
 
-    public function testItProvidesPhpUnitMockGenerator(): void
+    /**
+     * @param string $expectedClass
+     * @param string $requestedGenerator
+     *
+     * @dataProvider mockGeneratorDataProvider
+     */
+    public function testItProvidesMockGenerators(string $expectedClass, string $requestedGenerator): void
     {
         $config = Mockery::mock(Config::class);
-        $config->shouldReceive('mockWith')->andReturn('phpunit');
+        $config->shouldReceive('mockWith')->andReturn($requestedGenerator);
         $config->shouldReceive('generateWith')->andReturn('basic');
 
         $this->container->addServiceProvider(new CoreServiceProvider($config));
 
         $this->assertInstanceOf(
-            PhpUnitMockGenerator::class,
+            $expectedClass,
             $this->container->get(MockGenerator::class)
         );
     }
 
-    public function testItProvidesMockeryMockGenerator(): void
+    public function mockGeneratorDataProvider(): array
     {
-        $config = Mockery::mock(Config::class);
-        $config->shouldReceive('mockWith')->andReturn('mockery');
-        $config->shouldReceive('generateWith')->andReturn('basic');
-
-        $this->container->addServiceProvider(new CoreServiceProvider($config));
-
-        $this->assertInstanceOf(
-            MockeryMockGenerator::class,
-            $this->container->get(MockGenerator::class)
-        );
+        return [
+            [PhpUnitMockGenerator::class, 'phpunit'],
+            [MockeryMockGenerator::class, 'mockery'],
+        ];
     }
 
     public function testItProvidesCustomMockGenerator(): void
@@ -150,18 +151,32 @@ class CoreServiceProviderTest extends TestCase
         $this->container->get(TestGenerator::class);
     }
 
-    public function testItProvidesBasicTestGenerator(): void
+    /**
+     * @param string $expectedClass
+     * @param string $requestedGenerator
+     *
+     * @dataProvider generatorDataProvider
+     */
+    public function testItProvidesTestGenerators(string $expectedClass, string $requestedGenerator): void
     {
         $config = Mockery::mock(Config::class);
         $config->shouldReceive('mockWith')->andReturn('mockery');
-        $config->shouldReceive('generateWith')->andReturn('basic');
+        $config->shouldReceive('generateWith')->andReturn($requestedGenerator);
 
         $this->container->addServiceProvider(new CoreServiceProvider($config));
 
         $this->assertInstanceOf(
-            BasicTestGenerator::class,
+            $expectedClass,
             $this->container->get(TestGenerator::class)
         );
+    }
+
+    public function generatorDataProvider(): array
+    {
+        return [
+            [BasicTestGenerator::class, 'basic'],
+            [PolicyTestGenerator::class, 'laravel.policy'],
+        ];
     }
 
     public function testItProvidesCustomTestGenerator(): void
