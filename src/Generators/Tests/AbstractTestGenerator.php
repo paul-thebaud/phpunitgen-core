@@ -68,8 +68,7 @@ abstract class AbstractTestGenerator implements TestGenerator
      */
     public function canGenerateFor(ReflectionClass $reflectionClass): bool
     {
-        return ! $reflectionClass->isInterface()
-            && ! $reflectionClass->isAnonymous();
+        return ! ($reflectionClass->isInterface() || $reflectionClass->isAnonymous());
     }
 
     /*
@@ -137,7 +136,7 @@ abstract class AbstractTestGenerator implements TestGenerator
             $documentation->addLine();
         }
 
-        $documentation->addLine('@covers '.$class->getReflectionClass()->getName());
+        $documentation->addLine('@covers \\'.$class->getReflectionClass()->getName());
 
         $class->setDocumentation($documentation);
     }
@@ -204,7 +203,7 @@ abstract class AbstractTestGenerator implements TestGenerator
      */
 
     /**
-     * Check "setUp" and "tearDown" should be created for the given class.
+     * Check if "setUp" and "tearDown" should be created for the given class.
      *
      * @param TestClass $class
      *
