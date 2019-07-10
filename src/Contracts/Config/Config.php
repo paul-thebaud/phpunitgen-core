@@ -23,18 +23,11 @@ interface Config
     public function automaticTests(): bool;
 
     /**
-     * Get the MockGenerator to use.
+     * Get the contracts implementations mapping.
      *
-     * @return string
+     * @return array
      */
-    public function mockWith(): string;
-
-    /**
-     * Get the TestGenerator to use.
-     *
-     * @return string
-     */
-    public function generateWith(): string;
+    public function implementations(): array;
 
     /**
      * Get the base namespace of the source code. This will be removed from the test class namespace.

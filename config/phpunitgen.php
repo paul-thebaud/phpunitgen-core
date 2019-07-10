@@ -1,5 +1,18 @@
 <?php
 
+use PhpUnitGen\Core\Contracts\Generators\ImportFactory as ImportFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
+use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
+use PhpUnitGen\Core\Contracts\Generators\ValueFactory as ValueFactoryContract;
+use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
+use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
+use PhpUnitGen\Core\Generators\Factories\ImportFactory;
+use PhpUnitGen\Core\Generators\Factories\ValueFactory;
+use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
+use PhpUnitGen\Core\Generators\Tests\BasicTestGenerator;
+use PhpUnitGen\Core\Parsers\CodeParser;
+use PhpUnitGen\Core\Renderers\Renderer;
+
 return [
     /*
      |--------------------------------------------------------------------------
@@ -13,28 +26,20 @@ return [
 
     /*
      |--------------------------------------------------------------------------
-     | Mock Library to use.
+     | Contract implementations to use.
      |
-     | Tells to the generator to prefer using one of the following library when
-     | mock creation is required (instantiation, function arguments).
-     |  - "mockery" (see https://github.com/mockery/mockery)
-     |  - "phpunit" (see https://github.com/sebastianbergmann/phpunit)
+     | Tells which implementation you want to use when PhpUnitGen requires a
+     | specific contract.
      |--------------------------------------------------------------------------
      */
-    'mockWith'          => 'mockery',
-
-    /*
-     |--------------------------------------------------------------------------
-     | Test Generator to use.
-     |
-     | Tells which generator you want to use.
-     |  - "basic" will generate classic PHP class tests (one tests per method)
-     |    with automatic getter/setter tests.
-     |  - "laravel.policy" will generate tests for Laravel Policy class
-     |    (see https://laravel.com/docs/5.8/authorization#creating-policies).
-     |--------------------------------------------------------------------------
-     */
-    'generateWith'      => 'basic',
+    'implementations'   => [
+        CodeParserContract::class    => CodeParser::class,
+        ImportFactoryContract::class => ImportFactory::class,
+        MockGeneratorContract::class => MockeryMockGenerator::class,
+        RendererContract::class      => Renderer::class,
+        TestGeneratorContract::class => BasicTestGenerator::class,
+        ValueFactoryContract::class  => ValueFactory::class,
+    ],
 
     /*
      |--------------------------------------------------------------------------

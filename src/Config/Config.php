@@ -36,8 +36,7 @@ class Config implements ConfigContract
      */
     protected const PROPERTIES = [
         'automaticTests'    => self::TYPE_BOOL,
-        'mockWith'          => self::TYPE_STRING,
-        'generateWith'      => self::TYPE_STRING,
+        'implementations'   => self::TYPE_ARRAY,
         'baseNamespace'     => self::TYPE_STRING,
         'baseTestNamespace' => self::TYPE_STRING,
         'testCase'          => self::TYPE_STRING,
@@ -122,17 +121,9 @@ class Config implements ConfigContract
     /**
      * {@inheritdoc}
      */
-    public function mockWith(): string
+    public function implementations(): array
     {
-        return $this->config['mockWith'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generateWith(): string
-    {
-        return $this->config['generateWith'];
+        return $this->config['implementations'];
     }
 
     /**

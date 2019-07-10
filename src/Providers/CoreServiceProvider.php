@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Providers;
 
-use League\Container\Container;
+use League\Container\Definition\DefinitionInterface;
+use League\Container\ReflectionContainer;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\ImportFactory as ImportFactoryContract;
@@ -14,15 +15,10 @@ use PhpUnitGen\Core\Contracts\Generators\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
-use PhpUnitGen\Core\Generators\Factories\ImportFactory;
-use PhpUnitGen\Core\Generators\Factories\ValueFactory;
-use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
-use PhpUnitGen\Core\Generators\Mocks\PhpUnitMockGenerator;
-use PhpUnitGen\Core\Generators\Tests\BasicTestGenerator;
-use PhpUnitGen\Core\Generators\Tests\Laravel\PolicyTestGenerator;
-use PhpUnitGen\Core\Parsers\CodeParser;
-use PhpUnitGen\Core\Renderers\Renderer;
-use Roave\BetterReflection\BetterReflection;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionParameter;
 
 /**
  * Class CoreServiceProvider.
@@ -34,10 +30,9 @@ use Roave\BetterReflection\BetterReflection;
 class CoreServiceProvider extends AbstractServiceProvider
 {
     /**
-     * @var string[]
+     * The contracts that this service provider must have defined at the registration end.
      */
-    protected $provides = [
-        Config::class,
+    protected const REQUIRED_CONTRACTS = [
         CodeParserContract::class,
         ImportFactoryContract::class,
         MockGeneratorContract::class,
@@ -45,16 +40,6 @@ class CoreServiceProvider extends AbstractServiceProvider
         TestGeneratorContract::class,
         ValueFactoryContract::class,
     ];
-
-    /**
-     * @var callable[] The mock generator resolvers.
-     */
-    protected $mockGeneratorResolvers = [];
-
-    /**
-     * @var callable[] The test generator resolvers.
-     */
-    protected $testGeneratorResolvers = [];
 
     /**
      * @var Config
@@ -70,9 +55,8 @@ class CoreServiceProvider extends AbstractServiceProvider
     {
         $this->config = $config;
 
-        $this
-            ->addDefaultMockGeneratorResolvers()
-            ->addDefaultTestGeneratorResolvers();
+        $this->provides = self::REQUIRED_CONTRACTS;
+        array_unshift($this->provides, Config::class);
     }
 
     /**
@@ -80,153 +64,103 @@ class CoreServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        $this
-            ->addConcretes()
-            ->addImplementations()
-            ->callMockGeneratorResolver()
-            ->callTestGeneratorResolver();
-    }
+        $this->leagueContainer->delegate(new ReflectionContainer());
 
-    /**
-     * Add contracts implementations to container.
-     *
-     * @return static
-     */
-    protected function addConcretes(): self
-    {
-        $this->getLeagueContainer()
-            ->add(Config::class, $this->config);
+        $this->leagueContainer->add(Config::class, $this->config);
 
-        return $this;
-    }
+        $implementations = $this->config->implementations();
 
-    /**
-     * Add contracts implementations to container.
-     *
-     * @return static
-     */
-    protected function addImplementations(): self
-    {
-        $container = $this->getLeagueContainer();
-
-        $container->add(CodeParserContract::class, CodeParser::class)
-            ->addArgument(BetterReflection::class);
-
-        $container->add(ImportFactoryContract::class, ImportFactory::class);
-
-        $container->add(RendererContract::class, Renderer::class);
-
-        $container->add(ValueFactoryContract::class, ValueFactory::class)
-            ->addArgument(MockGeneratorContract::class);
-
-        return $this;
-    }
-
-    /**
-     * Add the given resolver for mock generator and map it with the given key.
-     *
-     * @param string   $key
-     * @param callable $resolver
-     *
-     * @return static
-     */
-    public function addMockGeneratorResolver(string $key, callable $resolver): self
-    {
-        $this->mockGeneratorResolvers[$key] = $resolver;
-
-        return $this;
-    }
-
-    /**
-     * Add the default PhpUnitGen mock generator resolvers.
-     *
-     * @return static
-     */
-    protected function addDefaultMockGeneratorResolvers(): self
-    {
-        return $this
-            ->addMockGeneratorResolver('phpunit', function (Container $container) {
-                $container->add(MockGeneratorContract::class, PhpUnitMockGenerator::class)
-                    ->addArgument(ImportFactory::class);
-            })
-            ->addMockGeneratorResolver('mockery', function (Container $container) {
-                $container->add(MockGeneratorContract::class, MockeryMockGenerator::class)
-                    ->addArgument(ImportFactory::class);
-            });
-    }
-
-    /**
-     * Resolve the mock generator mapped with the given key in container.
-     *
-     * @return static
-     */
-    protected function callMockGeneratorResolver(): self
-    {
-        $selected = $this->config->mockWith();
-
-        if (! array_key_exists($selected, $this->mockGeneratorResolvers)) {
-            throw new InvalidArgumentException("{$selected} mock generator cannot be resolved");
+        foreach ($implementations as $contract => $concrete) {
+            $this->addDefinition($contract, $concrete);
         }
 
-        $this->mockGeneratorResolvers[$selected]($this->getContainer());
-
-        return $this;
+        if (array_diff(self::REQUIRED_CONTRACTS, array_keys($implementations))) {
+            throw new InvalidArgumentException("missing contract implementation in config");
+        }
     }
 
     /**
-     * Add the given resolver for test generator and map it with the given key.
+     * Add a contract's implementation to container with its arguments using reflection.
      *
-     * @param string   $key
-     * @param callable $resolver
+     * @param string $contract
+     * @param string $concrete
      *
-     * @return static
+     * @throws InvalidArgumentException
      */
-    public function addTestGeneratorResolver(string $key, callable $resolver): self
+    protected function addDefinition(string $contract, string $concrete): void
     {
-        $this->testGeneratorResolvers[$key] = $resolver;
-
-        return $this;
-    }
-
-    /**
-     * Add the default PhpUnitGen mock generator resolvers.
-     *
-     * @return static
-     */
-    protected function addDefaultTestGeneratorResolvers(): self
-    {
-        return $this
-            ->addTestGeneratorResolver('basic', function (Container $container) {
-                $container->add(TestGeneratorContract::class, BasicTestGenerator::class)
-                    ->addArgument(Config::class)
-                    ->addArgument(MockGeneratorContract::class)
-                    ->addArgument(ImportFactoryContract::class)
-                    ->addArgument(ValueFactoryContract::class);
-            })
-            ->addTestGeneratorResolver('laravel.policy', function (Container $container) {
-                $container->add(TestGeneratorContract::class, PolicyTestGenerator::class)
-                    ->addArgument(Config::class)
-                    ->addArgument(MockGeneratorContract::class)
-                    ->addArgument(ImportFactoryContract::class)
-                    ->addArgument(ValueFactoryContract::class);
-            });
-    }
-
-    /**
-     * Resolve the test generator mapped with the given key in container.
-     *
-     * @return static
-     */
-    protected function callTestGeneratorResolver(): self
-    {
-        $selected = $this->config->generateWith();
-
-        if (! array_key_exists($selected, $this->testGeneratorResolvers)) {
-            throw new InvalidArgumentException("{$selected} test generator cannot be resolved");
+        if (! in_array($contract, $this->provides)) {
+            throw new InvalidArgumentException("contract {$contract} implementation is not necessary");
         }
 
-        $this->testGeneratorResolvers[$selected]($this->getLeagueContainer());
+        if (! class_exists($concrete)) {
+            throw new InvalidArgumentException("class {$concrete} does not exists");
+        }
 
-        return $this;
+        if (! in_array($contract, class_implements($concrete))) {
+            throw new InvalidArgumentException("class {$concrete} does not implements {$contract}");
+        }
+
+        $definition = $this->leagueContainer->add($contract, $concrete);
+
+        $this->addDefinitionArguments($definition);
+    }
+
+    /**
+     * Add the necessary arguments to the definition.
+     *
+     * @param DefinitionInterface $definition
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function addDefinitionArguments(DefinitionInterface $definition): void
+    {
+        $constructor = $this->getClassConstructor($definition);
+
+        if (! $constructor) {
+            return;
+        }
+
+        foreach ($constructor->getParameters() as $parameter) {
+            $this->addDefinitionArgument($definition, $parameter);
+        }
+    }
+
+    /**
+     * Add an argument to definition from the given parameter.
+     *
+     * @param DefinitionInterface $definition
+     * @param ReflectionParameter $parameter
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function addDefinitionArgument(DefinitionInterface $definition, ReflectionParameter $parameter): void
+    {
+        $type = $parameter->getType();
+        if (! $type || $type->isBuiltin()) {
+            throw new InvalidArgumentException(
+                "dependency {$parameter->getName()} for class {$definition->getConcrete()} has an unresolvable type"
+            );
+        }
+
+        $definition->addArgument((string) $type);
+    }
+
+    /**
+     * Get the constructor for a definition concrete class.
+     *
+     * @param DefinitionInterface $definition
+     *
+     * @return ReflectionMethod|null
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function getClassConstructor(DefinitionInterface $definition): ?ReflectionMethod
+    {
+        try {
+            return (new ReflectionClass($definition->getConcrete()))->getMethod('__construct');
+        } catch (ReflectionException $exception) {
+            return null;
+        }
     }
 }
