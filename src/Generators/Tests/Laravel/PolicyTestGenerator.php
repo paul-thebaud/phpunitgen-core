@@ -27,35 +27,24 @@ class PolicyTestGenerator extends AbstractLaravelTestGenerator
      */
     protected function addSetUpTestMethod(TestClass $class): void
     {
+        $userClass = $this->config->getOption('laravel.user', 'App\\User');
+        $userImport = $this->importFactory->create($class, $userClass);
+
         $userProperty = new TestProperty('user');
-        $userProperty->setDocumentation(new TestDocumentation('@var User'));
+        $userProperty->setDocumentation(new TestDocumentation('@var '.$userImport->getFinalName()));
         $class->addProperty($userProperty);
 
         $setUpMethod = $this->createBaseSetUpMethod($class);
 
-        $userStatement = new TestStatement('$this->user = new User();');
+        $userStatement = new TestStatement("\$this->user = new {$userImport->getFinalName()}();");
         $setUpMethod->addStatement($userStatement);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function isTestable(ReflectionMethod $reflectionMethod): bool
+    protected function handleNotTestableMethod(TestClass $class, ReflectionMethod $reflectionMethod): void
     {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function handleTestableMethod(TestClass $class, ReflectionMethod $reflectionMethod): void
-    {
-        if ($this->isGetterOrSetter($reflectionMethod)) {
-            $this->handleGetterOrSetterMethod($class, $reflectionMethod);
-
-            return;
-        }
-
         $this->addPolicyMethod($class, $reflectionMethod, 'False', 'Unauthorized');
         $this->addPolicyMethod($class, $reflectionMethod, 'True', 'Authorized');
     }
