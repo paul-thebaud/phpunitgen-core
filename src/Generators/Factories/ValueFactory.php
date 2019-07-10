@@ -19,6 +19,20 @@ use Roave\BetterReflection\Reflection\ReflectionType;
 class ValueFactory implements ValueFactoryContract
 {
     /**
+     * Mapping between built in types and values.
+     */
+    protected const BUILT_IN_VALUES = [
+        'int'      => '42',
+        'float'    => '42.42',
+        'string'   => '\'42\'',
+        'bool'     => 'true',
+        'callable' => 'function () {}',
+        'array'    => '[]',
+        'iterable' => '[]',
+        'object'   => 'new \\stdClass()',
+    ];
+
+    /**
      * @var MockGenerator
      */
     protected $mockGenerator;
@@ -61,28 +75,11 @@ class ValueFactory implements ValueFactoryContract
      */
     protected function createForBuiltIn(TestClass $class, string $type): string
     {
-        switch ($type) {
-            case 'int':
-                return '42';
-            case 'float':
-                return '42.42';
-            case 'string':
-                return '\'42\'';
-            case 'bool':
-                return 'true';
-            case 'callable':
-                return 'function () {}';
-            case 'array':
-            case 'iterable':
-                return '[]';
-            case 'object':
-                return 'new \\stdClass()';
-            case 'self':
-            case 'parent':
-                return $this->mockGenerator->generateMock($class, $class->getReflectionClass()->getShortName());
-            case 'void':
-            default:
-                return 'null';
+        // The built in type reference a class, so mock it.
+        if ($type === 'self' || $type === 'parent') {
+            return $this->mockGenerator->generateMock($class, $class->getReflectionClass()->getShortName());
         }
+
+        return static::BUILT_IN_VALUES[$type] ?? 'null';
     }
 }

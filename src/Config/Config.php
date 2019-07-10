@@ -17,19 +17,34 @@ use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 class Config implements ConfigContract
 {
     /**
+     * The type for string properties.
+     */
+    protected const TYPE_STRING = 'string';
+
+    /**
+     * The type for boolean properties.
+     */
+    protected const TYPE_BOOL = 'bool';
+
+    /**
+     * The type for array properties.
+     */
+    protected const TYPE_ARRAY = 'array';
+
+    /**
      * The properties of the config with there type hint.
      */
     protected const PROPERTIES = [
-        'automaticTests'    => 'bool',
-        'mockWith'          => 'string',
-        'generateWith'      => 'string',
-        'baseNamespace'     => 'string',
-        'baseTestNamespace' => 'string',
-        'testCase'          => 'string',
-        'excludedMethods'   => 'array',
-        'mergedPhpDoc'      => 'array',
-        'phpDoc'            => 'array',
-        'options'           => 'array',
+        'automaticTests'    => self::TYPE_BOOL,
+        'mockWith'          => self::TYPE_STRING,
+        'generateWith'      => self::TYPE_STRING,
+        'baseNamespace'     => self::TYPE_STRING,
+        'baseTestNamespace' => self::TYPE_STRING,
+        'testCase'          => self::TYPE_STRING,
+        'excludedMethods'   => self::TYPE_ARRAY,
+        'mergedPhpDoc'      => self::TYPE_ARRAY,
+        'phpDoc'            => self::TYPE_ARRAY,
+        'options'           => self::TYPE_ARRAY,
     ];
 
     /**
@@ -181,7 +196,7 @@ class Config implements ConfigContract
      */
     public function getOption(string $name, $default = null)
     {
-        return $this->config['options'][$name] ?? $default;
+        return $this->options()[$name] ?? $default;
     }
 
     /**
