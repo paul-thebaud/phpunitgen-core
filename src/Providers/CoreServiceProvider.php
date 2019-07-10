@@ -75,7 +75,7 @@ class CoreServiceProvider extends AbstractServiceProvider
         }
 
         if (array_diff(self::REQUIRED_CONTRACTS, array_keys($implementations))) {
-            throw new InvalidArgumentException("missing contract implementation in config");
+            throw new InvalidArgumentException('missing contract implementation in config');
         }
     }
 

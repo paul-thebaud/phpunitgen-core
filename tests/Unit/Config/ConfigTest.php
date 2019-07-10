@@ -5,7 +5,19 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use PhpUnitGen\Core\Config\Config;
+use PhpUnitGen\Core\Contracts\Generators\ImportFactory as ImportFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
+use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
+use PhpUnitGen\Core\Contracts\Generators\ValueFactory as ValueFactoryContract;
+use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
+use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
+use PhpUnitGen\Core\Generators\Factories\ImportFactory;
+use PhpUnitGen\Core\Generators\Factories\ValueFactory;
+use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
+use PhpUnitGen\Core\Generators\Tests\BasicTestGenerator;
+use PhpUnitGen\Core\Parsers\CodeParser;
+use PhpUnitGen\Core\Renderers\Renderer;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -19,8 +31,14 @@ class ConfigTest extends TestCase
     {
         $this->assertSame([
             'automaticTests'    => true,
-            'mockWith'          => 'mockery',
-            'generateWith'      => 'basic',
+            'implementations'   => [
+                CodeParserContract::class    => CodeParser::class,
+                ImportFactoryContract::class => ImportFactory::class,
+                MockGeneratorContract::class => MockeryMockGenerator::class,
+                RendererContract::class      => Renderer::class,
+                TestGeneratorContract::class => BasicTestGenerator::class,
+                ValueFactoryContract::class  => ValueFactory::class,
+            ],
             'baseNamespace'     => '',
             'baseTestNamespace' => 'Tests\\',
             'testCase'          => 'PHPUnit\\Framework\\TestCase',
@@ -43,8 +61,7 @@ class ConfigTest extends TestCase
     {
         $this->assertSame([
             'automaticTests'    => false,
-            'mockWith'          => 'phpunit',
-            'generateWith'      => 'custom',
+            'implementations'   => [],
             'baseNamespace'     => 'App\\',
             'baseTestNamespace' => 'App\\Tests\\',
             'testCase'          => 'App\\Tests\\TestCase',
@@ -54,8 +71,7 @@ class ConfigTest extends TestCase
             'options'           => ['custom' => 'option'],
         ], Config::make([
             'automaticTests'    => false,
-            'mockWith'          => 'phpunit',
-            'generateWith'      => 'custom',
+            'implementations'   => [],
             'baseNamespace'     => 'App\\',
             'baseTestNamespace' => 'App\\Tests\\',
             'testCase'          => 'App\\Tests\\TestCase',
@@ -87,10 +103,10 @@ class ConfigTest extends TestCase
     public function testInvalidString(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('configuration property mockWith must be of type string');
+        $this->expectExceptionMessage('configuration property baseNamespace must be of type string');
 
         $this->assertSame([], Config::validate([
-            'mockWith' => ['invalid type'],
+            'baseNamespace' => ['invalid type'],
         ]));
     }
 
@@ -108,8 +124,7 @@ class ConfigTest extends TestCase
     {
         $config = Config::make([
             'automaticTests'    => false,
-            'mockWith'          => 'phpunit',
-            'generateWith'      => 'custom',
+            'implementations'   => [],
             'baseNamespace'     => 'App\\',
             'baseTestNamespace' => 'App\\Tests\\',
             'testCase'          => 'App\\Tests\\TestCase',
@@ -120,8 +135,7 @@ class ConfigTest extends TestCase
         ]);
 
         $this->assertSame(false, $config->automaticTests());
-        $this->assertSame('phpunit', $config->mockWith());
-        $this->assertSame('custom', $config->generateWith());
+        $this->assertSame([], $config->implementations());
         $this->assertSame('App\\', $config->baseNamespace());
         $this->assertSame('App\\Tests\\', $config->baseTestNamespace());
         $this->assertSame('App\\Tests\\TestCase', $config->testCase());
