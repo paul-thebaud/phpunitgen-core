@@ -119,7 +119,7 @@ class ConfigTest extends TestCase
             'options'           => ['custom' => 'option'],
         ]);
 
-        $this->assertSame(false, $config->hasAutomaticTests());
+        $this->assertSame(false, $config->automaticTests());
         $this->assertSame('phpunit', $config->mockWith());
         $this->assertSame('custom', $config->generateWith());
         $this->assertSame('App\\', $config->baseNamespace());

@@ -189,7 +189,7 @@ abstract class AbstractTestGenerator implements TestGenerator
                     return;
                 }
 
-                if ($this->config->hasAutomaticTests() && $this->isTestable($reflectionMethod)) {
+                if ($this->config->automaticTests() && $this->isTestable($reflectionMethod)) {
                     $this->handleTestableMethod($class, $reflectionMethod);
                 } else {
                     $this->handleNotTestableMethod($class, $reflectionMethod);
@@ -212,7 +212,7 @@ abstract class AbstractTestGenerator implements TestGenerator
      */
     protected function shouldAddSetUp(TestClass $class): bool
     {
-        return $this->config->hasAutomaticTests();
+        return $this->config->automaticTests();
     }
 
     /**

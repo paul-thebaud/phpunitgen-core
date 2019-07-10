@@ -114,7 +114,7 @@ class Config implements ConfigContract
     /**
      * {@inheritdoc}
      */
-    public function hasAutomaticTests(): bool
+    public function automaticTests(): bool
     {
         return $this->config['automaticTests'];
     }

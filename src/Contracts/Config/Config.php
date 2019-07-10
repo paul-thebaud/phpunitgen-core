@@ -20,7 +20,7 @@ interface Config
      *
      * @return bool
      */
-    public function hasAutomaticTests(): bool;
+    public function automaticTests(): bool;
 
     /**
      * Get the MockGenerator to use.
