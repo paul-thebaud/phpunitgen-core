@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Mocks;
 
-use PhpUnitGen\Core\Contracts\Generators\ImportFactory;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
 
 /**

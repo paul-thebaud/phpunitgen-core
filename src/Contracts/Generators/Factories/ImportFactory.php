@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpUnitGen\Core\Contracts\Generators;
+namespace PhpUnitGen\Core\Contracts\Generators\Factories;
 
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;

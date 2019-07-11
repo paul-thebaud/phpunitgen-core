@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Generators\Factories;
 
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
-use PhpUnitGen\Core\Contracts\Generators\ValueFactory as ValueFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Models\TestClass;
 use Roave\BetterReflection\Reflection\ReflectionType;
 

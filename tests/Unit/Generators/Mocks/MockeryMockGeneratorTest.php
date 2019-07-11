@@ -6,7 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use Mockery;
 use Mockery\Mock;
-use PhpUnitGen\Core\Contracts\Generators\ImportFactory;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;

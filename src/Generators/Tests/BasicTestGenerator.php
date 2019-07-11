@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Generators\Tests;
 
 use PhpUnitGen\Core\Contracts\Config\Config;
-use PhpUnitGen\Core\Contracts\Generators\ImportFactory;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
-use PhpUnitGen\Core\Contracts\Generators\ValueFactory;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
