@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Mocks;
 
+use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
+use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
 
@@ -16,8 +19,10 @@ use PhpUnitGen\Core\Models\TestImport;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class MockeryMockGenerator extends AbstractMockGenerator
+class MockeryMockGenerator implements MockGenerator, ImportFactoryAware
 {
+    use ImportFactoryAwareTrait;
+
     /**
      * {@inheritdoc}
      */

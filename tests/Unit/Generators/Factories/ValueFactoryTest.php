@@ -51,7 +51,8 @@ class ValueFactoryTest extends TestCase
         $this->class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
         $this->mockGenerator = Mockery::mock(MockGenerator::class);
 
-        $this->valueFactory = new ValueFactory($this->mockGenerator);
+        $this->valueFactory = new ValueFactory();
+        $this->valueFactory->setMockGenerator($this->mockGenerator);
     }
 
     public function testWithoutType(): void

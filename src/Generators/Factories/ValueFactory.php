@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Factories;
 
-use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
+use PhpUnitGen\Core\Aware\MockGeneratorAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Models\TestClass;
 use Roave\BetterReflection\Reflection\ReflectionType;
@@ -16,8 +17,10 @@ use Roave\BetterReflection\Reflection\ReflectionType;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class ValueFactory implements ValueFactoryContract
+class ValueFactory implements ValueFactoryContract, MockGeneratorAware
 {
+    use MockGeneratorAwareTrait;
+
     /**
      * Mapping between built in types and values.
      */
@@ -31,21 +34,6 @@ class ValueFactory implements ValueFactoryContract
         'iterable' => '[]',
         'object'   => 'new \\stdClass()',
     ];
-
-    /**
-     * @var MockGenerator
-     */
-    protected $mockGenerator;
-
-    /**
-     * ValueFactory constructor.
-     *
-     * @param MockGenerator $mockGenerator
-     */
-    public function __construct(MockGenerator $mockGenerator)
-    {
-        $this->mockGenerator = $mockGenerator;
-    }
 
     /**
      * {@inheritdoc}

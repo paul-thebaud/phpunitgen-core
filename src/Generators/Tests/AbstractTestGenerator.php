@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Generators\Tests;
 
 use phpDocumentor\Reflection\DocBlock\Tag;
-use PhpUnitGen\Core\Contracts\Config\Config;
+use PhpUnitGen\Core\Aware\ConfigAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Helpers\Reflect;
@@ -26,22 +27,9 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-abstract class AbstractTestGenerator implements TestGenerator
+abstract class AbstractTestGenerator implements TestGenerator, ConfigAware
 {
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * AbstractTestGenerator constructor.
-     *
-     * @param Config $config
-     */
-    public function __construct(Config $config)
-    {
-        $this->config = $config;
-    }
+    use ConfigAwareTrait;
 
     /**
      * {@inheritdoc}

@@ -38,7 +38,8 @@ class MockeryMockGeneratorTest extends TestCase
         parent::setUp();
 
         $this->importFactory = Mockery::mock(ImportFactory::class);
-        $this->mockeryMockGenerator = new MockeryMockGenerator($this->importFactory);
+        $this->mockeryMockGenerator = new MockeryMockGenerator();
+        $this->mockeryMockGenerator->setImportFactory($this->importFactory);
     }
 
     public function testGetMockType(): void

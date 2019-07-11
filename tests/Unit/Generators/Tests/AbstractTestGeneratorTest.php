@@ -50,13 +50,14 @@ class AbstractTestGeneratorTest extends TestCase
         $this->reflectionClass = Mockery::mock(ReflectionClass::class);
 
         $this->abstractTestGenerator = $this->getMockBuilder(AbstractTestGenerator::class)
-            ->setConstructorArgs([$this->config])
             ->setMethods([
                 'addSetUpTestMethod',
                 'isTestable',
                 'handleTestableMethod',
             ])
             ->getMockForAbstractClass();
+
+        $this->abstractTestGenerator->setConfig($this->config);
     }
 
     public function testCanGenerateForWithInterface(): void

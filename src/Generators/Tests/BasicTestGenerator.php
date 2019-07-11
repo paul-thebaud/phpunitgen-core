@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests;
 
-use PhpUnitGen\Core\Contracts\Config\Config;
-use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
-use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
-use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory;
+use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\MockGeneratorAwareTrait;
+use PhpUnitGen\Core\Aware\ValueFactoryAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
@@ -29,43 +31,14 @@ use Tightenco\Collect\Support\Collection;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class BasicTestGenerator extends AbstractTestGenerator
+class BasicTestGenerator extends AbstractTestGenerator implements
+    ImportFactoryAware,
+    MockGeneratorAware,
+    ValueFactoryAware
 {
-    /**
-     * @var MockGenerator
-     */
-    protected $mockGenerator;
-
-    /**
-     * @var ImportFactory
-     */
-    protected $importFactory;
-
-    /**
-     * @var ValueFactory
-     */
-    protected $valueFactory;
-
-    /**
-     * BasicTestGenerator constructor.
-     *
-     * @param Config        $config
-     * @param MockGenerator $mockGenerator
-     * @param ImportFactory $importFactory
-     * @param ValueFactory  $valueFactory
-     */
-    public function __construct(
-        Config $config,
-        MockGenerator $mockGenerator,
-        ImportFactory $importFactory,
-        ValueFactory $valueFactory
-    ) {
-        parent::__construct($config);
-
-        $this->mockGenerator = $mockGenerator;
-        $this->importFactory = $importFactory;
-        $this->valueFactory = $valueFactory;
-    }
+    use ImportFactoryAwareTrait;
+    use MockGeneratorAwareTrait;
+    use ValueFactoryAwareTrait;
 
     /*
      |--------------------------------------------------------------------------

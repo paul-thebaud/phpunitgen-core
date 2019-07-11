@@ -7,14 +7,20 @@ namespace PhpUnitGen\Core\Providers;
 use League\Container\Definition\DefinitionInterface;
 use League\Container\ReflectionContainer;
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
+use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\TestGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
-use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
+use PhpUnitGen\Core\Helpers\Str;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -39,6 +45,17 @@ class CoreServiceProvider extends AbstractServiceProvider
         RendererContract::class,
         TestGeneratorContract::class,
         ValueFactoryContract::class,
+    ];
+
+    /**
+     * The aware contracts that should be inflected on container.
+     */
+    protected const AWARE_CONTRACTS = [
+        ConfigAware::class,
+        ImportFactoryAware::class,
+        MockGeneratorAware::class,
+        TestGeneratorAware::class,
+        ValueFactoryAware::class,
     ];
 
     /**
@@ -68,6 +85,14 @@ class CoreServiceProvider extends AbstractServiceProvider
 
         $this->leagueContainer->add(Config::class, $this->config);
 
+        $this->addDefinitions();
+    }
+
+    /**
+     * Add the contracts implementations to container and verify they are all declared.
+     */
+    protected function addDefinitions(): void
+    {
         $implementations = $this->config->implementations();
 
         foreach ($implementations as $contract => $concrete) {
@@ -76,6 +101,21 @@ class CoreServiceProvider extends AbstractServiceProvider
 
         if (array_diff(self::REQUIRED_CONTRACTS, array_keys($implementations))) {
             throw new InvalidArgumentException('missing contract implementation in config');
+        }
+    }
+
+    /**
+     * Add the inflector for all *Aware contracts.
+     */
+    protected function addInflectors(): void
+    {
+        foreach (self::AWARE_CONTRACTS as $awareContract) {
+            $setter = 'set'.Str::replaceLast('Aware', '', $awareContract);
+
+            $this->leagueContainer->inflector($awareContract)
+                ->invokeMethod($setter, [
+                    $this->leagueContainer->extend($awareContract)->getConcrete(),
+                ]);
         }
     }
 
