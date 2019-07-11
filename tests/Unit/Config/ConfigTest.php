@@ -6,9 +6,9 @@ namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
-use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
