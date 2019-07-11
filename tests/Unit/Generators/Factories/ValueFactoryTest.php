@@ -56,7 +56,7 @@ class ValueFactoryTest extends TestCase
 
     public function testWithoutType(): void
     {
-        $this->assertSame('null', $this->valueFactory->create($this->class, null));
+        $this->assertSame('null', $this->valueFactory->make($this->class, null));
     }
 
     public function testWithNotBuiltIn(): void
@@ -70,7 +70,7 @@ class ValueFactoryTest extends TestCase
 
         $this->assertSame(
             'Mockery::mock(Foo::class)',
-            $this->valueFactory->create($this->class, $this->reflectionType)
+            $this->valueFactory->make($this->class, $this->reflectionType)
         );
     }
 
@@ -79,7 +79,7 @@ class ValueFactoryTest extends TestCase
         $this->reflectionType->shouldReceive('isBuiltIn')->andReturnTrue();
         $this->reflectionType->shouldReceive('__toString')->andReturn('int');
 
-        $this->assertSame('42', $this->valueFactory->create($this->class, $this->reflectionType));
+        $this->assertSame('42', $this->valueFactory->make($this->class, $this->reflectionType));
     }
 
     public function testWithBuiltInFloat(): void
@@ -87,7 +87,7 @@ class ValueFactoryTest extends TestCase
         $this->reflectionType->shouldReceive('isBuiltIn')->andReturnTrue();
         $this->reflectionType->shouldReceive('__toString')->andReturn('float');
 
-        $this->assertSame('42.42', $this->valueFactory->create($this->class, $this->reflectionType));
+        $this->assertSame('42.42', $this->valueFactory->make($this->class, $this->reflectionType));
     }
 
     public function testWithBuiltInString(): void
@@ -95,7 +95,7 @@ class ValueFactoryTest extends TestCase
         $this->reflectionType->shouldReceive('isBuiltIn')->andReturnTrue();
         $this->reflectionType->shouldReceive('__toString')->andReturn('string');
 
-        $this->assertSame('\'42\'', $this->valueFactory->create($this->class, $this->reflectionType));
+        $this->assertSame('\'42\'', $this->valueFactory->make($this->class, $this->reflectionType));
     }
 
     public function testWithBuiltInBoolean(): void
@@ -103,7 +103,7 @@ class ValueFactoryTest extends TestCase
         $this->reflectionType->shouldReceive('isBuiltIn')->andReturnTrue();
         $this->reflectionType->shouldReceive('__toString')->andReturn('bool');
 
-        $this->assertSame('true', $this->valueFactory->create($this->class, $this->reflectionType));
+        $this->assertSame('true', $this->valueFactory->make($this->class, $this->reflectionType));
     }
 
     public function testWithBuiltInCallable(): void
@@ -111,7 +111,7 @@ class ValueFactoryTest extends TestCase
         $this->reflectionType->shouldReceive('isBuiltIn')->andReturnTrue();
         $this->reflectionType->shouldReceive('__toString')->andReturn('callable');
 
-        $this->assertSame('function () {}', $this->valueFactory->create($this->class, $this->reflectionType));
+        $this->assertSame('function () {}', $this->valueFactory->make($this->class, $this->reflectionType));
     }
 
     public function testWithBuiltInArray(): void
@@ -119,7 +119,7 @@ class ValueFactoryTest extends TestCase
         $this->reflectionType->shouldReceive('isBuiltIn')->andReturnTrue();
         $this->reflectionType->shouldReceive('__toString')->andReturn('array');
 
-        $this->assertSame('[]', $this->valueFactory->create($this->class, $this->reflectionType));
+        $this->assertSame('[]', $this->valueFactory->make($this->class, $this->reflectionType));
     }
 
     public function testWithBuiltInIterable(): void
@@ -127,7 +127,7 @@ class ValueFactoryTest extends TestCase
         $this->reflectionType->shouldReceive('isBuiltIn')->andReturnTrue();
         $this->reflectionType->shouldReceive('__toString')->andReturn('iterable');
 
-        $this->assertSame('[]', $this->valueFactory->create($this->class, $this->reflectionType));
+        $this->assertSame('[]', $this->valueFactory->make($this->class, $this->reflectionType));
     }
 
     public function testWithBuiltInObject(): void
@@ -135,7 +135,7 @@ class ValueFactoryTest extends TestCase
         $this->reflectionType->shouldReceive('isBuiltIn')->andReturnTrue();
         $this->reflectionType->shouldReceive('__toString')->andReturn('object');
 
-        $this->assertSame('new \\stdClass()', $this->valueFactory->create($this->class, $this->reflectionType));
+        $this->assertSame('new \\stdClass()', $this->valueFactory->make($this->class, $this->reflectionType));
     }
 
     public function testWithBuiltInSelf(): void
@@ -152,7 +152,7 @@ class ValueFactoryTest extends TestCase
 
         $this->assertSame(
             'Mockery::mock(Foo::class)',
-            $this->valueFactory->create($this->class, $this->reflectionType)
+            $this->valueFactory->make($this->class, $this->reflectionType)
         );
     }
 
@@ -170,7 +170,7 @@ class ValueFactoryTest extends TestCase
 
         $this->assertSame(
             'Mockery::mock(Foo::class)',
-            $this->valueFactory->create($this->class, $this->reflectionType)
+            $this->valueFactory->make($this->class, $this->reflectionType)
         );
     }
 
@@ -179,6 +179,6 @@ class ValueFactoryTest extends TestCase
         $this->reflectionType->shouldReceive('isBuiltIn')->andReturnTrue();
         $this->reflectionType->shouldReceive('__toString')->andReturn('void');
 
-        $this->assertSame('null', $this->valueFactory->create($this->class, $this->reflectionType));
+        $this->assertSame('null', $this->valueFactory->make($this->class, $this->reflectionType));
     }
 }

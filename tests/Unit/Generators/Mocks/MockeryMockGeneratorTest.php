@@ -46,7 +46,7 @@ class MockeryMockGeneratorTest extends TestCase
         $class = Mockery::mock(TestClass::class);
         $import = Mockery::mock(TestImport::class);
 
-        $this->importFactory->shouldReceive('create')
+        $this->importFactory->shouldReceive('make')
             ->once()
             ->with($class, 'Mockery\\Mock')
             ->andReturn($import);
@@ -60,11 +60,11 @@ class MockeryMockGeneratorTest extends TestCase
         $import1 = Mockery::mock(TestImport::class);
         $import2 = Mockery::mock(TestImport::class);
 
-        $this->importFactory->shouldReceive('create')
+        $this->importFactory->shouldReceive('make')
             ->once()
             ->with($class, 'Mockery')
             ->andReturn($import1);
-        $this->importFactory->shouldReceive('create')
+        $this->importFactory->shouldReceive('make')
             ->once()
             ->with($class, 'Foo')
             ->andReturn($import2);

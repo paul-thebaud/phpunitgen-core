@@ -23,7 +23,7 @@ class PhpUnitMockGenerator extends AbstractMockGenerator
      */
     public function getMockType(TestClass $class): TestImport
     {
-        return $this->importFactory->create($class, 'PHPUnit\\Framework\\MockObject\\MockObject');
+        return $this->importFactory->make($class, 'PHPUnit\\Framework\\MockObject\\MockObject');
     }
 
     /**
@@ -31,7 +31,7 @@ class PhpUnitMockGenerator extends AbstractMockGenerator
      */
     public function generateMock(TestClass $class, string $type): string
     {
-        $mockedType = $this->importFactory->create($class, $type);
+        $mockedType = $this->importFactory->make($class, $type);
 
         return "\$this->getMock({$mockedType->getFinalName()}::class)";
     }

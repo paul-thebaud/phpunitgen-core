@@ -21,7 +21,7 @@ class ImportFactory implements ImportFactoryContract
     /**
      * {@inheritdoc}
      */
-    public function create(TestClass $class, string $type): TestImport
+    public function make(TestClass $class, string $type): TestImport
     {
         $import = $class->getImports()
             ->first(function (TestImport $import) use ($type) {

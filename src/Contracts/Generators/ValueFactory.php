@@ -26,5 +26,5 @@ interface ValueFactory
      *
      * @return string
      */
-    public function create(TestClass $class, ?ReflectionType $reflectionType): string;
+    public function make(TestClass $class, ?ReflectionType $reflectionType): string;
 }

@@ -28,7 +28,7 @@ class PolicyTestGenerator extends AbstractLaravelTestGenerator
     protected function addSetUpTestMethod(TestClass $class): void
     {
         $userClass = $this->config->getOption('laravel.user', 'App\\User');
-        $userImport = $this->importFactory->create($class, $userClass);
+        $userImport = $this->importFactory->make($class, $userClass);
 
         $userProperty = new TestProperty('user');
         $userProperty->setDocumentation(new TestDocumentation('@var '.$userImport->getFinalName()));

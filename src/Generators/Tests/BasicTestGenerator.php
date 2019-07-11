@@ -152,7 +152,7 @@ class BasicTestGenerator extends AbstractTestGenerator
         }
 
         $statement = new TestStatement(
-            "\$this->{$property->getName()} = {$this->valueFactory->create($class, $type)};"
+            "\$this->{$property->getName()} = {$this->valueFactory->make($class, $type)};"
         );
 
         $method->addStatement($statement);
@@ -420,12 +420,12 @@ class BasicTestGenerator extends AbstractTestGenerator
 
         // Expected value variable creation.
         $expectedStatement = (new TestStatement('$expected = '))
-            ->append($this->valueFactory->create($method->getTestClass(), $reflectionType))
+            ->append($this->valueFactory->make($method->getTestClass(), $reflectionType))
             ->append(';');
         $method->addStatement($expectedStatement);
 
         // Reflected property variable creation.
-        $reflectionClassImport = $this->importFactory->create($method->getTestClass(), 'ReflectionClass');
+        $reflectionClassImport = $this->importFactory->make($method->getTestClass(), 'ReflectionClass');
         $propertyStatement = (new TestStatement('$property = (new '))
             ->append($reflectionClassImport->getFinalName())
             ->append('(')

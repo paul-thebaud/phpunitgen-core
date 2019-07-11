@@ -26,5 +26,5 @@ interface ImportFactory
      *
      * @return TestImport
      */
-    public function create(TestClass $class, string $type): TestImport;
+    public function make(TestClass $class, string $type): TestImport;
 }

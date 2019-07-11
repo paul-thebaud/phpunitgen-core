@@ -50,7 +50,7 @@ class ValueFactory implements ValueFactoryContract
     /**
      * {@inheritdoc}
      */
-    public function create(TestClass $class, ?ReflectionType $reflectionType): string
+    public function make(TestClass $class, ?ReflectionType $reflectionType): string
     {
         if (! $reflectionType) {
             return 'null';

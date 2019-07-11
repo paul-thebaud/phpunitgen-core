@@ -23,7 +23,7 @@ class MockeryMockGenerator extends AbstractMockGenerator
      */
     public function getMockType(TestClass $class): TestImport
     {
-        return $this->importFactory->create($class, 'Mockery\\Mock');
+        return $this->importFactory->make($class, 'Mockery\\Mock');
     }
 
     /**
@@ -32,8 +32,8 @@ class MockeryMockGenerator extends AbstractMockGenerator
     public function generateMock(TestClass $class, string $type): string
     {
         // Mockery must be imported to mock classes.
-        $mockeryType = $this->importFactory->create($class, 'Mockery');
-        $mockedType = $this->importFactory->create($class, $type);
+        $mockeryType = $this->importFactory->make($class, 'Mockery');
+        $mockedType = $this->importFactory->make($class, $type);
 
         return "{$mockeryType->getFinalName()}::mock({$mockedType->getFinalName()}::class)";
     }

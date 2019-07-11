@@ -46,7 +46,7 @@ class PhpUnitMockGeneratorTest extends TestCase
         $class = Mockery::mock(TestClass::class);
         $import = Mockery::mock(TestImport::class);
 
-        $this->importFactory->shouldReceive('create')
+        $this->importFactory->shouldReceive('make')
             ->once()
             ->with($class, 'PHPUnit\\Framework\\MockObject\\MockObject')
             ->andReturn($import);
@@ -59,7 +59,7 @@ class PhpUnitMockGeneratorTest extends TestCase
         $class = Mockery::mock(TestClass::class);
         $import = Mockery::mock(TestImport::class);
 
-        $this->importFactory->shouldReceive('create')
+        $this->importFactory->shouldReceive('make')
             ->once()
             ->with($class, 'Foo')
             ->andReturn($import);
