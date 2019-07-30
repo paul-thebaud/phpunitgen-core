@@ -1,28 +1,17 @@
 <?php
 
-use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
-use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
-use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
-use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
-use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
-use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
-use PhpUnitGen\Core\Generators\Factories\ImportFactory;
-use PhpUnitGen\Core\Generators\Factories\ValueFactory;
-use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
-use PhpUnitGen\Core\Generators\Tests\BasicTestGenerator;
-use PhpUnitGen\Core\Parsers\CodeParser;
-use PhpUnitGen\Core\Renderers\Renderer;
+use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 
 return [
     /*
      |--------------------------------------------------------------------------
-     | Automatic Test Generation.
+     | Automatic Generation.
      |
-     | Tells if the generator should create advanced tests skeletons and
-     | class instantiation.
+     | Tells if the generator should create tested class instantiation and
+     | complex tests skeleton (getter/setter tests...).
      |--------------------------------------------------------------------------
      */
-    'automaticTests'    => true,
+    'automaticGeneration' => true,
 
     /*
      |--------------------------------------------------------------------------
@@ -32,14 +21,7 @@ return [
      | specific contract.
      |--------------------------------------------------------------------------
      */
-    'implementations'   => [
-        CodeParserContract::class    => CodeParser::class,
-        ImportFactoryContract::class => ImportFactory::class,
-        MockGeneratorContract::class => MockeryMockGenerator::class,
-        RendererContract::class      => Renderer::class,
-        TestGeneratorContract::class => BasicTestGenerator::class,
-        ValueFactoryContract::class  => ValueFactory::class,
-    ],
+    'implementations'     => BasicTestGenerator::implementations(),
 
     /*
      |--------------------------------------------------------------------------
@@ -48,7 +30,7 @@ return [
      | This string will be removed from the test class namespace.
      |--------------------------------------------------------------------------
      */
-    'baseNamespace'     => '',
+    'baseNamespace'       => '',
 
     /*
      |--------------------------------------------------------------------------
@@ -57,7 +39,7 @@ return [
      | This string will be prepend to the test class namespace.
      |--------------------------------------------------------------------------
      */
-    'baseTestNamespace' => 'Tests\\',
+    'baseTestNamespace'   => 'Tests',
 
     /*
      |--------------------------------------------------------------------------
@@ -66,7 +48,7 @@ return [
      | The absolute class name to TestCase.
      |--------------------------------------------------------------------------
      */
-    'testCase'          => 'PHPUnit\\Framework\\TestCase',
+    'testCase'            => 'PHPUnit\\Framework\\TestCase',
 
     /*
      |--------------------------------------------------------------------------
@@ -77,7 +59,7 @@ return [
      | closing "/", as they will be added automatically.
      |--------------------------------------------------------------------------
      */
-    'excludedMethods'   => [
+    'excludedMethods'     => [
         '__construct',
         '__destruct',
     ],
@@ -90,7 +72,7 @@ return [
      | to the test class documentation.
      |--------------------------------------------------------------------------
      */
-    'mergedPhpDoc'      => [
+    'mergedPhpDoc'        => [
         'author',
         'copyright',
         'license',
@@ -105,7 +87,7 @@ return [
      | added to the test class documentation.
      |--------------------------------------------------------------------------
      */
-    'phpDoc'            => [],
+    'phpDoc'              => [],
 
     /*
      |--------------------------------------------------------------------------
@@ -115,12 +97,13 @@ return [
      | contains any other useful information for test generation.
      |--------------------------------------------------------------------------
      */
-    'options'           => [
+    'options'             => [
         /*
          |----------------------------------------------------------------------
          | Laravel Options.
          |
-         | Those options are used by Laravel Test Generators.
+         | Those options are used by Laravel Test Generators and are nested in
+         | a "laravel." namespace.
          |  - "user" is the class of User Eloquent model, since it will be used
          |    in many tests.
          |----------------------------------------------------------------------

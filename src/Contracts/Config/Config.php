@@ -20,7 +20,7 @@ interface Config
      *
      * @return bool
      */
-    public function automaticTests(): bool;
+    public function automaticGeneration(): bool;
 
     /**
      * Get the contracts implementations mapping.

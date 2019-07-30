@@ -35,15 +35,15 @@ class Config implements ConfigContract
      * The properties of the config with there type hint.
      */
     protected const PROPERTIES = [
-        'automaticTests'    => self::TYPE_BOOL,
-        'implementations'   => self::TYPE_ARRAY,
-        'baseNamespace'     => self::TYPE_STRING,
-        'baseTestNamespace' => self::TYPE_STRING,
-        'testCase'          => self::TYPE_STRING,
-        'excludedMethods'   => self::TYPE_ARRAY,
-        'mergedPhpDoc'      => self::TYPE_ARRAY,
-        'phpDoc'            => self::TYPE_ARRAY,
-        'options'           => self::TYPE_ARRAY,
+        'automaticGeneration' => self::TYPE_BOOL,
+        'implementations'     => self::TYPE_ARRAY,
+        'baseNamespace'       => self::TYPE_STRING,
+        'baseTestNamespace'   => self::TYPE_STRING,
+        'testCase'            => self::TYPE_STRING,
+        'excludedMethods'     => self::TYPE_ARRAY,
+        'mergedPhpDoc'        => self::TYPE_ARRAY,
+        'phpDoc'              => self::TYPE_ARRAY,
+        'options'             => self::TYPE_ARRAY,
     ];
 
     /**
@@ -113,9 +113,9 @@ class Config implements ConfigContract
     /**
      * {@inheritdoc}
      */
-    public function automaticTests(): bool
+    public function automaticGeneration(): bool
     {
-        return $this->config['automaticTests'];
+        return $this->config['automaticGeneration'];
     }
 
     /**

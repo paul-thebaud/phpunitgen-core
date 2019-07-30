@@ -5,19 +5,8 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use PhpUnitGen\Core\Config\Config;
-use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
-use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
-use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
-use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
-use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
-use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
-use PhpUnitGen\Core\Generators\Factories\ImportFactory;
-use PhpUnitGen\Core\Generators\Factories\ValueFactory;
-use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
-use PhpUnitGen\Core\Generators\Tests\BasicTestGenerator;
-use PhpUnitGen\Core\Parsers\CodeParser;
-use PhpUnitGen\Core\Renderers\Renderer;
+use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -30,73 +19,66 @@ class ConfigTest extends TestCase
     public function testWhenDefaultConfiguration(): void
     {
         $this->assertSame([
-            'automaticTests'    => true,
-            'implementations'   => [
-                CodeParserContract::class    => CodeParser::class,
-                ImportFactoryContract::class => ImportFactory::class,
-                MockGeneratorContract::class => MockeryMockGenerator::class,
-                RendererContract::class      => Renderer::class,
-                TestGeneratorContract::class => BasicTestGenerator::class,
-                ValueFactoryContract::class  => ValueFactory::class,
-            ],
-            'baseNamespace'     => '',
-            'baseTestNamespace' => 'Tests\\',
-            'testCase'          => 'PHPUnit\\Framework\\TestCase',
-            'excludedMethods'   => [
+            'automaticGeneration' => true,
+            'implementations'     => BasicTestGenerator::implementations(),
+            'baseNamespace'       => '',
+            'baseTestNamespace'   => 'Tests',
+            'testCase'            => 'PHPUnit\\Framework\\TestCase',
+            'excludedMethods'     => [
                 '__construct',
                 '__destruct',
             ],
-            'mergedPhpDoc'      => [
+            'mergedPhpDoc'        => [
                 'author',
                 'copyright',
                 'license',
                 'version',
             ],
-            'phpDoc'            => [],
-            'options'           => [],
+            'phpDoc'              => [],
+            'options'             => [],
         ], Config::make()->toArray());
     }
 
     public function testWhenCompleteConfiguration(): void
     {
         $this->assertSame([
-            'automaticTests'    => false,
-            'implementations'   => [],
-            'baseNamespace'     => 'App\\',
-            'baseTestNamespace' => 'App\\Tests\\',
-            'testCase'          => 'App\\Tests\\TestCase',
-            'excludedMethods'   => [],
-            'mergedPhpDoc'      => [],
-            'phpDoc'            => ['@author John Doe'],
-            'options'           => ['custom' => 'option'],
+            'automaticGeneration' => false,
+            'implementations'     => [],
+            'baseNamespace'       => 'App\\',
+            'baseTestNamespace'   => 'App\\Tests\\',
+            'testCase'            => 'App\\Tests\\TestCase',
+            'excludedMethods'     => [],
+            'mergedPhpDoc'        => [],
+            'phpDoc'              => ['@author John Doe'],
+            'options'             => ['custom' => 'option'],
         ], Config::make([
-            'automaticTests'    => false,
-            'implementations'   => [],
-            'baseNamespace'     => 'App\\',
-            'baseTestNamespace' => 'App\\Tests\\',
-            'testCase'          => 'App\\Tests\\TestCase',
-            'excludedMethods'   => [],
-            'mergedPhpDoc'      => [],
-            'phpDoc'            => ['@author John Doe'],
-            'options'           => ['custom' => 'option'],
+            'automaticGeneration' => false,
+            'implementations'     => [],
+            'baseNamespace'       => 'App\\',
+            'baseTestNamespace'   => 'App\\Tests\\',
+            'testCase'            => 'App\\Tests\\TestCase',
+            'excludedMethods'     => [],
+            'mergedPhpDoc'        => [],
+            'phpDoc'              => ['@author John Doe'],
+            'options'             => ['custom' => 'option'],
         ])->toArray());
     }
 
     public function testMissingNullOrInvalidPropertiesAreIgnored(): void
     {
         $this->assertSame([], Config::validate([
-            'automaticTests' => null,
-            'unknown'        => 'foo bar',
+            'automaticGeneration' => null,
+            'unknown'             => 'foo bar',
         ]));
     }
 
     public function testInvalidBoolean(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('configuration property automaticTests must be of type bool');
+        $this->expectExceptionMessage('configuration property automaticGeneration must be of type bool');
 
         $this->assertSame([], Config::validate([
-            'automaticTests' => ['invalid type'],
+            'automaticGeneration' => ['invalid type'],
         ]));
     }
 
@@ -123,18 +105,18 @@ class ConfigTest extends TestCase
     public function testGetters(): void
     {
         $config = Config::make([
-            'automaticTests'    => false,
-            'implementations'   => [],
-            'baseNamespace'     => 'App\\',
-            'baseTestNamespace' => 'App\\Tests\\',
-            'testCase'          => 'App\\Tests\\TestCase',
-            'excludedMethods'   => [],
-            'mergedPhpDoc'      => [],
-            'phpDoc'            => ['@author John Doe'],
-            'options'           => ['custom' => 'option'],
+            'automaticGeneration' => false,
+            'implementations'     => [],
+            'baseNamespace'       => 'App\\',
+            'baseTestNamespace'   => 'App\\Tests\\',
+            'testCase'            => 'App\\Tests\\TestCase',
+            'excludedMethods'     => [],
+            'mergedPhpDoc'        => [],
+            'phpDoc'              => ['@author John Doe'],
+            'options'             => ['custom' => 'option'],
         ]);
 
-        $this->assertSame(false, $config->automaticTests());
+        $this->assertSame(false, $config->automaticGeneration());
         $this->assertSame([], $config->implementations());
         $this->assertSame('App\\', $config->baseNamespace());
         $this->assertSame('App\\Tests\\', $config->baseTestNamespace());
