@@ -62,7 +62,7 @@ class MethodFactory implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function makeTearDown(TestClass $class): TestMethod
     {
@@ -79,7 +79,7 @@ class MethodFactory implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function makeEmpty(ReflectionMethod $reflectionMethod, string $suffix = ''): TestMethod
     {
@@ -89,7 +89,7 @@ class MethodFactory implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function makeIncomplete(ReflectionMethod $reflectionMethod): TestMethod
     {
@@ -104,7 +104,7 @@ class MethodFactory implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function makeTestable(TestClass $class, ReflectionMethod $reflectionMethod): void
     {

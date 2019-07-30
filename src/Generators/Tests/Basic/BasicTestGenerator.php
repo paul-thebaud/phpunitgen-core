@@ -24,7 +24,7 @@ class BasicTestGenerator extends AbstractTestGenerator implements ValueFactoryAw
     use ManagesGetterAndSetter;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function implementations(): array
     {
@@ -34,7 +34,7 @@ class BasicTestGenerator extends AbstractTestGenerator implements ValueFactoryAw
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function isTestable(TestClass $class, ReflectionMethod $reflectionMethod): bool
     {
@@ -42,7 +42,7 @@ class BasicTestGenerator extends AbstractTestGenerator implements ValueFactoryAw
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function handleForTestable(TestClass $class, ReflectionMethod $reflectionMethod): void
     {
