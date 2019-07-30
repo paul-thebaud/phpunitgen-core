@@ -296,7 +296,7 @@ abstract class AbstractTestGenerator implements
     abstract protected function handleForTestable(TestClass $class, ReflectionMethod $reflectionMethod): void;
 
     /**
-     * Handle the method
+     * Handle the method to generate an empty test (using "markTestIsIncomplete").
      *
      * @param TestClass        $class
      * @param ReflectionMethod $reflectionMethod
