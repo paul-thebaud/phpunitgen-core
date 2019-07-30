@@ -8,5 +8,4 @@
 # Cache and coverage.
 /\.coverage/
 /\.phpunit\.result\.cache
-
 \.scannerwork/
