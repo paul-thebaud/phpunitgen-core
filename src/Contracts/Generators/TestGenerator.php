@@ -20,6 +20,13 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 interface TestGenerator
 {
     /**
+     * Get the implementations that this generator will use (for factories).
+     *
+     * @return array
+     */
+    public static function implementations(): array;
+
+    /**
      * Generate the tests models for the given reflection class.
      *
      * @param ReflectionClass $reflectionClass

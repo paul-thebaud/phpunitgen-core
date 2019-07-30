@@ -8,6 +8,7 @@ use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\Models\Concerns\HasTestClassParent;
 use PhpUnitGen\Core\Models\Concerns\HasTestDocumentation;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Tightenco\Collect\Support\Collection;
 
 /**
@@ -36,6 +37,11 @@ class TestMethod implements Renderable
      * The private visibility.
      */
     public const VISIBILITY_PRIVATE = 'private';
+
+    /**
+     * @var ReflectionMethod|null The method for which this test method is created.
+     */
+    protected $reflectionMethod;
 
     /**
      * @var string The name of the method.
@@ -68,10 +74,8 @@ class TestMethod implements Renderable
      * @param string $name
      * @param string $visibility
      */
-    public function __construct(
-        string $name,
-        string $visibility = self::VISIBILITY_PUBLIC
-    ) {
+    public function __construct(string $name, string $visibility = self::VISIBILITY_PUBLIC)
+    {
         $this->name = $name;
         $this->visibility = $visibility;
 

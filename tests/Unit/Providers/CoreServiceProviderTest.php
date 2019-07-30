@@ -5,10 +5,27 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Providers;
 
 use League\Container\Container;
+use League\Container\ReflectionContainer;
 use Mockery;
 use Mockery\Mock;
+use PhpUnitGen\Core\Aware\ClassFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\ConfigAwareTrait;
+use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\MockGeneratorAwareTrait;
+use PhpUnitGen\Core\Aware\TestGeneratorAwareTrait;
+use PhpUnitGen\Core\Aware\ValueFactoryAwareTrait;
 use PhpUnitGen\Core\Config\Config;
+use PhpUnitGen\Core\Contracts\Aware\ClassFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
+use PhpUnitGen\Core\Contracts\Aware\DocumentationFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\TestGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
 use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory as DocumentationFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
@@ -17,10 +34,12 @@ use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
+use PhpUnitGen\Core\Generators\Factories\ClassFactory;
+use PhpUnitGen\Core\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
-use PhpUnitGen\Core\Generators\Tests\BasicTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Providers\CoreServiceProvider;
@@ -135,12 +154,37 @@ class CoreServiceProviderTest extends TestCase
 
         $this->coreServiceProvider->register();
 
+        $this->assertInstanceOf(ClassFactory::class, $this->container->get(ClassFactoryContract::class));
         $this->assertInstanceOf(CodeParser::class, $this->container->get(CodeParserContract::class));
+        $this->assertInstanceOf(
+            DocumentationFactory::class,
+            $this->container->get(DocumentationFactoryContract::class)
+        );
         $this->assertInstanceOf(ImportFactory::class, $this->container->get(ImportFactoryContract::class));
         $this->assertInstanceOf(MockeryMockGenerator::class, $this->container->get(MockGeneratorContract::class));
         $this->assertInstanceOf(Renderer::class, $this->container->get(RendererContract::class));
         $this->assertInstanceOf(BasicTestGenerator::class, $this->container->get(TestGeneratorContract::class));
         $this->assertInstanceOf(ValueFactory::class, $this->container->get(ValueFactoryContract::class));
+    }
+
+    public function testAllInflectorsAreDefined(): void
+    {
+        $this->config->shouldReceive('implementations')->andReturn(
+            Config::make()->implementations()
+        );
+
+        $this->container->delegate(new ReflectionContainer());
+
+        /** @var StubAware $stubAware */
+        $stubAware = $this->container->get(StubAware::class);
+
+        $this->assertInstanceOf(ClassFactoryContract::class, $stubAware->getClassFactory());
+        $this->assertInstanceOf(ConfigContract::class, $stubAware->getConfig());
+        $this->assertInstanceOf(DocumentationFactoryContract::class, $stubAware->getDocumentationFactory());
+        $this->assertInstanceOf(ImportFactoryContract::class, $stubAware->getImportFactory());
+        $this->assertInstanceOf(MockGeneratorContract::class, $stubAware->getMockGenerator());
+        $this->assertInstanceOf(TestGeneratorContract::class, $stubAware->getTestGenerator());
+        $this->assertInstanceOf(ValueFactoryContract::class, $stubAware->getValueFactory());
     }
 }
 
@@ -150,6 +194,11 @@ class InvalidStubTestGenerator
 
 class InvalidConstructorStubTestGenerator implements TestGenerator
 {
+    public static function implementations(): array
+    {
+        return [];
+    }
+
     public function __construct($dependency)
     {
     }
@@ -165,6 +214,11 @@ class InvalidConstructorStubTestGenerator implements TestGenerator
 
 class StubTestGenerator implements TestGenerator
 {
+    public static function implementations(): array
+    {
+        return [];
+    }
+
     public function generate(ReflectionClass $reflectionClass): TestClass
     {
     }
@@ -172,4 +226,22 @@ class StubTestGenerator implements TestGenerator
     public function canGenerateFor(ReflectionClass $reflectionClass): bool
     {
     }
+}
+
+class StubAware implements
+    ClassFactoryAware,
+    ConfigAware,
+    DocumentationFactoryAware,
+    ImportFactoryAware,
+    MockGeneratorAware,
+    TestGeneratorAware,
+    ValueFactoryAware
+{
+    use ClassFactoryAwareTrait;
+    use ConfigAwareTrait;
+    use DocumentationFactoryAwareTrait;
+    use ImportFactoryAwareTrait;
+    use MockGeneratorAwareTrait;
+    use TestGeneratorAwareTrait;
+    use ValueFactoryAwareTrait;
 }

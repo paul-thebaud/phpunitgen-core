@@ -7,20 +7,34 @@ namespace PhpUnitGen\Core\Providers;
 use League\Container\Definition\DefinitionInterface;
 use League\Container\ReflectionContainer;
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use League\Container\ServiceProvider\BootableServiceProviderInterface;
+use PhpUnitGen\Core\Contracts\Aware\ClassFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
+use PhpUnitGen\Core\Contracts\Aware\DocumentationFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\MethodFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\PropertyFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\StatementFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\TestGeneratorAware;
 use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
 use PhpUnitGen\Core\Contracts\Config\Config;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory as DocumentationFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\PropertyFactory as PropertyFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
+use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Helpers\Str;
+use PhpUnitGen\Core\Parsers\CodeParser;
+use PhpUnitGen\Core\Renderers\Renderer;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -29,33 +43,55 @@ use ReflectionParameter;
 /**
  * Class CoreServiceProvider.
  *
+ * This service provider will provides all contracts implementations mapping
+ * to the container it is registered on.
+ *
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class CoreServiceProvider extends AbstractServiceProvider
+class CoreServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
     /**
      * The contracts that this service provider must have defined at the registration end.
      */
     protected const REQUIRED_CONTRACTS = [
+        ClassFactoryContract::class,
         CodeParserContract::class,
+        DocumentationFactoryContract::class,
         ImportFactoryContract::class,
+        MethodFactoryContract::class,
         MockGeneratorContract::class,
+        PropertyFactoryContract::class,
         RendererContract::class,
+        StatementFactoryContract::class,
         TestGeneratorContract::class,
         ValueFactoryContract::class,
     ];
 
     /**
-     * The aware contracts that should be inflected on container.
+     * The aware contracts that should be inflected on container and the contract they provide.
      */
     protected const AWARE_CONTRACTS = [
-        ConfigAware::class,
-        ImportFactoryAware::class,
-        MockGeneratorAware::class,
-        TestGeneratorAware::class,
-        ValueFactoryAware::class,
+        ClassFactoryAware::class         => ClassFactoryContract::class,
+        ConfigAware::class               => Config::class,
+        DocumentationFactoryAware::class => DocumentationFactoryContract::class,
+        ImportFactoryAware::class        => ImportFactoryContract::class,
+        MethodFactoryAware::class        => MethodFactoryContract::class,
+        MockGeneratorAware::class        => MockGeneratorContract::class,
+        PropertyFactoryAware::class      => PropertyFactoryContract::class,
+        StatementFactoryAware::class     => StatementFactoryContract::class,
+        TestGeneratorAware::class        => TestGeneratorContract::class,
+        ValueFactoryAware::class         => ValueFactoryContract::class,
+    ];
+
+    /**
+     * The default implementations which will be used if not provided in configuration.
+     */
+    protected const DEFAULT_IMPLEMENTATIONS = [
+        CodeParserContract::class    => CodeParser::class,
+        MockGeneratorContract::class => MockeryMockGenerator::class,
+        RendererContract::class      => Renderer::class,
     ];
 
     /**
@@ -79,6 +115,14 @@ class CoreServiceProvider extends AbstractServiceProvider
     /**
      * {@inheritdoc}
      */
+    public function boot()
+    {
+        $this->addInflectors();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function register()
     {
         $this->leagueContainer->delegate(new ReflectionContainer());
@@ -93,7 +137,10 @@ class CoreServiceProvider extends AbstractServiceProvider
      */
     protected function addDefinitions(): void
     {
-        $implementations = $this->config->implementations();
+        $implementations = array_merge(
+            self::DEFAULT_IMPLEMENTATIONS,
+            $this->config->implementations()
+        );
 
         foreach ($implementations as $contract => $concrete) {
             $this->addDefinition($contract, $concrete);
@@ -109,13 +156,11 @@ class CoreServiceProvider extends AbstractServiceProvider
      */
     protected function addInflectors(): void
     {
-        foreach (self::AWARE_CONTRACTS as $awareContract) {
-            $setter = 'set'.Str::replaceLast('Aware', '', $awareContract);
+        foreach (self::AWARE_CONTRACTS as $awareContract => $providedContract) {
+            $setter = 'set'.Str::replaceLast('Aware', '', Str::afterLast('\\', $awareContract));
 
             $this->leagueContainer->inflector($awareContract)
-                ->invokeMethod($setter, [
-                    $this->leagueContainer->extend($awareContract)->getConcrete(),
-                ]);
+                ->invokeMethod($setter, [$providedContract]);
         }
     }
 

@@ -4,21 +4,46 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests;
 
-use phpDocumentor\Reflection\DocBlock\Tag;
+use PhpUnitGen\Core\Aware\ClassFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
+use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\MethodFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\PropertyFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\StatementFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\ValueFactoryAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\ClassFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
+use PhpUnitGen\Core\Contracts\Aware\DocumentationFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\MethodFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\PropertyFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\StatementFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory as DocumentationFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\PropertyFactory as PropertyFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
+use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
+use PhpUnitGen\Core\Generators\Concerns\InstantiatesClass;
+use PhpUnitGen\Core\Generators\Factories\ClassFactory;
+use PhpUnitGen\Core\Generators\Factories\DocumentationFactory;
+use PhpUnitGen\Core\Generators\Factories\ImportFactory;
+use PhpUnitGen\Core\Generators\Factories\MethodFactory;
+use PhpUnitGen\Core\Generators\Factories\PropertyFactory;
+use PhpUnitGen\Core\Generators\Factories\StatementFactory;
+use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestDocumentation;
-use PhpUnitGen\Core\Models\TestImport;
-use PhpUnitGen\Core\Models\TestMethod;
-use PhpUnitGen\Core\Models\TestProperty;
-use PhpUnitGen\Core\Models\TestStatement;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 /**
  * Class AbstractTestGenerator.
@@ -27,9 +52,43 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-abstract class AbstractTestGenerator implements TestGenerator, ConfigAware
+abstract class AbstractTestGenerator implements
+    TestGenerator,
+    ClassFactoryAware,
+    ConfigAware,
+    DocumentationFactoryAware,
+    ImportFactoryAware,
+    MethodFactoryAware,
+    PropertyFactoryAware,
+    StatementFactoryAware,
+    ValueFactoryAware
 {
+    use ClassFactoryAwareTrait;
     use ConfigAwareTrait;
+    use DocumentationFactoryAwareTrait;
+    use ImportFactoryAwareTrait;
+    use MethodFactoryAwareTrait;
+    use PropertyFactoryAwareTrait;
+    use StatementFactoryAwareTrait;
+    use ValueFactoryAwareTrait;
+    use InstantiatesClass;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function implementations(): array
+    {
+        return [
+            TestGeneratorContract::class        => static::class,
+            ClassFactoryContract::class         => ClassFactory::class,
+            DocumentationFactoryContract::class => DocumentationFactory::class,
+            ImportFactoryContract::class        => ImportFactory::class,
+            MethodFactoryContract::class        => MethodFactory::class,
+            PropertyFactoryContract::class      => PropertyFactory::class,
+            StatementFactoryContract::class     => StatementFactory::class,
+            ValueFactoryContract::class         => ValueFactory::class,
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -37,16 +96,39 @@ abstract class AbstractTestGenerator implements TestGenerator, ConfigAware
     public function generate(ReflectionClass $reflectionClass): TestClass
     {
         if (! $this->canGenerateFor($reflectionClass)) {
-            throw new InvalidArgumentException('cannot generate tests for given reflection class');
+            throw new InvalidArgumentException(
+                'cannot generate tests for given reflection class'
+            );
         }
 
-        $class = $this->createTestClass($reflectionClass);
+        // First step of a generator is to generate the test class with its
+        // documentation, base import (such as TestCase or tested class)
+        // and used trait.
+        $class = $this->makeClass($reflectionClass);
+        $this->addImports($class);
+        $this->addTraits($class);
 
-        $this->addTestClassDocumentation($class);
-        $this->addTestClassImports($class);
-        $this->addTestClassTraits($class);
-        $this->addTestClassProperties($class);
-        $this->addTestClassMethods($class);
+        // Second step is to add the properties that will be used in each test,
+        // such as the tested class instance or the mocked dependencies.
+        // Those properties should be added only if automatic generation is
+        // activated.
+        if ($this->shouldAddProperties($class)) {
+            $this->addProperties($class);
+        }
+
+        // Third step is to add the fixture methods to set up and tear down
+        // the properties created on previous step.
+        // Those methods should be added only if automatic generation is
+        // activated.
+        if ($this->shouldAddFixtures($class)) {
+            $this->addFixtures($class);
+        }
+
+        // Fourth and last step is to add the test methods. We will
+        // add incomplete methods (when automation is disable or method should
+        // not receive automatic testing) or complex methods with generated
+        // tests or parts.
+        $this->addMethods($class);
 
         return $class;
     }
@@ -66,67 +148,53 @@ abstract class AbstractTestGenerator implements TestGenerator, ConfigAware
      */
 
     /**
-     * Create the base test class object without methods.
+     * Check if properties should be added for test class.
+     *
+     * @param TestClass $class
+     *
+     * @return bool
+     */
+    protected function shouldAddProperties(TestClass $class): bool
+    {
+        return $this->config->automaticGeneration();
+    }
+
+    /**
+     * Check if fixtures should be added for test class.
+     *
+     * @param TestClass $class
+     *
+     * @return bool
+     */
+    protected function shouldAddFixtures(TestClass $class): bool
+    {
+        return $this->config->automaticGeneration();
+    }
+
+    /**
+     * Check if a test method should be added for the given method.
+     *
+     * @param TestClass        $class
+     * @param ReflectionMethod $reflectionMethod
+     *
+     * @return bool
+     */
+    protected function shouldAddMethod(TestClass $class, ReflectionMethod $reflectionMethod): bool
+    {
+        return $reflectionMethod->isPublic()
+            && ! Str::containsRegex($this->config->excludedMethods(), $reflectionMethod->getShortName());
+    }
+
+    /**
+     * Make the test class.
      *
      * @param ReflectionClass $reflectionClass
      *
      * @return TestClass
      */
-    protected function createTestClass(ReflectionClass $reflectionClass): TestClass
+    protected function makeClass(ReflectionClass $reflectionClass): TestClass
     {
-        return new TestClass($reflectionClass, $this->getTestClassName($reflectionClass));
-    }
-
-    /**
-     * Get the test class complete name.
-     *
-     * @param ReflectionClass $reflectionClass
-     *
-     * @return string
-     */
-    protected function getTestClassName(ReflectionClass $reflectionClass): string
-    {
-        $name = $reflectionClass->getName();
-
-        $baseNamespace = $this->config->baseNamespace();
-        if ($baseNamespace !== '') {
-            $name = Str::replaceFirst($baseNamespace, '', $name);
-        }
-
-        return $this->config->baseTestNamespace().$name.'Test';
-    }
-
-    /**
-     * Add the documentation on the created test class.
-     *
-     * @param TestClass $class
-     */
-    protected function addTestClassDocumentation(TestClass $class): void
-    {
-        $documentation = new TestDocumentation("Class {$class->getShortName()}.");
-        $documentation->addLine();
-
-        $hasDocumentation = Reflect::docBlockTags($class->getReflectionClass())
-            ->reject(function (Tag $tag) {
-                return ! in_array($tag->getName(), $this->config->mergedPhpDoc());
-            })
-            ->map(function (Tag $tag) {
-                return $tag->render();
-            })
-            ->merge($this->config->phpDoc())
-            ->unique()
-            ->each(function ($line) use ($documentation) {
-                $documentation->addLine($line);
-            })
-            ->isNotEmpty();
-
-        if ($hasDocumentation) {
-            $documentation->addLine();
-        }
-
-        $documentation->addLine('@covers \\'.$class->getReflectionClass()->getName());
-
-        $class->setDocumentation($documentation);
+        return $this->getClassFactory()->make($reflectionClass);
     }
 
     /**
@@ -134,10 +202,10 @@ abstract class AbstractTestGenerator implements TestGenerator, ConfigAware
      *
      * @param TestClass $class
      */
-    protected function addTestClassImports(TestClass $class): void
+    protected function addImports(TestClass $class): void
     {
-        $class->addImport(new TestImport($this->config->testCase()));
-        $class->addImport(new TestImport($class->getReflectionClass()->getName()));
+        $this->importFactory->make($class, $this->config->testCase());
+        $this->importFactory->make($class, $class->getReflectionClass()->getName());
     }
 
     /**
@@ -145,7 +213,7 @@ abstract class AbstractTestGenerator implements TestGenerator, ConfigAware
      *
      * @param TestClass $class
      */
-    protected function addTestClassTraits(TestClass $class): void
+    protected function addTraits(TestClass $class): void
     {
     }
 
@@ -154,32 +222,51 @@ abstract class AbstractTestGenerator implements TestGenerator, ConfigAware
      *
      * @param TestClass $class
      */
-    protected function addTestClassProperties(TestClass $class): void
+    protected function addProperties(TestClass $class): void
     {
-    }
+        $class->addProperty($this->propertyFactory->makeForClass($class));
 
-    /**
-     * Add the properties on the created test class.
-     *
-     * @param TestClass $class
-     */
-    protected function addTestClassMethods(TestClass $class): void
-    {
-        if ($this->shouldAddSetUp($class)) {
-            $this->addSetUpTestMethod($class);
-            $this->addTearDownTestMethod($class);
+        $constructor = $this->getConstructor($class->getReflectionClass());
+        if (! $constructor) {
+            return;
         }
 
+        Reflect::parameters($constructor)
+            ->each(function (ReflectionParameter $reflectionParameter) use ($class) {
+                $class->addProperty(
+                    $this->propertyFactory->makeForParameter($class, $reflectionParameter)
+                );
+            });
+    }
+
+    /**
+     * Add the fixtures ("setUp" and "tearDown") on the created test class.
+     *
+     * @param TestClass $class
+     */
+    protected function addFixtures(TestClass $class): void
+    {
+        $class->addMethod($this->methodFactory->makeSetUp($class));
+        $class->addMethod($this->methodFactory->makeTearDown($class));
+    }
+
+    /**
+     * Add the methods on the created test class.
+     *
+     * @param TestClass $class
+     */
+    protected function addMethods(TestClass $class): void
+    {
         Reflect::methods($class->getReflectionClass())
             ->each(function (ReflectionMethod $reflectionMethod) use ($class) {
-                if (! $this->shouldHandleTestMethod($reflectionMethod)) {
+                if (! $this->shouldAddMethod($class, $reflectionMethod)) {
                     return;
                 }
 
-                if ($this->config->automaticTests() && $this->isTestable($reflectionMethod)) {
-                    $this->handleTestableMethod($class, $reflectionMethod);
+                if ($this->isTestable($class, $reflectionMethod)) {
+                    $this->handleForTestable($class, $reflectionMethod);
                 } else {
-                    $this->handleNotTestableMethod($class, $reflectionMethod);
+                    $this->handleForNotTestable($class, $reflectionMethod);
                 }
             });
     }
@@ -191,98 +278,33 @@ abstract class AbstractTestGenerator implements TestGenerator, ConfigAware
      */
 
     /**
-     * Check if "setUp" and "tearDown" should be created for the given class.
+     * Check if a non empty test method should be added (method can have automatic generation).
      *
-     * @param TestClass $class
-     *
-     * @return bool
-     */
-    protected function shouldAddSetUp(TestClass $class): bool
-    {
-        return $this->config->automaticTests();
-    }
-
-    /**
-     * Add the "setUp" method for the given class.
-     *
-     * @param TestClass $class
-     */
-    abstract protected function addSetUpTestMethod(TestClass $class): void;
-
-    /**
-     * Add the "tearDown" method for the given class.
-     *
-     * @param TestClass $class
-     */
-    protected function addTearDownTestMethod(TestClass $class): void
-    {
-        $method = new TestMethod('tearDown', TestMethod::VISIBILITY_PROTECTED);
-        $class->addMethod($method);
-
-        $method->setDocumentation(new TestDocumentation('{@inheritdoc}'));
-        $method->addStatement(new TestStatement('parent::tearDown();'));
-        $method->addStatement(new TestStatement(''));
-
-        $class->getProperties()
-            ->each(function (TestProperty $property) use ($method) {
-                $method->addStatement(new TestStatement("unset(\$this->{$property->getName()});"));
-            });
-    }
-
-    /**
-     * Check if the given reflection method should have generated tests.
-     *
+     * @param TestClass        $class
      * @param ReflectionMethod $reflectionMethod
      *
      * @return bool
      */
-    protected function shouldHandleTestMethod(ReflectionMethod $reflectionMethod): bool
-    {
-        return $reflectionMethod->isPublic()
-            && ! Str::containsRegex($this->config->excludedMethods(), $reflectionMethod->getShortName());
-    }
+    abstract protected function isTestable(TestClass $class, ReflectionMethod $reflectionMethod): bool;
 
     /**
-     * Check if the given reflection method can receive automatically generated tests or not.
-     *
-     * @param ReflectionMethod $reflectionMethod
-     *
-     * @return bool
-     */
-    abstract protected function isTestable(ReflectionMethod $reflectionMethod): bool;
-
-    /**
-     * Handle a method for which tests can be automatically generated.
+     * Handle the method to generate automatic tests.
      *
      * @param TestClass        $class
      * @param ReflectionMethod $reflectionMethod
      */
-    abstract protected function handleTestableMethod(TestClass $class, ReflectionMethod $reflectionMethod): void;
+    abstract protected function handleForTestable(TestClass $class, ReflectionMethod $reflectionMethod): void;
 
     /**
-     * Handle a method for which tests can not be automatically generated.
+     * Handle the method
      *
      * @param TestClass        $class
      * @param ReflectionMethod $reflectionMethod
      */
-    protected function handleNotTestableMethod(TestClass $class, ReflectionMethod $reflectionMethod): void
+    protected function handleForNotTestable(TestClass $class, ReflectionMethod $reflectionMethod): void
     {
-        $method = new TestMethod($this->getTestMethodName($reflectionMethod));
-        $class->addMethod($method);
-
-        $method->addStatement(new TestStatement('/** @todo This test is incomplete. */'));
-        $method->addStatement(new TestStatement('$this->markTestIncomplete();'));
-    }
-
-    /**
-     * Get the test method name.
-     *
-     * @param ReflectionMethod $reflectionMethod
-     *
-     * @return string
-     */
-    protected function getTestMethodName(ReflectionMethod $reflectionMethod): string
-    {
-        return 'test'.ucfirst($reflectionMethod->getShortName());
+        $class->addMethod(
+            $this->methodFactory->makeIncomplete($reflectionMethod)
+        );
     }
 }
