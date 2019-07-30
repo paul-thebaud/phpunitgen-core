@@ -15,7 +15,6 @@ use Tests\PhpUnitGen\Core\TestCase;
 /**
  * Class MockeryMockGeneratorTest.
  *
- * @covers \PhpUnitGen\Core\Generators\Mocks\AbstractMockGenerator
  * @covers \PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator
  */
 class MockeryMockGeneratorTest extends TestCase
