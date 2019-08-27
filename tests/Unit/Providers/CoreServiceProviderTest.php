@@ -12,7 +12,10 @@ use PhpUnitGen\Core\Aware\ClassFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\MethodFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\MockGeneratorAwareTrait;
+use PhpUnitGen\Core\Aware\PropertyFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\StatementFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\TestGeneratorAwareTrait;
 use PhpUnitGen\Core\Aware\ValueFactoryAwareTrait;
 use PhpUnitGen\Core\Config\Config;
@@ -20,13 +23,19 @@ use PhpUnitGen\Core\Contracts\Aware\ClassFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Aware\DocumentationFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\MethodFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\PropertyFactoryAware;
+use PhpUnitGen\Core\Contracts\Aware\StatementFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\TestGeneratorAware;
 use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
 use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory as DocumentationFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\PropertyFactory as PropertyFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
@@ -50,6 +59,16 @@ use Tests\PhpUnitGen\Core\TestCase;
 /**
  * Class CoreServiceProviderTest.
  *
+ * @covers \PhpUnitGen\Core\Aware\ClassFactoryAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\ConfigAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\ImportFactoryAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\MethodFactoryAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\MockGeneratorAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\PropertyFactoryAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\StatementFactoryAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\TestGeneratorAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\ValueFactoryAwareTrait
  * @covers \PhpUnitGen\Core\Providers\CoreServiceProvider
  */
 class CoreServiceProviderTest extends TestCase
@@ -182,7 +201,10 @@ class CoreServiceProviderTest extends TestCase
         $this->assertInstanceOf(ConfigContract::class, $stubAware->getConfig());
         $this->assertInstanceOf(DocumentationFactoryContract::class, $stubAware->getDocumentationFactory());
         $this->assertInstanceOf(ImportFactoryContract::class, $stubAware->getImportFactory());
+        $this->assertInstanceOf(MethodFactoryContract::class, $stubAware->getMethodFactory());
         $this->assertInstanceOf(MockGeneratorContract::class, $stubAware->getMockGenerator());
+        $this->assertInstanceOf(PropertyFactoryContract::class, $stubAware->getPropertyFactory());
+        $this->assertInstanceOf(StatementFactoryContract::class, $stubAware->getStatementFactory());
         $this->assertInstanceOf(TestGeneratorContract::class, $stubAware->getTestGenerator());
         $this->assertInstanceOf(ValueFactoryContract::class, $stubAware->getValueFactory());
     }
@@ -233,7 +255,10 @@ class StubAware implements
     ConfigAware,
     DocumentationFactoryAware,
     ImportFactoryAware,
+    MethodFactoryAware,
     MockGeneratorAware,
+    PropertyFactoryAware,
+    StatementFactoryAware,
     TestGeneratorAware,
     ValueFactoryAware
 {
@@ -241,7 +266,10 @@ class StubAware implements
     use ConfigAwareTrait;
     use DocumentationFactoryAwareTrait;
     use ImportFactoryAwareTrait;
+    use MethodFactoryAwareTrait;
     use MockGeneratorAwareTrait;
+    use PropertyFactoryAwareTrait;
+    use StatementFactoryAwareTrait;
     use TestGeneratorAwareTrait;
     use ValueFactoryAwareTrait;
 }
