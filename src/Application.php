@@ -76,11 +76,19 @@ class Application
     }
 
     /**
+     * @return ContainerInterface
+     */
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
+    }
+
+    /**
      * @return CodeParser
      */
     public function getCodeParser(): CodeParser
     {
-        return $this->container->get(CodeParser::class);
+        return $this->getContainer()->get(CodeParser::class);
     }
 
     /**
@@ -88,7 +96,7 @@ class Application
      */
     public function getTestGenerator(): TestGenerator
     {
-        return $this->container->get(TestGenerator::class);
+        return $this->getContainer()->get(TestGenerator::class);
     }
 
     /**
@@ -96,6 +104,6 @@ class Application
      */
     public function getRenderer(): Renderer
     {
-        return $this->container->get(Renderer::class);
+        return $this->getContainer()->get(Renderer::class);
     }
 }
