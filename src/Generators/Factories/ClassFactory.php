@@ -51,7 +51,7 @@ class ClassFactory implements ClassFactoryContract, ConfigAware, DocumentationFa
      */
     protected function makeNamespace(ReflectionClass $reflectionClass): string
     {
-        return $this->config->baseTestNamespace();
+        return trim($this->config->baseTestNamespace(), '\\');
     }
 
     /**
@@ -65,9 +65,9 @@ class ClassFactory implements ClassFactoryContract, ConfigAware, DocumentationFa
     {
         $name = $reflectionClass->getName();
 
-        $baseNamespace = $this->config->baseNamespace();
+        $baseNamespace = trim($this->config->baseNamespace(), '\\');
         if ($baseNamespace !== '') {
-            $name = Str::replaceFirst($baseNamespace, '', $name);
+            $name = trim(Str::replaceFirst($baseNamespace, '', $name), '\\');
         }
 
         return $name.'Test';
