@@ -43,12 +43,11 @@ class DocumentationFactory implements DocumentationFactoryContract, ConfigAware
             })
             ->isNotEmpty();
 
-        if (! $hasDocumentation) {
-            return $documentation;
+        if ($hasDocumentation) {
+            $documentation->addLine();
         }
 
-        return $documentation->addLine()
-            ->addLine('@covers \\'.$class->getReflectionClass()->getName());
+        return $documentation->addLine('@covers \\'.$class->getReflectionClass()->getName());
     }
 
     /**
