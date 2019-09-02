@@ -84,7 +84,11 @@ class PropertyFactory implements
      */
     protected function makeDocType(TestClass $class, ?ReflectionType $reflectionType)
     {
-        $stringType = $reflectionType ? strval($reflectionType) : 'mixed';
+        if (! $reflectionType) {
+            return 'mixed';
+        }
+
+        $stringType = strval($reflectionType);
 
         if (in_array($stringType, ['parent', 'self'])) {
             return $this->importFactory->make($class, $class->getReflectionClass()->getName());
