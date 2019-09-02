@@ -70,10 +70,20 @@ class MethodFactory implements
 
         $this->makeMethodInherited($method);
 
-        $class->getProperties()
-            ->each(function (TestProperty $property) use ($method) {
-                $method->addStatement(new TestStatement("unset(\$this->{$property->getName()});"));
-            });
+        $properties = $class->getProperties();
+        if ($properties->isEmpty()) {
+            $method->addStatement(
+                $this->statementFactory->makeTodo('Complete the tearDown() method.')
+            );
+
+            return $method;
+        }
+
+        $properties->each(function (TestProperty $property) use ($method) {
+            $method->addStatement(
+                new TestStatement("unset(\$this->{$property->getName()});")
+            );
+        });
 
         return $method;
     }
@@ -97,7 +107,7 @@ class MethodFactory implements
             $this->makeTestMethodName($reflectionMethod)
         );
 
-        $method->addStatement(new TestStatement('/** @todo This test is incomplete. */'));
+        $method->addStatement($this->statementFactory->makeTodo('This test is incomplete.'));
         $method->addStatement(new TestStatement('$this->markTestIncomplete();'));
 
         return $method;
