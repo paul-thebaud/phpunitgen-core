@@ -95,9 +95,9 @@ class StatementFactory implements StatementFactoryContract, ImportFactoryAware
             ->append('])');
 
         if ($reflectionClass->isAbstract()) {
-            return $statement->addLine('getMockForAbstractClass();');
+            return $statement->addLine('->getMockForAbstractClass();');
         }
 
-        return $statement->addLine('getMockForTrait();');
+        return $statement->addLine('->getMockForTrait();');
     }
 }
