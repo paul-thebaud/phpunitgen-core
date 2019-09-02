@@ -126,7 +126,7 @@ class DocumentationFactoryTest extends TestCase
         $doc = $this->documentationFactory->makeForProperty($property, 'string');
 
         $this->assertSame([
-            '@var string'
+            '@var string',
         ], $doc->getLines()->toArray());
     }
 
@@ -142,13 +142,13 @@ class DocumentationFactoryTest extends TestCase
         $doc = $this->documentationFactory->makeForProperty($property, ['string', $type]);
 
         $this->assertSame([
-            '@var string|Foo'
+            '@var string|Foo',
         ], $doc->getLines()->toArray());
 
         $doc = $this->documentationFactory->makeForProperty($property, new Collection(['string', $type]));
 
         $this->assertSame([
-            '@var string|Foo'
+            '@var string|Foo',
         ], $doc->getLines()->toArray());
     }
 
