@@ -9,7 +9,7 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 /**
- * Class InstantiatesClass.
+ * Trait InstantiatesClass.
  *
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
