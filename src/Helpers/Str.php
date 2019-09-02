@@ -172,4 +172,25 @@ class Str
 
         return false;
     }
+
+    /**
+     * Check if the given string ends with (one of) the given search.
+     *
+     * @param string|string[] $searches
+     * @param string          $subject
+     *
+     * @return bool
+     */
+    public static function endsWith($searches, string $subject): bool
+    {
+        $searches = Arr::wrap($searches);
+
+        foreach ($searches as $search) {
+            if (substr($subject, -strlen($search)) === $search) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

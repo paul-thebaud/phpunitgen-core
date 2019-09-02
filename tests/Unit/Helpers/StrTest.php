@@ -193,4 +193,26 @@ class StrTest extends TestCase
             [true, ['Bar', 'Foo'], 'Foo Bar Baz'],
         ];
     }
+
+    /**
+     * @param bool   $expected
+     * @param string $search
+     * @param string $subject
+     *
+     * @dataProvider endsWithProvider
+     */
+    public function testEndsWith(bool $expected, $search, string $subject): void
+    {
+        $this->assertSame($expected, Str::endsWith($search, $subject));
+    }
+
+    public function endsWithProvider(): array
+    {
+        return [
+            [false, 'Foo', 'Bar Baz'],
+            [false, 'Foo', 'Bar Foo Baz'],
+            [true, 'Baz', 'Foo Bar Baz'],
+            [true, ['Bar', 'Baz'], 'Foo Bar Baz'],
+        ];
+    }
 }

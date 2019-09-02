@@ -81,7 +81,7 @@ class StatementFactoryTest extends TestCase
         $statement = $this->statementFactory->makeAssert('equals');
 
         $this->assertSame([
-            '$this->assertEquals();',
+            '$this->assertEquals()',
         ], $statement->getLines()->toArray());
     }
 
@@ -90,7 +90,7 @@ class StatementFactoryTest extends TestCase
         $statement = $this->statementFactory->makeAssert('Equals', '1', '2');
 
         $this->assertSame([
-            '$this->assertEquals(1, 2);',
+            '$this->assertEquals(1, 2)',
         ], $statement->getLines()->toArray());
     }
 
@@ -139,13 +139,13 @@ class StatementFactoryTest extends TestCase
         $param2->shouldReceive(['getName' => 'baz']);
 
         return [
-            [['$this->foo = new Foo();'], $reflectionClass, []],
-            [['$this->foo = new Foo($this->bar, $this->baz);'], $reflectionClass, $parameters],
+            [['$this->foo = new Foo()'], $reflectionClass, []],
+            [['$this->foo = new Foo($this->bar, $this->baz)'], $reflectionClass, $parameters],
             [
                 [
                     '$this->foo = $this->getMockBuilder(Foo::class)',
                     '->setConstructorArgs([])',
-                    '->getMockForAbstractClass();',
+                    '->getMockForAbstractClass()',
                 ],
                 $reflectionAbstract,
                 [],
@@ -154,7 +154,7 @@ class StatementFactoryTest extends TestCase
                 [
                     '$this->foo = $this->getMockBuilder(Foo::class)',
                     '->setConstructorArgs([$this->bar, $this->baz])',
-                    '->getMockForAbstractClass();',
+                    '->getMockForAbstractClass()',
                 ],
                 $reflectionAbstract,
                 $parameters,
@@ -163,7 +163,7 @@ class StatementFactoryTest extends TestCase
                 [
                     '$this->foo = $this->getMockBuilder(Foo::class)',
                     '->setConstructorArgs([])',
-                    '->getMockForTrait();',
+                    '->getMockForTrait()',
                 ],
                 $reflectionTrait,
                 [],
@@ -172,7 +172,7 @@ class StatementFactoryTest extends TestCase
                 [
                     '$this->foo = $this->getMockBuilder(Foo::class)',
                     '->setConstructorArgs([$this->bar, $this->baz])',
-                    '->getMockForTrait();',
+                    '->getMockForTrait()',
                 ],
                 $reflectionTrait,
                 $parameters,

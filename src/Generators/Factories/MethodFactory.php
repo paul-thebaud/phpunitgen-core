@@ -81,7 +81,7 @@ class MethodFactory implements
 
         $properties->each(function (TestProperty $property) use ($method) {
             $method->addStatement(
-                new TestStatement("unset(\$this->{$property->getName()});")
+                new TestStatement("unset(\$this->{$property->getName()})")
             );
         });
 
@@ -108,7 +108,7 @@ class MethodFactory implements
         );
 
         $method->addStatement($this->statementFactory->makeTodo('This test is incomplete.'));
-        $method->addStatement(new TestStatement('$this->markTestIncomplete();'));
+        $method->addStatement(new TestStatement('$this->markTestIncomplete()'));
 
         return $method;
     }
@@ -146,7 +146,7 @@ class MethodFactory implements
 
         $callStatement = (new TestStatement('parent::'))
             ->append($method->getName())
-            ->append('();');
+            ->append('()');
 
         $method->addStatement($callStatement)
             ->addStatement(new TestStatement(''));
@@ -166,7 +166,7 @@ class MethodFactory implements
         $method->addStatement(
             $this->statementFactory->makeAffect(
                 $this->getPropertyName($class->getReflectionClass()),
-                'null;'
+                'null'
             )
         );
     }
@@ -188,7 +188,7 @@ class MethodFactory implements
                 $value = $this->valueFactory->make($class, $reflectionParameter->getType());
 
                 $method->addStatement(
-                    $this->statementFactory->makeAffect($reflectionParameter->getName(), $value.';')
+                    $this->statementFactory->makeAffect($reflectionParameter->getName(), $value)
                 );
             });
 

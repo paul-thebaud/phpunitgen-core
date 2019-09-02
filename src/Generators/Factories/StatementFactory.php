@@ -38,7 +38,7 @@ class StatementFactory implements StatementFactoryContract, ImportFactoryAware
      */
     public function makeAffect(string $name, string $value, bool $isProperty = true): TestStatement
     {
-        $statement = (new TestStatement('$'));
+        $statement = new TestStatement('$');
 
         if ($isProperty) {
             $statement->append('this->');
@@ -58,7 +58,7 @@ class StatementFactory implements StatementFactoryContract, ImportFactoryAware
             ->append(ucfirst($assert))
             ->append('(')
             ->append(implode(', ', $parameters))
-            ->append(');');
+            ->append(')');
     }
 
     /**
@@ -84,7 +84,7 @@ class StatementFactory implements StatementFactoryContract, ImportFactoryAware
                 ->append($className)
                 ->append('(')
                 ->append($parametersString)
-                ->append(');');
+                ->append(')');
         }
 
         $statement->append('$this->getMockBuilder(')
@@ -95,9 +95,9 @@ class StatementFactory implements StatementFactoryContract, ImportFactoryAware
             ->append('])');
 
         if ($reflectionClass->isAbstract()) {
-            return $statement->addLine('->getMockForAbstractClass();');
+            return $statement->addLine('->getMockForAbstractClass()');
         }
 
-        return $statement->addLine('->getMockForTrait();');
+        return $statement->addLine('->getMockForTrait()');
     }
 }

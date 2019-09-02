@@ -385,7 +385,7 @@ class FooTest extends TestCase
 
     public function testItRendersStatementWithSingleLine(): void
     {
-        $this->renderer->visitTestStatement(new TestStatement('$this->assertTrue(true);'));
+        $this->renderer->visitTestStatement(new TestStatement('$this->assertTrue(true)'));
 
         $this->assertCount(1, $this->renderer->getLines());
         $this->assertSame(
@@ -398,7 +398,7 @@ class FooTest extends TestCase
     {
         $statement = new TestStatement('$this->getMockBuilder(Foo::class)');
         $statement->addLine('->setConstructorArgs([$this->barMock])');
-        $statement->addLine('->getMock();');
+        $statement->addLine('->getMock()');
 
         $this->renderer->visitTestStatement($statement);
 
@@ -407,6 +407,17 @@ class FooTest extends TestCase
             '$this->getMockBuilder(Foo::class)
     ->setConstructorArgs([$this->barMock])
     ->getMock();',
+            $this->renderer->getRendered()->toString()
+        );
+    }
+
+    public function testItRendersStatementWithDocComment(): void
+    {
+        $this->renderer->visitTestStatement(new TestStatement('/** @todo */'));
+
+        $this->assertCount(1, $this->renderer->getLines());
+        $this->assertSame(
+            '/** @todo */',
             $this->renderer->getRendered()->toString()
         );
     }

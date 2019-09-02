@@ -40,7 +40,7 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
         $userImport = $this->getUserClass($class)->getFinalName();
 
         $method->addStatement(
-            $this->statementFactory->makeAffect('user', "new {$userImport}();")
+            $this->statementFactory->makeAffect('user', "new {$userImport}()")
         );
 
         return $method;

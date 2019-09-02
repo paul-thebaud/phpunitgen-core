@@ -99,8 +99,8 @@ class MethodFactoryTest extends TestCase
             ->with('Instantiate tested object to use it.')
             ->andReturn(new TestStatement('/** @todo Instantiate tested object to use it. */'));
         $this->statementFactory->shouldReceive('makeAffect')
-            ->with('foo', 'null;')
-            ->andReturn(new TestStatement('$this->foo = null;'));
+            ->with('foo', 'null')
+            ->andReturn(new TestStatement('$this->foo = null'));
 
         $method = $this->methodFactory->makeSetUp($class);
 
@@ -108,10 +108,10 @@ class MethodFactoryTest extends TestCase
         $this->assertSame('protected', $method->getVisibility());
         $this->assertSame($doc, $method->getDocumentation());
         $this->assertSame([
-            ['parent::setUp();'],
+            ['parent::setUp()'],
             [''],
             ['/** @todo Instantiate tested object to use it. */'],
-            ['$this->foo = null;'],
+            ['$this->foo = null'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -194,14 +194,14 @@ class MethodFactoryTest extends TestCase
             ->andReturn('42');
 
         $this->statementFactory->shouldReceive('makeAffect')
-            ->with('bar', 'null;')
-            ->andReturn(new TestStatement('$this->bar = null;'));
+            ->with('bar', 'null')
+            ->andReturn(new TestStatement('$this->bar = null'));
         $this->statementFactory->shouldReceive('makeAffect')
-            ->with('baz', '42;')
-            ->andReturn(new TestStatement('$this->baz = 42;'));
+            ->with('baz', '42')
+            ->andReturn(new TestStatement('$this->baz = 42'));
         $this->statementFactory->shouldReceive('makeInstantiation')
             ->with($class, Mockery::type(Collection::class))
-            ->andReturn(new TestStatement('$this->foo = new Foo($this->bar, $this->baz);'));
+            ->andReturn(new TestStatement('$this->foo = new Foo($this->bar, $this->baz)'));
 
         $method = $this->methodFactory->makeSetUp($class);
 
@@ -209,11 +209,11 @@ class MethodFactoryTest extends TestCase
         $this->assertSame('protected', $method->getVisibility());
         $this->assertSame($doc, $method->getDocumentation());
         $this->assertSame([
-            ['parent::setUp();'],
+            ['parent::setUp()'],
             [''],
-            ['$this->bar = null;'],
-            ['$this->baz = 42;'],
-            ['$this->foo = new Foo($this->bar, $this->baz);'],
+            ['$this->bar = null'],
+            ['$this->baz = 42'],
+            ['$this->foo = new Foo($this->bar, $this->baz)'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -237,10 +237,10 @@ class MethodFactoryTest extends TestCase
         $this->assertSame('protected', $method->getVisibility());
         $this->assertSame($doc, $method->getDocumentation());
         $this->assertSame([
-            ['parent::tearDown();'],
+            ['parent::tearDown()'],
             [''],
-            ['unset($this->foo);'],
-            ['unset($this->bar);'],
+            ['unset($this->foo)'],
+            ['unset($this->bar)'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -266,7 +266,7 @@ class MethodFactoryTest extends TestCase
         $this->assertSame('protected', $method->getVisibility());
         $this->assertSame($doc, $method->getDocumentation());
         $this->assertSame([
-            ['parent::tearDown();'],
+            ['parent::tearDown()'],
             [''],
             ['/** @todo Complete the tearDown() method. */'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
@@ -306,7 +306,7 @@ class MethodFactoryTest extends TestCase
         $this->assertSame('public', $method->getVisibility());
         $this->assertSame([
             ['/** @todo This test is incomplete. */'],
-            ['$this->markTestIncomplete();'],
+            ['$this->markTestIncomplete()'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -334,7 +334,7 @@ class MethodFactoryTest extends TestCase
         $this->assertSame('public', $method->getVisibility());
         $this->assertSame([
             ['/** @todo This test is incomplete. */'],
-            ['$this->markTestIncomplete();'],
+            ['$this->markTestIncomplete()'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());

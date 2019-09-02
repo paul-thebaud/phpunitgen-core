@@ -51,7 +51,7 @@ class BasicMethodFactory extends MethodFactory
         [$callTarget, $actualValueTarget] = $this->getCallTargetAndValueTarget($class, $reflectionMethod);
 
         $method->addStatement(
-            new TestStatement('$property->setValue('.$actualValueTarget.', $expected);')
+            new TestStatement('$property->setValue('.$actualValueTarget.', $expected)')
         );
         $method->addStatement(
             $this->statementFactory->makeAssert('same', '$expected', $callTarget.$reflectionMethod->getShortName().'()')
@@ -75,7 +75,7 @@ class BasicMethodFactory extends MethodFactory
         [$callTarget, $actualValueTarget] = $this->getCallTargetAndValueTarget($class, $reflectionMethod);
 
         $method->addStatement(
-            new TestStatement($callTarget.$reflectionMethod->getShortName().'($expected);')
+            new TestStatement($callTarget.$reflectionMethod->getShortName().'($expected)')
         );
         $method->addStatement(
             $this->statementFactory->makeAssert('same', '$expected', '$property->getValue('.$actualValueTarget.'))')
@@ -128,8 +128,7 @@ class BasicMethodFactory extends MethodFactory
 
         // Expected value variable creation.
         $expectedStatement = (new TestStatement('$expected = '))
-            ->append($this->valueFactory->make($method->getTestClass(), $reflectionType))
-            ->append(';');
+            ->append($this->valueFactory->make($method->getTestClass(), $reflectionType));
         $method->addStatement($expectedStatement);
 
         // Reflected property variable creation.
@@ -141,11 +140,11 @@ class BasicMethodFactory extends MethodFactory
             ->append('::class))')
             ->addLine('->getProperty(\'')
             ->append($reflectionProperty->getName())
-            ->append('\');');
+            ->append('\')');
         $method->addStatement($propertyStatement);
 
         if (! $reflectionProperty->isPublic()) {
-            $method->addStatement(new TestStatement('$property->setAccessible(true);'));
+            $method->addStatement(new TestStatement('$property->setAccessible(true)'));
         }
 
         return $method;

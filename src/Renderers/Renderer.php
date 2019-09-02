@@ -6,6 +6,7 @@ namespace PhpUnitGen\Core\Renderers;
 
 use PhpUnitGen\Core\Contracts\Renderers\Rendered;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
+use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
@@ -234,13 +235,19 @@ class Renderer implements RendererContract
     public function visitTestStatement(TestStatement $statement): void
     {
         $this->whenNotEmpty($statement->getLines(), function (Collection $lines) {
-            $this->addLine($lines->shift());
+            $firstLine = $lines->shift();
+            $this->addLine($firstLine);
 
             $this->augmentIndent();
 
             $lines->each(function (string $line) {
                 $this->addLine($line);
             });
+
+            $lastLine = trim(strval($lines->last() ?? $firstLine));
+            if (! Str::startsWith('//', $lastLine) && ! Str::endsWith('*/', $lastLine)) {
+                $this->append(';');
+            }
 
             $this->reduceIndent();
         });
