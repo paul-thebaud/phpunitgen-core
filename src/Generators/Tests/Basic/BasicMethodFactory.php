@@ -78,7 +78,7 @@ class BasicMethodFactory extends MethodFactory
             new TestStatement($callTarget.$reflectionMethod->getShortName().'($expected)')
         );
         $method->addStatement(
-            $this->statementFactory->makeAssert('same', '$expected', '$property->getValue('.$actualValueTarget.'))')
+            $this->statementFactory->makeAssert('same', '$expected', '$property->getValue('.$actualValueTarget.')')
         );
     }
 
