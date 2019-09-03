@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Basic;
 
-use PhpUnitGen\Core\Aware\ValueFactoryAwareTrait;
-use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
 use PhpUnitGen\Core\Generators\Tests\AbstractTestGenerator;
 use PhpUnitGen\Core\Models\TestClass;
@@ -18,9 +16,8 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class BasicTestGenerator extends AbstractTestGenerator implements ValueFactoryAware
+class BasicTestGenerator extends AbstractTestGenerator
 {
-    use ValueFactoryAwareTrait;
     use ManagesGetterAndSetter;
 
     /**
@@ -38,7 +35,7 @@ class BasicTestGenerator extends AbstractTestGenerator implements ValueFactoryAw
      */
     protected function isTestable(TestClass $class, ReflectionMethod $reflectionMethod): bool
     {
-        return $this->isGetterOrSetter($reflectionMethod);
+        return $this->config->automaticGeneration() && $this->isGetterOrSetter($reflectionMethod);
     }
 
     /**

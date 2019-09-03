@@ -6,20 +6,14 @@ namespace PhpUnitGen\Core\Generators\Tests;
 
 use PhpUnitGen\Core\Aware\ClassFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
-use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\MethodFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\PropertyFactoryAwareTrait;
-use PhpUnitGen\Core\Aware\StatementFactoryAwareTrait;
-use PhpUnitGen\Core\Aware\ValueFactoryAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ClassFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
-use PhpUnitGen\Core\Contracts\Aware\DocumentationFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\MethodFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\PropertyFactoryAware;
-use PhpUnitGen\Core\Contracts\Aware\StatementFactoryAware;
-use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory as DocumentationFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
@@ -56,21 +50,15 @@ abstract class AbstractTestGenerator implements
     TestGenerator,
     ClassFactoryAware,
     ConfigAware,
-    DocumentationFactoryAware,
     ImportFactoryAware,
     MethodFactoryAware,
-    PropertyFactoryAware,
-    StatementFactoryAware,
-    ValueFactoryAware
+    PropertyFactoryAware
 {
     use ClassFactoryAwareTrait;
     use ConfigAwareTrait;
-    use DocumentationFactoryAwareTrait;
     use ImportFactoryAwareTrait;
     use MethodFactoryAwareTrait;
     use PropertyFactoryAwareTrait;
-    use StatementFactoryAwareTrait;
-    use ValueFactoryAwareTrait;
     use InstantiatesClass;
 
     /**
@@ -194,7 +182,7 @@ abstract class AbstractTestGenerator implements
      */
     protected function makeClass(ReflectionClass $reflectionClass): TestClass
     {
-        return $this->getClassFactory()->make($reflectionClass);
+        return $this->classFactory->make($reflectionClass);
     }
 
     /**
