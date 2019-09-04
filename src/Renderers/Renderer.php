@@ -235,6 +235,8 @@ class Renderer implements RendererContract
     public function visitTestStatement(TestStatement $statement): void
     {
         $this->whenNotEmpty($statement->getLines(), function (Collection $lines) {
+            /** @todo Here, we should add a comma only when this is a real statement (not empty or comment). */
+
             $firstLine = $lines->shift();
             $this->addLine($firstLine);
 
@@ -245,7 +247,10 @@ class Renderer implements RendererContract
             });
 
             $lastLine = trim(strval($lines->last() ?? $firstLine));
-            if (! Str::startsWith('//', $lastLine) && ! Str::endsWith('*/', $lastLine)) {
+            if ($lastLine !== ''
+                && ! Str::startsWith('//', $lastLine)
+                && ! Str::endsWith('*/', $lastLine)
+            ) {
                 $this->append(';');
             }
 

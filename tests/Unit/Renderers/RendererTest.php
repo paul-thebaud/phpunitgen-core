@@ -397,14 +397,18 @@ class FooTest extends TestCase
     public function testItRendersStatementWithMultipleLines(): void
     {
         $statement = new TestStatement('$this->getMockBuilder(Foo::class)');
+        $statement->addLine('// A blank line to test comma are not added.');
+        $statement->addLine('');
         $statement->addLine('->setConstructorArgs([$this->barMock])');
         $statement->addLine('->getMock()');
 
         $this->renderer->visitTestStatement($statement);
 
-        $this->assertCount(3, $this->renderer->getLines());
+        $this->assertCount(5, $this->renderer->getLines());
         $this->assertSame(
             '$this->getMockBuilder(Foo::class)
+    // A blank line to test comma are not added.
+
     ->setConstructorArgs([$this->barMock])
     ->getMock();',
             $this->renderer->getRendered()->toString()

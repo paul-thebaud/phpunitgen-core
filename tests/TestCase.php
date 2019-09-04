@@ -17,9 +17,9 @@ class TestCase extends PHPUnitTestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * Call the given method on the given instance / class using reflection.
+     * Call the given method on the given instance/class using reflection.
      *
-     * @param object|string $instance
+     * @param object|string $target
      * @param string        $method
      * @param mixed         ...$args
      *
@@ -27,11 +27,11 @@ class TestCase extends PHPUnitTestCase
      *
      * @throws ReflectionException
      */
-    protected function callProtectedMethod($instance, string $method, ...$args)
+    protected function callProtectedMethod($target, string $method, ...$args)
     {
-        $reflectionMethod = (new ReflectionClass($instance))->getMethod($method);
+        $reflectionMethod = (new ReflectionClass($target))->getMethod($method);
         $reflectionMethod->setAccessible(true);
 
-        return $reflectionMethod->invoke(is_object($instance) ? $instance : null, ...$args);
+        return $reflectionMethod->invoke(is_object($target) ? $target : null, ...$args);
     }
 }
