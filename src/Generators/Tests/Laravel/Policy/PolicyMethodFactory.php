@@ -33,12 +33,21 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
      */
     public function makeSetUp(TestClass $class): TestMethod
     {
-        $method = new TestMethod('setUp', TestMethod::VISIBILITY_PROTECTED);
-
-        $this->makeMethodInherited($method);
+        $method = parent::makeSetUp($class);
 
         $userImport = $this->getUserClass($class)->getFinalName();
 
+        $reflectionClass = $class->getReflectionClass();
+
+        $method->addStatement(new TestStatement(''));
+        $method->addStatement(
+            (new TestStatement('$this->app->instance('))
+                ->append($reflectionClass->getShortName())
+                ->append('::class, $this->')
+                ->append($this->getPropertyName($reflectionClass))
+                ->append(')')
+        );
+        $method->addStatement(new TestStatement(''));
         $method->addStatement(
             $this->statementFactory->makeAffect('user', "new {$userImport}()")
         );

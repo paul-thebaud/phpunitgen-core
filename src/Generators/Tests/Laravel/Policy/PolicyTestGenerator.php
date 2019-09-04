@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Policy;
 
+use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\DocumentationFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UnitClassFactory;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UsesUserModel;
 use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestProperty;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
@@ -21,8 +22,9 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class PolicyTestGenerator extends BasicTestGenerator
+class PolicyTestGenerator extends BasicTestGenerator implements DocumentationFactoryAware
 {
+    use DocumentationFactoryAwareTrait;
     use UsesUserModel;
 
     /**
@@ -41,7 +43,7 @@ class PolicyTestGenerator extends BasicTestGenerator
      */
     protected function isTestable(TestClass $class, ReflectionMethod $reflectionMethod): bool
     {
-        return true;
+        return $this->config->automaticGeneration();
     }
 
     /**
@@ -49,10 +51,14 @@ class PolicyTestGenerator extends BasicTestGenerator
      */
     protected function addProperties(TestClass $class): void
     {
-        $userImport = $this->getUserClass($class)->getFinalName();
+        parent::addProperties($class);
+
+        $userImport = $this->getUserClass($class);
 
         $userProperty = new TestProperty('user');
-        $userProperty->setDocumentation(new TestDocumentation('@var '.$userImport));
+        $userProperty->setDocumentation(
+            $this->documentationFactory->makeForProperty($userProperty, $userImport)
+        );
         $class->addProperty($userProperty);
     }
 }
