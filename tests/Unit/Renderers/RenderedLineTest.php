@@ -47,4 +47,12 @@ class RenderedLineTest extends TestCase
         $this->assertSame('            $foo->bar();', $line->render());
         $this->assertSame('$foo->bar();', $line->getContent());
     }
+
+    public function testItRenderWithIndentationAndEmptyContent(): void
+    {
+        $line = new RenderedLine(3, '');
+
+        $this->assertSame('', $line->render());
+        $this->assertSame('', $line->getContent());
+    }
 }

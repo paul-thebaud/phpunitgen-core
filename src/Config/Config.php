@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Config;
 
+use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 
 /**
@@ -13,101 +14,187 @@ use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class Config
+class Config implements ConfigContract
 {
     /**
-     * @var bool If instantiation and tests (getter, setter...) should be generated.
+     * The type for string properties.
      */
-    protected $automaticTests = true;
+    protected const TYPE_STRING = 'string';
 
     /**
-     * @var string The generator should be used to generate mock construction.
+     * The type for boolean properties.
      */
-    protected $mockWith;
+    protected const TYPE_BOOL = 'bool';
 
     /**
-     * @var string The generator should be used to test class.
+     * The type for array properties.
      */
-    protected $generateWith;
+    protected const TYPE_ARRAY = 'array';
 
     /**
-     * @var string The base namespace of source code.
+     * The properties of the config with there type hint.
      */
-    protected $baseNamespace = '';
+    protected const PROPERTIES = [
+        'automaticGeneration' => self::TYPE_BOOL,
+        'implementations'     => self::TYPE_ARRAY,
+        'baseNamespace'       => self::TYPE_STRING,
+        'baseTestNamespace'   => self::TYPE_STRING,
+        'testCase'            => self::TYPE_STRING,
+        'excludedMethods'     => self::TYPE_ARRAY,
+        'mergedPhpDoc'        => self::TYPE_ARRAY,
+        'phpDoc'              => self::TYPE_ARRAY,
+        'options'             => self::TYPE_ARRAY,
+    ];
 
     /**
-     * @var string The base namespace for the test class.
+     * @var array The configuration, as an array.
      */
-    protected $baseTestNamespace = 'Tests\\';
+    protected $config;
 
     /**
-     * @var array The PHP documentation for the test class.
+     * Validate the given config and create a new instance.
+     *
+     * @param array $config
+     *
+     * @return static
      */
-    protected $phpDocumentation = [];
+    public static function make(array $config = []): self
+    {
+        $config = static::validate($config);
+
+        return new static(
+            array_merge(
+                require __DIR__.'/../../config/phpunitgen.php',
+                $config
+            )
+        );
+    }
+
+    /**
+     * Validate the given config properties and the cleaned config array.
+     *
+     * @param array $config
+     *
+     * @return array
+     */
+    public static function validate(array $config): array
+    {
+        $validated = [];
+
+        foreach (static::PROPERTIES as $property => $type) {
+            $value = $config[$property] ?? null;
+
+            if ($value === null) {
+                continue;
+            }
+
+            if (! call_user_func('is_'.$type, $value)) {
+                throw new InvalidArgumentException(
+                    "configuration property {$property} must be of type {$type}"
+                );
+            }
+
+            $validated[$property] = $value;
+        }
+
+        return $validated;
+    }
 
     /**
      * Config constructor.
      *
-     * @param array $configuration
+     * @param array $config
      */
-    public function __construct(array $configuration = [])
+    protected function __construct(array $config = [])
     {
-        foreach ($configuration as $configurationKey => $configurationValue) {
-            if (! is_string($configurationKey) || ! property_exists($this, $configurationKey)) {
-                throw new InvalidArgumentException(
-                    "configuration key {$configurationKey} does not exists"
-                );
-            }
-
-            $this->{$configurationKey} = $configurationValue;
-        }
+        $this->config = $config;
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    public function hasAutomaticTests(): bool
+    public function automaticGeneration(): bool
     {
-        return (bool) $this->automaticTests;
+        return $this->config['automaticGeneration'];
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getMockWith(): string
+    public function implementations(): array
     {
-        return (string) $this->mockWith;
+        return $this->config['implementations'];
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getGenerateWith(): string
+    public function baseNamespace(): string
     {
-        return (string) $this->generateWith;
+        return $this->config['baseNamespace'];
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getBaseNamespace(): string
+    public function baseTestNamespace(): string
     {
-        return (string) $this->baseNamespace;
+        return $this->config['baseTestNamespace'];
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getBaseTestNamespace(): string
+    public function testCase(): string
     {
-        return (string) $this->baseTestNamespace;
+        return $this->config['testCase'];
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
-    public function getPhpDocumentation(): array
+    public function excludedMethods(): array
     {
-        return (array) $this->phpDocumentation;
+        return $this->config['excludedMethods'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function mergedPhpDoc(): array
+    {
+        return $this->config['mergedPhpDoc'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function phpDoc(): array
+    {
+        return $this->config['phpDoc'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function options(): array
+    {
+        return $this->config['options'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOption(string $name, $default = null)
+    {
+        return $this->options()[$name] ?? $default;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray(): array
+    {
+        return $this->config;
     }
 }

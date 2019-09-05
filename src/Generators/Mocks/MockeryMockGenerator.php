@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Mocks;
 
+use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
+use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
 use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestStatement;
+use PhpUnitGen\Core\Models\TestImport;
 
 /**
  * Class MockeryMockGenerator.
@@ -16,24 +19,27 @@ use PhpUnitGen\Core\Models\TestStatement;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class MockeryMockGenerator extends AbstractMockGenerator
+class MockeryMockGenerator implements MockGenerator, ImportFactoryAware
 {
+    use ImportFactoryAwareTrait;
+
     /**
      * {@inheritdoc}
      */
-    protected function getMockClass(): string
+    public function getMockType(TestClass $class): TestImport
     {
-        return 'Mockery\\Mock';
+        return $this->importFactory->make($class, 'Mockery\\Mock');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function mockCreationStatement(TestClass $class, string $type): TestStatement
+    public function generateMock(TestClass $class, string $type): string
     {
         // Mockery must be imported to mock classes.
-        $mockeryType = $this->importFactory->create($class, 'Mockery');
+        $mockeryType = $this->importFactory->make($class, 'Mockery');
+        $mockedType = $this->importFactory->make($class, $type);
 
-        return new TestStatement("{$mockeryType->getFinalName()}::mock({$type}::class);");
+        return "{$mockeryType->getFinalName()}::mock({$mockedType->getFinalName()}::class)";
     }
 }

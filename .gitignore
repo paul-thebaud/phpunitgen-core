@@ -1,3 +1,6 @@
+# System.
+.DS_Store
+
 # IDE.
 /\.idea/
 
@@ -8,5 +11,4 @@
 # Cache and coverage.
 /\.coverage/
 /\.phpunit\.result\.cache
-
 \.scannerwork/

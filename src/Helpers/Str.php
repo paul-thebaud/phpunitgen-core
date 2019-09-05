@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Helpers;
 
+use Tightenco\Collect\Support\Arr;
+
 /**
  * Class Str.
+ *
+ * Helper methods for string.
  *
  * @internal
  *
@@ -31,6 +35,24 @@ class Str
         }
 
         return substr($subject, 0, $lastPosition);
+    }
+
+    /**
+     * Get the substring after the first occurrence of search.
+     *
+     * @param string $search
+     * @param string $subject
+     *
+     * @return string
+     */
+    public static function afterFirst(string $search, string $subject): string
+    {
+        $lastPosition = strpos($subject, $search);
+        if ($lastPosition === false) {
+            return $subject;
+        }
+
+        return substr($subject, $lastPosition + 1);
     }
 
     /**
@@ -89,28 +111,86 @@ class Str
     }
 
     /**
-     * Check if the given string contains with the given search.
+     * Check if the given string contains with (one of) the given search.
      *
-     * @param string $search
-     * @param string $subject
+     * @param string|string[] $searches
+     * @param string          $subject
      *
      * @return bool
      */
-    public static function contains(string $search, string $subject): bool
+    public static function contains($searches, string $subject): bool
     {
-        return strpos($subject, $search) !== false;
+        $searches = Arr::wrap($searches);
+
+        foreach ($searches as $search) {
+            if (strpos($subject, $search) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * Check if the given string starts with the given search.
+     * Check if the given string contains with (one of) the given regex.
      *
-     * @param string $search
-     * @param string $subject
+     * @param string|string[] $expressions
+     * @param string          $subject
      *
      * @return bool
      */
-    public static function startsWith(string $search, string $subject): bool
+    public static function containsRegex($expressions, string $subject): bool
     {
-        return strpos($subject, $search) === 0;
+        $expressions = Arr::wrap($expressions);
+
+        foreach ($expressions as $expression) {
+            if (preg_match('/'.$expression.'/i', $subject)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the given string starts with (one of) the given search.
+     *
+     * @param string|string[] $searches
+     * @param string          $subject
+     *
+     * @return bool
+     */
+    public static function startsWith($searches, string $subject): bool
+    {
+        $searches = Arr::wrap($searches);
+
+        foreach ($searches as $search) {
+            if (strpos($subject, $search) === 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the given string ends with (one of) the given search.
+     *
+     * @param string|string[] $searches
+     * @param string          $subject
+     *
+     * @return bool
+     */
+    public static function endsWith($searches, string $subject): bool
+    {
+        $searches = Arr::wrap($searches);
+
+        foreach ($searches as $search) {
+            if (substr($subject, -strlen($search)) === $search) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Renderers;
 
+use PhpUnitGen\Core\Contracts\Renderers\Rendered;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
+use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
@@ -47,13 +49,15 @@ class Renderer implements RendererContract
     /**
      * {@inheritdoc}
      */
-    public function getRendered(): string
+    public function getRendered(): Rendered
     {
-        return $this->lines
-            ->map(function (RenderedLine $line) {
-                return $line->render();
-            })
-            ->implode("\n");
+        return new RenderedString(
+            $this->lines
+                ->map(function (RenderedLine $line) {
+                    return $line->render();
+                })
+                ->implode("\n")
+        );
     }
 
     /**
@@ -231,13 +235,22 @@ class Renderer implements RendererContract
     public function visitTestStatement(TestStatement $statement): void
     {
         $this->whenNotEmpty($statement->getLines(), function (Collection $lines) {
-            $this->addLine($lines->shift());
+            $firstLine = $lines->shift();
+            $this->addLine($firstLine);
 
             $this->augmentIndent();
 
             $lines->each(function (string $line) {
                 $this->addLine($line);
             });
+
+            $lastLine = trim(strval($lines->last() ?? $firstLine));
+            if ($lastLine !== ''
+                && ! Str::startsWith('//', $lastLine)
+                && ! Str::endsWith('*/', $lastLine)
+            ) {
+                $this->append(';');
+            }
 
             $this->reduceIndent();
         });
@@ -252,7 +265,11 @@ class Renderer implements RendererContract
             $this->addLine('/*');
 
             $lines->each(function (string $line) {
-                $this->addLine(' * '.$line);
+                $this->addLine(' *');
+
+                if ($line !== '') {
+                    $this->append(' '.$line);
+                }
             });
 
             $this->addLine(' */');
@@ -291,20 +308,6 @@ class Renderer implements RendererContract
     protected function removeLine(): self
     {
         $this->lines->pop();
-
-        return $this;
-    }
-
-    /**
-     * Prepends content to last line.
-     *
-     * @param string $content
-     *
-     * @return static
-     */
-    protected function prepend(string $content): self
-    {
-        $this->lines->last()->prepend($content);
 
         return $this;
     }

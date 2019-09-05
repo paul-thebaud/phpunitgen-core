@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Renderers;
 
 use Mockery;
-use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
@@ -28,11 +27,6 @@ use Tests\PhpUnitGen\Core\TestCase;
 class RendererTest extends TestCase
 {
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
      * @var Renderer
      */
     protected $renderer;
@@ -44,13 +38,12 @@ class RendererTest extends TestCase
     {
         parent::setUp();
 
-        $this->config = Mockery::mock(Config::class);
-        $this->renderer = new Renderer($this->config);
+        $this->renderer = new Renderer();
     }
 
     public function testItRendersWithoutLine(): void
     {
-        $this->assertSame('', $this->renderer->getRendered());
+        $this->assertSame('', $this->renderer->getRendered()->toString());
     }
 
     public function testItRendersWithMultipleLine(): void
@@ -61,7 +54,7 @@ class RendererTest extends TestCase
         $this->assertSame(
             'use Foo\\Bar;
 use Foo\\Baz;',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -72,7 +65,7 @@ use Foo\\Baz;',
         $this->assertCount(1, $this->renderer->getLines());
         $this->assertSame(
             'use Foo\\Bar;',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -83,7 +76,7 @@ use Foo\\Baz;',
         $this->assertCount(1, $this->renderer->getLines());
         $this->assertSame(
             'use Foo\\Bar as BarAlias;',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -99,7 +92,7 @@ class FooTest extends TestCase
 {
 }
 ',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -186,7 +179,7 @@ class FooTest extends TestCase
 {
 }
 ',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -197,7 +190,7 @@ class FooTest extends TestCase
         $this->assertCount(1, $this->renderer->getLines());
         $this->assertSame(
             'use Foo;',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -209,7 +202,7 @@ class FooTest extends TestCase
         $this->assertSame(
             'protected $fooMock;
 ',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -229,7 +222,7 @@ class FooTest extends TestCase
         $this->assertSame(
             'protected $fooMock;
 ',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -243,7 +236,7 @@ class FooTest extends TestCase
 {
 }
 ',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -302,7 +295,7 @@ class FooTest extends TestCase
 {
 }
 ',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -314,7 +307,7 @@ class FooTest extends TestCase
 
         $this->assertSame(
             '$expected',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -326,7 +319,7 @@ class FooTest extends TestCase
 
         $this->assertSame(
             'int $expected',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -342,7 +335,7 @@ class FooTest extends TestCase
     ];
 }
 ',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -375,7 +368,7 @@ class FooTest extends TestCase
     ];
 }
 ',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -386,35 +379,50 @@ class FooTest extends TestCase
         $this->assertCount(0, $this->renderer->getLines());
         $this->assertSame(
             '',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
     public function testItRendersStatementWithSingleLine(): void
     {
-        $this->renderer->visitTestStatement(new TestStatement('$this->assertTrue(true);'));
+        $this->renderer->visitTestStatement(new TestStatement('$this->assertTrue(true)'));
 
         $this->assertCount(1, $this->renderer->getLines());
         $this->assertSame(
             '$this->assertTrue(true);',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
     public function testItRendersStatementWithMultipleLines(): void
     {
         $statement = new TestStatement('$this->getMockBuilder(Foo::class)');
+        $statement->addLine('// A blank line to test comma are not added.');
+        $statement->addLine('');
         $statement->addLine('->setConstructorArgs([$this->barMock])');
-        $statement->addLine('->getMock();');
+        $statement->addLine('->getMock()');
 
         $this->renderer->visitTestStatement($statement);
 
-        $this->assertCount(3, $this->renderer->getLines());
+        $this->assertCount(5, $this->renderer->getLines());
         $this->assertSame(
             '$this->getMockBuilder(Foo::class)
+    // A blank line to test comma are not added.
+
     ->setConstructorArgs([$this->barMock])
     ->getMock();',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
+        );
+    }
+
+    public function testItRendersStatementWithDocComment(): void
+    {
+        $this->renderer->visitTestStatement(new TestStatement('/** @todo */'));
+
+        $this->assertCount(1, $this->renderer->getLines());
+        $this->assertSame(
+            '/** @todo */',
+            $this->renderer->getRendered()->toString()
         );
     }
 
@@ -425,24 +433,26 @@ class FooTest extends TestCase
         $this->assertCount(0, $this->renderer->getLines());
         $this->assertSame(
             '',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 
     public function testItRendersDocumentationWithLines(): void
     {
         $documentation = new TestDocumentation('@covers Foo');
+        $documentation->addLine();
         $documentation->addLine('@author John Doe');
 
         $this->renderer->visitTestDocumentation($documentation);
 
-        $this->assertCount(4, $this->renderer->getLines());
+        $this->assertCount(5, $this->renderer->getLines());
         $this->assertSame(
             '/*
  * @covers Foo
+ *
  * @author John Doe
  */',
-            $this->renderer->getRendered()
+            $this->renderer->getRendered()->toString()
         );
     }
 }

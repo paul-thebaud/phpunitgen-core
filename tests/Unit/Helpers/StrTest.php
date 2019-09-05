@@ -40,6 +40,27 @@ class StrTest extends TestCase
      * @param string $search
      * @param string $subject
      *
+     * @dataProvider afterFirstProvider
+     */
+    public function testAfterFirst(string $expected, string $search, string $subject): void
+    {
+        $this->assertSame($expected, Str::afterFirst($search, $subject));
+    }
+
+    public function afterFirstProvider(): array
+    {
+        return [
+            ['Foo', '\\', 'Foo'],
+            ['Bar', '\\', 'Foo\\Bar'],
+            ['Bar\\Baz', '\\', 'Foo\\Bar\\Baz'],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $search
+     * @param string $subject
+     *
      * @dataProvider afterLastProvider
      */
     public function testAfterLast(string $expected, string $search, string $subject): void
@@ -101,13 +122,13 @@ class StrTest extends TestCase
     }
 
     /**
-     * @param bool   $expected
-     * @param string $search
-     * @param string $subject
+     * @param bool            $expected
+     * @param string|string[] $search
+     * @param string          $subject
      *
      * @dataProvider containsProvider
      */
-    public function testContains(bool $expected, string $search, string $subject): void
+    public function testContains(bool $expected, $search, string $subject): void
     {
         $this->assertSame($expected, Str::contains($search, $subject));
     }
@@ -118,6 +139,36 @@ class StrTest extends TestCase
             [false, 'Foo', 'Bar Baz'],
             [true, 'Foo', 'Foo Bar Baz'],
             [true, 'Foo', 'Bar Baz Foo'],
+            [false, ['Foo'], 'Bar Baz'],
+            [false, ['Foo', 'FooBar'], 'Bar Baz'],
+            [true, ['Foo'], 'Foo Bar Baz'],
+            [true, ['FooBar', 'FooBaz', 'Baz'], 'Bar Baz Foo'],
+        ];
+    }
+
+    /**
+     * @param bool            $expected
+     * @param string|string[] $expression
+     * @param string          $subject
+     *
+     * @dataProvider containsRegexProvider
+     */
+    public function testContainsRegex(bool $expected, $expression, string $subject): void
+    {
+        $this->assertSame($expected, Str::containsRegex($expression, $subject));
+    }
+
+    public function containsRegexProvider(): array
+    {
+        return [
+            [false, 'foo', 'Bar Baz'],
+            [true, 'foo', 'Foo Bar Baz'],
+            [true, 'foo', 'Bar Baz Foo'],
+            [false, ['foo'], 'Bar Baz'],
+            [false, ['foo', 'FooBar'], 'Bar Baz'],
+            [true, ['foo'], 'Foo Bar Baz'],
+            [true, ['foobar', '^[barz ]+foo$', 'Baz'], 'Bar Baz Foo'],
+            [true, ['foobar', '^.*$', 'Baz'], 'Bar Baz Foo'],
         ];
     }
 
@@ -128,7 +179,7 @@ class StrTest extends TestCase
      *
      * @dataProvider startsWithProvider
      */
-    public function testStartsWith(bool $expected, string $search, string $subject): void
+    public function testStartsWith(bool $expected, $search, string $subject): void
     {
         $this->assertSame($expected, Str::startsWith($search, $subject));
     }
@@ -139,6 +190,29 @@ class StrTest extends TestCase
             [false, 'Foo', 'Bar Baz'],
             [false, 'Foo', 'Bar Foo Baz'],
             [true, 'Foo', 'Foo Bar Baz'],
+            [true, ['Bar', 'Foo'], 'Foo Bar Baz'],
+        ];
+    }
+
+    /**
+     * @param bool   $expected
+     * @param string $search
+     * @param string $subject
+     *
+     * @dataProvider endsWithProvider
+     */
+    public function testEndsWith(bool $expected, $search, string $subject): void
+    {
+        $this->assertSame($expected, Str::endsWith($search, $subject));
+    }
+
+    public function endsWithProvider(): array
+    {
+        return [
+            [false, 'Foo', 'Bar Baz'],
+            [false, 'Foo', 'Bar Foo Baz'],
+            [true, 'Baz', 'Foo Bar Baz'],
+            [true, ['Bar', 'Baz'], 'Foo Bar Baz'],
         ];
     }
 }

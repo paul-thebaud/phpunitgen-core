@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Factories;
 
+use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactoryContract;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
@@ -15,17 +16,12 @@ use PhpUnitGen\Core\Models\TestImport;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class ImportFactory
+class ImportFactory implements ImportFactoryContract
 {
     /**
-     * Create an import for the given type and add it to the given class if not already added.
-     *
-     * @param TestClass $class
-     * @param string    $type
-     *
-     * @return TestImport
+     * {@inheritdoc}
      */
-    public function create(TestClass $class, string $type): TestImport
+    public function make(TestClass $class, string $type): TestImport
     {
         $import = $class->getImports()
             ->first(function (TestImport $import) use ($type) {
