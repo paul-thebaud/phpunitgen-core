@@ -1,4 +1,4 @@
-<p align="center"><a href="https://phpunitgen.io" target="_blank"><h1>phpunitgen-core</h1></a></p>
+<h1 align="center">PhpUnitGen - Core</h1>
 
 <p align="center">
 <a href="https://travis-ci.org/paul-thebaud/phpunitgen-core" target="_blank"><img src="https://travis-ci.org/paul-thebaud/phpunitgen-core.svg?branch=master" alt="Build Status"></a>
