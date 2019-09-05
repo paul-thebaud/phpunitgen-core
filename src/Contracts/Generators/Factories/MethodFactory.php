@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Contracts\Generators\Factories;
 
+use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -61,6 +62,8 @@ interface MethodFactory
      *
      * @param TestClass        $class
      * @param ReflectionMethod $reflectionMethod
+     *
+     * @throws InvalidArgumentException
      */
     public function makeTestable(TestClass $class, ReflectionMethod $reflectionMethod): void;
 }

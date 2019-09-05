@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Basic;
 
+use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Factories\MethodFactory;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Models\TestClass;
@@ -35,9 +36,15 @@ class BasicMethodFactory extends MethodFactory
             return;
         }
 
-        $this->handleSetterMethod($class, $reflectionMethod);
+        if ($this->isSetter($reflectionMethod)) {
+            $this->handleSetterMethod($class, $reflectionMethod);
 
-        /** @todo This should throw an exception if method is not a getter or a setter. */
+            return;
+        }
+
+        throw new InvalidArgumentException(
+            "cannot generate tests for method {$reflectionMethod->getShortName()}, not a getter or a setter"
+        );
     }
 
     /**

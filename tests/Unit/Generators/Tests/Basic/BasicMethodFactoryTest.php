@@ -9,6 +9,7 @@ use Mockery\Mock;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory;
+use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Factories\StatementFactory;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
 use PhpUnitGen\Core\Models\TestClass;
@@ -62,6 +63,32 @@ class BasicMethodFactoryTest extends TestCase
         $this->methodFactory->setImportFactory($this->importFactory);
         $this->methodFactory->setStatementFactory($this->statementFactory);
         $this->methodFactory->setValueFactory($this->valueFactory);
+    }
+
+    public function testMakeTestableWillThrowException(): void
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+
+        $class = new TestClass($reflectionClass, 'FooTest');
+
+        $reflectionClass->shouldReceive([
+            'getShortName'           => 'Foo',
+            'getImmediateProperties' => [],
+        ]);
+
+        $reflectionMethod->shouldReceive([
+            'getShortName'      => 'bar',
+            'getDeclaringClass' => $class->getReflectionClass(),
+            'isStatic'          => false,
+        ]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'cannot generate tests for method bar, not a getter or a setter'
+        );
+
+        $this->methodFactory->makeTestable($class, $reflectionMethod);
     }
 
     /**
