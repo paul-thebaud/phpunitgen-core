@@ -6,6 +6,7 @@ namespace PhpUnitGen\Core\Generators\Tests\Laravel\Policy;
 
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
+use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UsesUserModel;
 use PhpUnitGen\Core\Helpers\Reflect;
@@ -66,7 +67,11 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
             return;
         }
 
-        /** @todo This should throw an exception if method is static. */
+        if ($reflectionMethod->isStatic()) {
+            throw new InvalidArgumentException(
+                "cannot generate tests for method {$reflectionMethod->getShortName()}, policy method cannot be static"
+            );
+        }
 
         $this->addPolicyMethod($class, $reflectionMethod, 'false', 'Unauthorized');
         $this->addPolicyMethod($class, $reflectionMethod, 'true', 'Authorized');
