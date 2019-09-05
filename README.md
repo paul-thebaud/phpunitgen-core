@@ -26,24 +26,8 @@ skeletons on your projects.
 
 ## Roadmap
 
-- [ ] Clean up and refactor code (split long lines, etc).
-- [ ] Finish unit tests for generator components.
-- [x] Add basic tests generator.
-- [ ] Add Laravel Command generator.
-- [ ] Add Laravel Controller generator.
-- [ ] Add Laravel Event generator.
-- [ ] Add Laravel Job generator.
-- [ ] Add Laravel Listener generator.
-- [ ] Add Laravel Mail generator.
-- [ ] Add Laravel Middleware generator.
-- [ ] Add Laravel Model generator.
-- [ ] Add Laravel Notification generator.
-- [ ] Add Laravel Observer generator.
-- [x] Add Laravel Policy generator. 
-- [ ] Add Laravel Provider generator.
-- [ ] Add Laravel Request generator.
-- [ ] Add Laravel Resource generator.
-- [ ] Add Laravel Rule generator.
+You can track the tasks we plan to do on our
+[Taiga.io project](https://tree.taiga.io/project/paul-thebaud-phpunitgen/kanban).
 
 ## Contributing
 
