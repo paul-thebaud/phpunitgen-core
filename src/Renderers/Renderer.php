@@ -235,8 +235,6 @@ class Renderer implements RendererContract
     public function visitTestStatement(TestStatement $statement): void
     {
         $this->whenNotEmpty($statement->getLines(), function (Collection $lines) {
-            /** @todo Here, we should add a comma only when this is a real statement (not empty or comment). */
-
             $firstLine = $lines->shift();
             $this->addLine($firstLine);
 
