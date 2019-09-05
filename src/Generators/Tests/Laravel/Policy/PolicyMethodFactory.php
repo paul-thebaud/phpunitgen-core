@@ -62,10 +62,14 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
     {
         if ($this->isGetterOrSetter($reflectionMethod)) {
             parent::makeTestable($class, $reflectionMethod);
-        } else {
-            $this->addPolicyMethod($class, $reflectionMethod, 'false', 'Unauthorized');
-            $this->addPolicyMethod($class, $reflectionMethod, 'true', 'Authorized');
+
+            return;
         }
+
+        /** @todo This should throw an exception if method is static. */
+
+        $this->addPolicyMethod($class, $reflectionMethod, 'false', 'Unauthorized');
+        $this->addPolicyMethod($class, $reflectionMethod, 'true', 'Authorized');
     }
 
     /**

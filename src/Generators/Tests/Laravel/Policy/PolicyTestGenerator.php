@@ -43,7 +43,8 @@ class PolicyTestGenerator extends BasicTestGenerator implements DocumentationFac
      */
     protected function isTestable(TestClass $class, ReflectionMethod $reflectionMethod): bool
     {
-        return $this->config->automaticGeneration();
+        return $this->config->automaticGeneration()
+            && ($this->isGetterOrSetter($reflectionMethod) || ! $reflectionMethod->isStatic());
     }
 
     /**

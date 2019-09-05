@@ -94,6 +94,7 @@ class BasicMethodFactoryTest extends TestCase
         $reflectionProperty->shouldReceive([
             'getName'  => 'bar',
             'isPublic' => $isPublic,
+            'isStatic' => $isStatic,
         ]);
 
         $this->importFactory->shouldReceive('make')
@@ -199,6 +200,7 @@ class BasicMethodFactoryTest extends TestCase
         $reflectionProperty->shouldReceive([
             'getName'  => 'bar',
             'isPublic' => $isPublic,
+            'isStatic' => $isStatic,
         ]);
 
         $this->importFactory->shouldReceive('make')

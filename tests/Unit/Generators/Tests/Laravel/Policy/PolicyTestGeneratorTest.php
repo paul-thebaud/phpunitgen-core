@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Generators\Tests\Laravel\Policy;
 
 use Mockery;
+use Mockery\Mock;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory as DocumentationFactoryContract;
@@ -26,8 +27,10 @@ use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestProperty;
+use ReflectionException;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionProperty;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -57,20 +60,68 @@ class PolicyTestGeneratorTest extends TestCase
         }
     }
 
-    public function testIsTestable(): void
+    /**
+     * @param bool                  $expected
+     * @param bool                  $automatic
+     * @param ReflectionMethod|Mock $method
+     *
+     * @throws ReflectionException
+     *
+     * @dataProvider isTestableDataProvider
+     */
+    public function testIsTestable(bool $expected, bool $automatic, ReflectionMethod $method): void
     {
         $class = Mockery::mock(TestClass::class);
-        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $barProperty = Mockery::mock(ReflectionProperty::class);
 
         $testGenerator = new PolicyTestGenerator();
 
-        $testGenerator->setConfig($config = Mockery::mock(Config::class));
-        $config->shouldReceive(['automaticGeneration' => false]);
-        $this->assertFalse($this->callProtectedMethod($testGenerator, 'isTestable', $class, $reflectionMethod));
+        $method->shouldReceive([
+            'getDeclaringClass' => $reflectionClass,
+        ]);
+
+        $reflectionClass->shouldReceive([
+            'getImmediateProperties' => [$barProperty],
+        ]);
+
+        $barProperty->shouldReceive([
+            'getName'  => 'bar',
+            'isStatic' => false,
+        ]);
 
         $testGenerator->setConfig($config = Mockery::mock(Config::class));
-        $config->shouldReceive(['automaticGeneration' => true]);
-        $this->assertTrue($this->callProtectedMethod($testGenerator, 'isTestable', $class, $reflectionMethod));
+        $config->shouldReceive(['automaticGeneration' => $automatic]);
+        $this->assertSame($expected, $this->callProtectedMethod($testGenerator, 'isTestable', $class, $method));
+    }
+
+    public function isTestableDataProvider(): array
+    {
+        $staticMethod = Mockery::mock(ReflectionMethod::class);
+        $getterMethod = Mockery::mock(ReflectionMethod::class);
+        $method = Mockery::mock(ReflectionMethod::class);
+
+        $staticMethod->shouldReceive([
+            'getShortName' => 'make',
+            'isStatic'     => true,
+        ]);
+        $getterMethod->shouldReceive([
+            'getShortName' => 'getBar',
+            'isStatic'     => false,
+        ]);
+        $method->shouldReceive([
+            'getShortName' => 'bar',
+            'isStatic'     => false,
+        ]);
+
+        return [
+            [false, false, $staticMethod],
+            [false, false, $getterMethod],
+            [false, false, $method],
+            [false, true, $staticMethod],
+            [true, true, $getterMethod],
+            [true, true, $method],
+        ];
     }
 
     public function testAddProperties(): void

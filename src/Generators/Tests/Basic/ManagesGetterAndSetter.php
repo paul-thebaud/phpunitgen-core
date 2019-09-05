@@ -70,11 +70,15 @@ trait ManagesGetterAndSetter
             return null;
         }
 
-        /** @todo Property should be static if the method is static. */
-
-        return Reflect::property(
+        $property = Reflect::property(
             $reflectionMethod->getDeclaringClass(),
             lcfirst(Str::replaceFirst($prefix, '', $methodName))
         );
+
+        if (! $property || $reflectionMethod->isStatic() !== $property->isStatic()) {
+            return null;
+        }
+
+        return $property;
     }
 }

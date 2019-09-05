@@ -203,21 +203,25 @@ class BasicTestGeneratorTest extends TestCase
             'getDeclaringClass' => $reflectionClass,
             'getShortName'      => 'getBar',
             'isPublic'          => true,
+            'isStatic'          => false,
         ]);
         $reflectionSetter->shouldReceive([
             'getDeclaringClass' => $reflectionClass,
             'getShortName'      => 'setBar',
             'isPublic'          => true,
+            'isStatic'          => false,
         ]);
         $reflectionPublicMethod->shouldReceive([
             'getDeclaringClass' => $reflectionClass,
             'getShortName'      => 'setBaz',
             'isPublic'          => true,
+            'isStatic'          => false,
         ]);
         $reflectionProtectedMethod->shouldReceive([
             'getDeclaringClass' => $reflectionClass,
             'getShortName'      => 'getBaz',
             'isPublic'          => false,
+            'isStatic'          => false,
         ]);
 
         $reflectionBarParameter->shouldReceive([
@@ -225,7 +229,8 @@ class BasicTestGeneratorTest extends TestCase
         ]);
 
         $reflectionBarProperty->shouldReceive([
-            'getName' => 'bar',
+            'getName'  => 'bar',
+            'isStatic' => false,
         ]);
 
         $this->config->shouldReceive([
@@ -385,17 +390,15 @@ class BasicTestGeneratorTest extends TestCase
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionPublicMethod = Mockery::mock(ReflectionMethod::class);
         $classProperty = Mockery::mock(TestProperty::class);
-        $setUpMethod = Mockery::mock(TestMethod::class);
-        $tearDownMethod = Mockery::mock(TestMethod::class);
         $publicMethod = Mockery::mock(TestMethod::class);
 
         $class = new TestClass($reflectionClass, 'FooTest');
 
         $reflectionClass->shouldReceive([
-            'isInterface'            => false,
-            'isAnonymous'            => false,
-            'getName'                => 'App\\Foo',
-            'getImmediateMethods'    => [
+            'isInterface'         => false,
+            'isAnonymous'         => false,
+            'getName'             => 'App\\Foo',
+            'getImmediateMethods' => [
                 $reflectionPublicMethod,
             ],
         ]);

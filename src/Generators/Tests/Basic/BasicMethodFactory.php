@@ -36,6 +36,8 @@ class BasicMethodFactory extends MethodFactory
         }
 
         $this->handleSetterMethod($class, $reflectionMethod);
+
+        /** @todo This should throw an exception if method is not a getter or a setter. */
     }
 
     /**
