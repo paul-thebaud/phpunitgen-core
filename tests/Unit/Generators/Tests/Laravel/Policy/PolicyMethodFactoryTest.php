@@ -210,6 +210,67 @@ class PolicyMethodFactoryTest extends TestCase
         $this->methodFactory->makeTestable($class, $reflectionMethod);
     }
 
+    public function testMakeTestableWithNoParam(): void
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionParamUser = Mockery::mock(ReflectionParameter::class);
+        $reflectionTypeUser = Mockery::mock(ReflectionType::class);
+
+        $class = new TestClass($reflectionClass, 'App\\FooTest');
+
+        $reflectionClass->shouldReceive([
+            'getShortName'           => 'Foo',
+            'getImmediateProperties' => [],
+        ]);
+
+        $reflectionMethod->shouldReceive([
+            'getShortName'      => 'bar',
+            'getDeclaringClass' => $class->getReflectionClass(),
+            'getReturnType'     => null,
+            'isStatic'          => false,
+            'getParameters'     => [$reflectionParamUser],
+        ]);
+
+        $reflectionParamUser->shouldReceive([
+            'getName' => 'user',
+            'getType' => $reflectionTypeUser,
+        ]);
+
+        $this->statementFactory->shouldReceive('makeAssert')
+            ->once()
+            ->with('false', '$this->user->can(\'bar\', [Foo::class])')
+            ->andReturn(new TestStatement('$this->assertFalse($this->user->can(\'bar\', [Foo::class]))'));
+        $this->statementFactory->shouldReceive('makeAssert')
+            ->once()
+            ->with('true', '$this->user->can(\'bar\', [Foo::class])')
+            ->andReturn(new TestStatement('$this->assertTrue($this->user->can(\'bar\', [Foo::class]))'));
+
+        $this->methodFactory->makeTestable($class, $reflectionMethod);
+
+        $method1 = $class->getMethods()[0];
+
+        $this->assertSame('testBarWhenUnauthorized', $method1->getName());
+        $this->assertSame('public', $method1->getVisibility());
+        $this->assertNull($method1->getDocumentation());
+        $this->assertSame([
+            ['$this->assertFalse($this->user->can(\'bar\', [Foo::class]))'],
+        ], $method1->getStatements()->map(function (TestStatement $statement) {
+            return $statement->getLines()->toArray();
+        })->toArray());
+
+        $method2 = $class->getMethods()[1];
+
+        $this->assertSame('testBarWhenAuthorized', $method2->getName());
+        $this->assertSame('public', $method2->getVisibility());
+        $this->assertNull($method2->getDocumentation());
+        $this->assertSame([
+            ['$this->assertTrue($this->user->can(\'bar\', [Foo::class]))'],
+        ], $method2->getStatements()->map(function (TestStatement $statement) {
+            return $statement->getLines()->toArray();
+        })->toArray());
+    }
+
     public function testMakeTestableWithSingleParam(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);

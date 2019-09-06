@@ -13,6 +13,7 @@ use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestStatement;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Tightenco\Collect\Support\Collection;
@@ -97,7 +98,7 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
         $parameters = Reflect::parameters($reflectionMethod)->forget(0);
 
         $this->addParametersStatements($method, $parameters);
-        $parametersString = $this->getParametersString($parameters);
+        $parametersString = $this->getParametersString($class->getReflectionClass(), $parameters);
 
         $methodCall = '$this->user->can(\''.$reflectionMethod->getShortName().'\', '.$parametersString.')';
 
@@ -122,7 +123,8 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
                 $method->addStatement(
                     $this->statementFactory->makeAffect($name, $value, false)
                 );
-            });
+            })
+            ->isNotEmpty();
 
         if ($parametersNotEmpty) {
             $method->addStatement(new TestStatement(''));
@@ -132,16 +134,21 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
     /**
      * Retrieve the parameters as they will be added in method argument.
      *
-     * @param Collection $parameters
+     * @param ReflectionClass $reflectionClass
+     * @param Collection      $parameters
      *
      * @return string
      */
-    protected function getParametersString(Collection $parameters): string
+    protected function getParametersString(ReflectionClass $reflectionClass, Collection $parameters): string
     {
         $parameters = $parameters
             ->map(function (ReflectionParameter $reflectionParameter) {
                 return '$'.$reflectionParameter->getName();
             });
+
+        if ($parameters->count() < 1) {
+            return '['.$reflectionClass->getShortName().'::class]';
+        }
 
         $parametersString = $parameters->implode(', ');
 
