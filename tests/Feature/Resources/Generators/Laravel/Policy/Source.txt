@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Policies;
+
+use App\Services\RoleService;
+use App\User;
+use App\Product;
+
+class ProductPolicy
+{
+    protected $roleService;
+
+    public function __construct(RoleService $roleService)
+    {
+    }
+
+    public function create(User $user): bool
+    {
+    }
+
+    public function update(User $user, Product $product): bool
+    {
+    }
+
+    public function delete(User $user, Product $product): bool
+    {
+    }
+
+    public function getRoleService(): RoleService
+    {
+    }
+
+    public function setRoleService(RoleService $roleService): void
+    {
+    }
+}

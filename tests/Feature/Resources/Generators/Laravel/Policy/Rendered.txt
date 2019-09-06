@@ -1,0 +1,120 @@
+<?php
+
+namespace Tests\Unit\App\Policies;
+
+use App\Policies\ProductPolicy;
+use App\Product;
+use App\Services\RoleService;
+use App\User;
+use Mockery;
+use Mockery\Mock;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+
+/*
+ * Class ProductPolicyTest.
+ *
+ * @covers \App\Policies\ProductPolicy
+ */
+class ProductPolicyTest extends TestCase
+{
+    /*
+     * @var ProductPolicy
+     */
+    protected $productPolicy;
+
+    /*
+     * @var RoleService|Mock
+     */
+    protected $roleService;
+
+    /*
+     * @var User
+     */
+    protected $user;
+
+    /*
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->roleService = Mockery::mock(RoleService::class);
+        $this->productPolicy = new ProductPolicy($this->roleService);
+
+        $this->app->instance(ProductPolicy::class, $this->productPolicy);
+
+        $this->user = new User();
+    }
+
+    /*
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->productPolicy);
+        unset($this->roleService);
+        unset($this->user);
+    }
+
+    public function testCreateWhenUnauthorized(): void
+    {
+        $this->assertFalse($this->user->can('create', [ProductPolicy::class]));
+    }
+
+    public function testCreateWhenAuthorized(): void
+    {
+        $this->assertTrue($this->user->can('create', [ProductPolicy::class]));
+    }
+
+    public function testUpdateWhenUnauthorized(): void
+    {
+        $product = Mockery::mock(Product::class);
+
+        $this->assertFalse($this->user->can('update', $product));
+    }
+
+    public function testUpdateWhenAuthorized(): void
+    {
+        $product = Mockery::mock(Product::class);
+
+        $this->assertTrue($this->user->can('update', $product));
+    }
+
+    public function testDeleteWhenUnauthorized(): void
+    {
+        $product = Mockery::mock(Product::class);
+
+        $this->assertFalse($this->user->can('delete', $product));
+    }
+
+    public function testDeleteWhenAuthorized(): void
+    {
+        $product = Mockery::mock(Product::class);
+
+        $this->assertTrue($this->user->can('delete', $product));
+    }
+
+    public function testGetRoleService(): void
+    {
+        $expected = Mockery::mock(RoleService::class);
+        $property = (new ReflectionClass(ProductPolicy::class))
+            ->getProperty('roleService');
+        $property->setAccessible(true);
+        $property->setValue($this->productPolicy, $expected);
+        $this->assertSame($expected, $this->productPolicy->getRoleService());
+    }
+
+    public function testSetRoleService(): void
+    {
+        $expected = Mockery::mock(RoleService::class);
+        $property = (new ReflectionClass(ProductPolicy::class))
+            ->getProperty('roleService');
+        $property->setAccessible(true);
+        $this->productPolicy->setRoleService($expected);
+        $this->assertSame($expected, $property->getValue($this->productPolicy));
+    }
+}
