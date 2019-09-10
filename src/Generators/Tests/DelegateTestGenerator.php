@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests;
 
-use League\Container\Container;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Config\Config;
+use PhpUnitGen\Core\Container\ContainerFactory;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
@@ -15,7 +15,6 @@ use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Providers\CoreServiceProvider;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
 /**
@@ -116,11 +115,6 @@ class DelegateTestGenerator implements TestGenerator, ConfigAware
      */
     protected function makeNewTestGenerator(ConfigContract $config): TestGenerator
     {
-        $container = new Container();
-        $container->addServiceProvider(
-            new CoreServiceProvider($config)
-        );
-
-        return $container->get(TestGenerator::class);
+        return ContainerFactory::make($config)->get(TestGenerator::class);
     }
 }

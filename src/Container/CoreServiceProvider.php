@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpUnitGen\Core\Providers;
+namespace PhpUnitGen\Core\Container;
 
 use League\Container\Definition\DefinitionInterface;
 use League\Container\ReflectionContainer;
@@ -60,9 +60,10 @@ use ReflectionParameter;
 class CoreServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
     /**
-     * The contracts that this service provider must have defined at the registration end.
+     * @var array The contracts that this service provider provides.
      */
-    protected const REQUIRED_CONTRACTS = [
+    protected $provides = [
+        Config::class,
         ClassFactoryContract::class,
         CodeParserContract::class,
         DocumentationFactoryContract::class,
@@ -121,9 +122,6 @@ class CoreServiceProvider extends AbstractServiceProvider implements BootableSer
     public function __construct(Config $config)
     {
         $this->config = $config;
-
-        $this->provides = self::REQUIRED_CONTRACTS;
-        array_unshift($this->provides, Config::class);
     }
 
     /**

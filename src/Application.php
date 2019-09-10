@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core;
 
-use League\Container\Container;
 use PhpUnitGen\Core\Config\Config;
+use PhpUnitGen\Core\Container\ContainerFactory;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser;
 use PhpUnitGen\Core\Contracts\Parsers\Source;
 use PhpUnitGen\Core\Contracts\Renderers\Rendered;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
-use PhpUnitGen\Core\Providers\CoreServiceProvider;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -49,12 +48,7 @@ class Application
      */
     public static function make(array $config = []): self
     {
-        $container = new Container();
-        $container->addServiceProvider(
-            new CoreServiceProvider(Config::make($config))
-        );
-
-        return new static($container);
+        return new static(ContainerFactory::make(Config::make($config)));
     }
 
     /**

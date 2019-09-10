@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\PhpUnitGen\Core\Unit\Providers;
+namespace Tests\PhpUnitGen\Core\Unit\Container;
 
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -47,7 +47,7 @@ use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Generators\Tests\DelegateTestGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Parsers\CodeParser;
-use PhpUnitGen\Core\Providers\CoreServiceProvider;
+use PhpUnitGen\Core\Container\CoreServiceProvider;
 use PhpUnitGen\Core\Renderers\Renderer;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
@@ -65,7 +65,7 @@ use Tests\PhpUnitGen\Core\TestCase;
  * @covers \PhpUnitGen\Core\Aware\StatementFactoryAwareTrait
  * @covers \PhpUnitGen\Core\Aware\TestGeneratorAwareTrait
  * @covers \PhpUnitGen\Core\Aware\ValueFactoryAwareTrait
- * @covers \PhpUnitGen\Core\Providers\CoreServiceProvider
+ * @covers \PhpUnitGen\Core\Container\CoreServiceProvider
  */
 class CoreServiceProviderTest extends TestCase
 {
