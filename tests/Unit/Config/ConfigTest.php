@@ -6,7 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
-use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\DelegateTestGenerator;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -20,7 +20,7 @@ class ConfigTest extends TestCase
     {
         $this->assertSame([
             'automaticGeneration' => true,
-            'implementations'     => BasicTestGenerator::implementations(),
+            'implementations'     => DelegateTestGenerator::implementations(),
             'baseNamespace'       => '',
             'baseTestNamespace'   => 'Tests',
             'testCase'            => 'PHPUnit\\Framework\\TestCase',

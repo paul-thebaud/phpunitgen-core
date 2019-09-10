@@ -43,12 +43,8 @@ use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
-use PhpUnitGen\Core\Generators\Factories\ClassFactory;
-use PhpUnitGen\Core\Generators\Factories\DocumentationFactory;
-use PhpUnitGen\Core\Generators\Factories\ImportFactory;
-use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
-use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\DelegateTestGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Providers\CoreServiceProvider;
@@ -153,18 +149,6 @@ class CoreServiceProviderTest extends TestCase
         $this->coreServiceProvider->register();
     }
 
-    public function testWhenMissingDefinitions(): void
-    {
-        $this->config->shouldReceive('implementations')->andReturn([
-            TestGenerator::class => StubTestGenerator::class,
-        ]);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('missing contract implementation in config');
-
-        $this->coreServiceProvider->register();
-    }
-
     public function testWhenAllOkWithDefaultConfiguration(): void
     {
         $this->config->shouldReceive('implementations')->andReturn(
@@ -173,17 +157,10 @@ class CoreServiceProviderTest extends TestCase
 
         $this->coreServiceProvider->register();
 
-        $this->assertInstanceOf(ClassFactory::class, $this->container->get(ClassFactoryContract::class));
         $this->assertInstanceOf(CodeParser::class, $this->container->get(CodeParserContract::class));
-        $this->assertInstanceOf(
-            DocumentationFactory::class,
-            $this->container->get(DocumentationFactoryContract::class)
-        );
-        $this->assertInstanceOf(ImportFactory::class, $this->container->get(ImportFactoryContract::class));
         $this->assertInstanceOf(MockeryMockGenerator::class, $this->container->get(MockGeneratorContract::class));
         $this->assertInstanceOf(Renderer::class, $this->container->get(RendererContract::class));
-        $this->assertInstanceOf(BasicTestGenerator::class, $this->container->get(TestGeneratorContract::class));
-        $this->assertInstanceOf(ValueFactory::class, $this->container->get(ValueFactoryContract::class));
+        $this->assertInstanceOf(DelegateTestGenerator::class, $this->container->get(TestGeneratorContract::class));
     }
 
     public function testAllInflectorsAreDefined(): void

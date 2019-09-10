@@ -1,6 +1,6 @@
 <?php
 
-use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\DelegateTestGenerator;
 
 return [
     /*
@@ -21,7 +21,7 @@ return [
      | specific contract.
      |--------------------------------------------------------------------------
      */
-    'implementations'     => BasicTestGenerator::implementations(),
+    'implementations'     => DelegateTestGenerator::implementations(),
 
     /*
      |--------------------------------------------------------------------------

@@ -35,7 +35,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for more details.
 
 Informal discussion regarding bugs, new features, and implementation of
 existing features takes place in the
-[Github issue page](https://github.com/paul-thebaud/phpunitgen-core/issues).
+[Github issue page of Core repository](https://github.com/paul-thebaud/phpunitgen-core/issues).
 
 ## Credits
 

@@ -31,6 +31,13 @@ use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
+use PhpUnitGen\Core\Generators\Factories\ClassFactory;
+use PhpUnitGen\Core\Generators\Factories\DocumentationFactory;
+use PhpUnitGen\Core\Generators\Factories\ImportFactory;
+use PhpUnitGen\Core\Generators\Factories\MethodFactory;
+use PhpUnitGen\Core\Generators\Factories\PropertyFactory;
+use PhpUnitGen\Core\Generators\Factories\StatementFactory;
+use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Parsers\CodeParser;
@@ -89,9 +96,16 @@ class CoreServiceProvider extends AbstractServiceProvider implements BootableSer
      * The default implementations which will be used if not provided in configuration.
      */
     protected const DEFAULT_IMPLEMENTATIONS = [
-        CodeParserContract::class    => CodeParser::class,
-        MockGeneratorContract::class => MockeryMockGenerator::class,
-        RendererContract::class      => Renderer::class,
+        CodeParserContract::class           => CodeParser::class,
+        MockGeneratorContract::class        => MockeryMockGenerator::class,
+        RendererContract::class             => Renderer::class,
+        ClassFactoryContract::class         => ClassFactory::class,
+        DocumentationFactoryContract::class => DocumentationFactory::class,
+        ImportFactoryContract::class        => ImportFactory::class,
+        MethodFactoryContract::class        => MethodFactory::class,
+        PropertyFactoryContract::class      => PropertyFactory::class,
+        StatementFactoryContract::class     => StatementFactory::class,
+        ValueFactoryContract::class         => ValueFactory::class,
     ];
 
     /**
@@ -144,10 +158,6 @@ class CoreServiceProvider extends AbstractServiceProvider implements BootableSer
 
         foreach ($implementations as $contract => $concrete) {
             $this->addDefinition($contract, $concrete);
-        }
-
-        if (array_diff(self::REQUIRED_CONTRACTS, array_keys($implementations))) {
-            throw new InvalidArgumentException('missing contract implementation in config');
         }
     }
 
