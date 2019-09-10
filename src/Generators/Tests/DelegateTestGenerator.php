@@ -15,6 +15,7 @@ use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
+use Psr\Container\ContainerInterface;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
 /**
@@ -51,9 +52,10 @@ class DelegateTestGenerator implements TestGenerator, ConfigAware
 
         $testGeneratorClass = $this->chooseTestGenerator($reflectionClass);
         $config = $this->makeNewConfiguration($testGeneratorClass);
-        $testGenerator = $this->makeNewTestGenerator($config);
 
-        return $testGenerator->generate($reflectionClass);
+        return $this->makeNewContainer($config)
+            ->get(TestGenerator::class)
+            ->generate($reflectionClass);
     }
 
     /**
@@ -90,14 +92,13 @@ class DelegateTestGenerator implements TestGenerator, ConfigAware
     protected function makeNewConfiguration(string $testGeneratorClass): ConfigContract
     {
         $configArray = $this->config->toArray();
+        $oldImplementations = $configArray['implementations'];
+
         $configArray['implementations'] = call_user_func([
             $testGeneratorClass,
             'implementations',
         ]);
-
-        $oldImplementations = $this->config->implementations();
         unset($oldImplementations[TestGenerator::class]);
-
         $configArray['implementations'] = array_merge(
             $configArray['implementations'],
             $oldImplementations
@@ -107,14 +108,14 @@ class DelegateTestGenerator implements TestGenerator, ConfigAware
     }
 
     /**
-     * Make the new test generator from the new configuration.
+     * Make the new container from the new configuration.
      *
      * @param ConfigContract $config
      *
-     * @return TestGenerator
+     * @return ContainerInterface
      */
-    protected function makeNewTestGenerator(ConfigContract $config): TestGenerator
+    protected function makeNewContainer(ConfigContract $config): ContainerInterface
     {
-        return ContainerFactory::make($config)->get(TestGenerator::class);
+        return ContainerFactory::make($config);
     }
 }
