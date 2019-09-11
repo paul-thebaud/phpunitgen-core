@@ -1,6 +1,8 @@
 # Change Log
 
-## Not release yet
+## Not released yet
+
+## 1.0.0-alpha3
 
 **Changed**
 
