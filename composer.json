@@ -23,16 +23,15 @@
     }
   ],
   "require": {
-    "php": "~7.2",
+    "php": "^7.2",
     "league/container": "^3.2",
     "phpdocumentor/reflection-docblock": "^4.3",
     "roave/better-reflection": "^3.5",
-    "tightenco/collect": "^5.8"
+    "tightenco/collect": "^6.0"
   },
   "require-dev": {
-    "brianium/paratest": "^3.0",
-    "mockery/mockery": "^1.0",
-    "phpunit/phpunit": "^8.1"
+    "mockery/mockery": "^1.2",
+    "phpunit/phpunit": "^8.3"
   },
   "autoload": {
     "psr-4": {
