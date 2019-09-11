@@ -2,6 +2,8 @@
 
 ## Not release yet
 
+## 1.0.0-alpha2
+
 **Added**
 
 - `DelegateTestGenerator` which choose a generator for the current `ReflectionClass`.
@@ -17,7 +19,7 @@
 
 - `CoreServiceProvider::REQUIRED_CONTRACTS` to only use `provides property.
 
-## 1.0.0-alpha
+## 1.0.0-alpha1
 
 **Added**
 
