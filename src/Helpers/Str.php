@@ -11,8 +11,6 @@ use Tightenco\Collect\Support\Arr;
  *
  * Helper methods for string.
  *
- * @internal
- *
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
