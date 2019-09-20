@@ -2,6 +2,11 @@
 
 ## Not released yet
 
+**Changed**
+
+- `Str` helper class is no longer internal.
+- Fix documentation rendering (replace `/*` with `/**`).
+
 ## 1.0.0-alpha3
 
 **Changed**
