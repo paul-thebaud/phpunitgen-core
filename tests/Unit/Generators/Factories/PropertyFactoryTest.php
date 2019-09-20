@@ -161,7 +161,7 @@ class PropertyFactoryTest extends TestCase
 
     /**
      * @param ReflectionType $reflectionType
-     * @param string     $expectedTypeHint
+     * @param string         $expectedTypeHint
      *
      * @dataProvider makeForParameterWithBuiltInTypeDataProvider
      */
