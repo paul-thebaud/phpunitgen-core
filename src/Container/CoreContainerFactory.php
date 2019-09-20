@@ -9,13 +9,13 @@ use PhpUnitGen\Core\Contracts\Config\Config;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class ContainerFactory.
+ * Class CoreContainerFactory.
  *
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class ContainerFactory
+class CoreContainerFactory
 {
     /**
      * Make a container for the given configuration.

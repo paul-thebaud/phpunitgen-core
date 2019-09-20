@@ -6,7 +6,7 @@ namespace PhpUnitGen\Core\Generators\Tests;
 
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Config\Config;
-use PhpUnitGen\Core\Container\ContainerFactory;
+use PhpUnitGen\Core\Container\CoreContainerFactory;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
@@ -116,6 +116,6 @@ class DelegateTestGenerator implements TestGenerator, ConfigAware
      */
     protected function makeNewContainer(ConfigContract $config): ContainerInterface
     {
-        return ContainerFactory::make($config);
+        return CoreContainerFactory::make($config);
     }
 }

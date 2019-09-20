@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\PhpUnitGen\Core\Feature\Generators;
 
-use PhpUnitGen\Core\Application;
+use PhpUnitGen\Core\CoreApplication;
 use PhpUnitGen\Core\Parsers\Sources\LocalFileSource;
 use Tests\PhpUnitGen\Core\TestCase;
 
@@ -24,7 +24,7 @@ class AbstractGeneratorTester extends TestCase
      */
     protected function assertGeneratedIs(string $expectedPath, string $sourcePath, array $config = []): void
     {
-        $application = Application::make($config);
+        $application = CoreApplication::make($config);
 
         $actual = $application->run(
             new LocalFileSource($this->getFileAbsolutePath($sourcePath))

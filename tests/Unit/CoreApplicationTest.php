@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit;
 
 use Mockery;
-use PhpUnitGen\Core\Application;
+use PhpUnitGen\Core\CoreApplication;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser;
@@ -18,15 +18,15 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
- * Class ApplicationTest.
+ * Class CoreApplicationTest.
  *
- * @covers \PhpUnitGen\Core\Application
+ * @covers \PhpUnitGen\Core\CoreApplication
  */
-class ApplicationTest extends TestCase
+class CoreApplicationTest extends TestCase
 {
     public function testMakeUsesGivenConfig(): void
     {
-        $application = Application::make([
+        $application = CoreApplication::make([
             'automaticGeneration' => false,
         ]);
 
@@ -47,7 +47,7 @@ class ApplicationTest extends TestCase
         $testClass = Mockery::mock(TestClass::class);
         $rendered = Mockery::mock(Rendered::class);
 
-        $application = new Application($container);
+        $application = new CoreApplication($container);
 
         $container->shouldReceive('get')
             ->once()

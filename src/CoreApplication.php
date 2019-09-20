@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core;
 
 use PhpUnitGen\Core\Config\Config;
-use PhpUnitGen\Core\Container\ContainerFactory;
+use PhpUnitGen\Core\Container\CoreContainerFactory;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser;
 use PhpUnitGen\Core\Contracts\Parsers\Source;
@@ -14,7 +14,7 @@ use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class Application.
+ * Class CoreApplication.
  *
  * The application which execute all PhpUnitGen steps to generate tests.
  *
@@ -22,7 +22,7 @@ use Psr\Container\ContainerInterface;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class Application
+class CoreApplication
 {
     /**
      * @var ContainerInterface
@@ -30,7 +30,7 @@ class Application
     protected $container;
 
     /**
-     * Application constructor.
+     * CoreApplication constructor.
      *
      * @param ContainerInterface $container
      */
@@ -44,11 +44,11 @@ class Application
      *
      * @param array $config
      *
-     * @return Application
+     * @return CoreApplication
      */
     public static function make(array $config = []): self
     {
-        return new static(ContainerFactory::make(Config::make($config)));
+        return new static(CoreContainerFactory::make(Config::make($config)));
     }
 
     /**
