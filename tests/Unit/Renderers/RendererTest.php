@@ -447,7 +447,7 @@ class FooTest extends TestCase
 
         $this->assertCount(5, $this->renderer->getLines());
         $this->assertSame(
-            '/*
+            '/**
  * @covers Foo
  *
  * @author John Doe

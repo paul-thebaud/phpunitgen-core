@@ -10,29 +10,29 @@ use Mockery\Mock;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
-/*
+/**
  * Class PersonTest.
  *
  * @covers \App\Entity\Person
  */
 class PersonTest extends TestCase
 {
-    /*
+    /**
      * @var Person
      */
     protected $person;
 
-    /*
+    /**
      * @var string
      */
     protected $name;
 
-    /*
+    /**
      * @var Work|Mock
      */
     protected $work;
 
-    /*
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -44,7 +44,7 @@ class PersonTest extends TestCase
         $this->person = new Person($this->name, $this->work);
     }
 
-    /*
+    /**
      * {@inheritdoc}
      */
     protected function tearDown(): void

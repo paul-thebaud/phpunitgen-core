@@ -11,29 +11,29 @@ use Mockery\Mock;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
-/*
+/**
  * Class ProductPolicyTest.
  *
  * @covers \App\Policies\ProductPolicy
  */
 class ProductPolicyTest extends TestCase
 {
-    /*
+    /**
      * @var ProductPolicy
      */
     protected $productPolicy;
 
-    /*
+    /**
      * @var RoleService|Mock
      */
     protected $roleService;
 
-    /*
+    /**
      * @var User
      */
     protected $user;
 
-    /*
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -48,7 +48,7 @@ class ProductPolicyTest extends TestCase
         $this->user = new User();
     }
 
-    /*
+    /**
      * {@inheritdoc}
      */
     protected function tearDown(): void

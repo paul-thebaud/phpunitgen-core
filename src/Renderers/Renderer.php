@@ -262,7 +262,7 @@ class Renderer implements RendererContract
     public function visitTestDocumentation(TestDocumentation $documentation): void
     {
         $this->whenNotEmpty($documentation->getLines(), function (Collection $lines) {
-            $this->addLine('/*');
+            $this->addLine('/**');
 
             $lines->each(function (string $line) {
                 $this->addLine(' *');
