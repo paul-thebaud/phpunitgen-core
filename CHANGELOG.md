@@ -6,6 +6,8 @@
 
 - `Str` helper class is no longer internal.
 - Fix documentation rendering (replace `/*` with `/**`).
+- `Application` class renamed to `CoreApplication`.
+- `ContainerFactory` class renamed to `CoreContainerFactory`.
 
 ## 1.0.0-alpha3
 
