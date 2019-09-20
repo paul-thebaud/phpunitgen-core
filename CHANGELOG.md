@@ -8,6 +8,7 @@
 - Fix documentation rendering (replace `/*` with `/**`).
 - `Application` class renamed to `CoreApplication`.
 - `ContainerFactory` class renamed to `CoreContainerFactory`.
+- `LaravelTestGenerator` for any class when Laravel project is declared (Application class exists).
 
 ## 1.0.0-alpha3
 

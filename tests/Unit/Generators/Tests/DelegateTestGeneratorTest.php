@@ -28,6 +28,7 @@ use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\DelegateTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyMethodFactory;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UnitClassFactory;
@@ -62,7 +63,7 @@ class DelegateTestGeneratorTest extends TestCase
 
         $this->config = Mockery::mock(ConfigContract::class);
         $this->testGenerator = $this->getMockBuilder(DelegateTestGenerator::class)
-            ->onlyMethods(['makeNewContainer'])
+            ->onlyMethods(['makeNewContainer', 'isLaravelProject'])
             ->getMock();
         $this->testGenerator->setConfig($this->config);
     }
@@ -124,6 +125,60 @@ class DelegateTestGeneratorTest extends TestCase
         $this->testGenerator->generate($reflectionClass);
     }
 
+    public function testGenerateDelegatesToLaravelClass(): void
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $container = Mockery::mock(ContainerInterface::class);
+        $delegatedTestGenerator = Mockery::mock(TestGenerator::class);
+        $testClass = Mockery::mock(TestClass::class);
+
+        $reflectionClass->shouldReceive([
+            'isInterface' => false,
+            'isAnonymous' => false,
+            'getName'     => 'App\\Services\\ProductService',
+        ]);
+
+        $this->config->shouldReceive([
+            'toArray' => [
+                'automaticGeneration' => false,
+                'implementations'     => [
+                    TestGenerator::class => DelegateTestGenerator::class,
+                    MethodFactory::class => BasicMethodFactory::class,
+                ],
+            ],
+        ]);
+
+        $this->testGenerator->expects($this->once())
+            ->method('isLaravelProject')
+            ->willReturn(true);
+        $this->testGenerator->expects($this->once())
+            ->method('makeNewContainer')
+            ->with($this->callback(function (ConfigContract $config) {
+                return $config->automaticGeneration() === false
+                    && $config->implementations() === [
+                        TestGenerator::class                => LaravelTestGenerator::class,
+                        ClassFactoryContract::class         => UnitClassFactory::class,
+                        DocumentationFactoryContract::class => DocumentationFactory::class,
+                        ImportFactoryContract::class        => ImportFactory::class,
+                        MethodFactory::class                => BasicMethodFactory::class,
+                        PropertyFactoryContract::class      => PropertyFactory::class,
+                        StatementFactoryContract::class     => StatementFactory::class,
+                        ValueFactoryContract::class         => ValueFactory::class,
+                    ];
+            }))
+            ->willReturn($container);
+
+        $container->shouldReceive('get')
+            ->with(TestGenerator::class)
+            ->andReturn($delegatedTestGenerator);
+
+        $delegatedTestGenerator->shouldReceive('generate')
+            ->with($reflectionClass)
+            ->andReturn($testClass);
+
+        $this->assertSame($testClass, $this->testGenerator->generate($reflectionClass));
+    }
+
     public function testGenerateDelegatesToLaravelPolicy(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
@@ -147,6 +202,9 @@ class DelegateTestGeneratorTest extends TestCase
             ],
         ]);
 
+        $this->testGenerator->expects($this->once())
+            ->method('isLaravelProject')
+            ->willReturn(true);
         $this->testGenerator->expects($this->once())
             ->method('makeNewContainer')
             ->with($this->callback(function (ConfigContract $config) {
@@ -198,6 +256,9 @@ class DelegateTestGeneratorTest extends TestCase
             ],
         ]);
 
+        $this->testGenerator->expects($this->once())
+            ->method('isLaravelProject')
+            ->willReturn(false);
         $this->testGenerator->expects($this->once())
             ->method('makeNewContainer')
             ->with($this->callback(function (ConfigContract $config) {

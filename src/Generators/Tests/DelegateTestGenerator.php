@@ -12,6 +12,7 @@ use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
@@ -75,11 +76,25 @@ class DelegateTestGenerator implements TestGenerator, ConfigAware
      */
     protected function chooseTestGenerator(ReflectionClass $reflectionClass): string
     {
-        if (Str::contains('\\Policies\\', $reflectionClass->getName())) {
-            return PolicyTestGenerator::class;
+        if ($this->isLaravelProject()) {
+            if (Str::contains('\\Policies\\', $reflectionClass->getName())) {
+                return PolicyTestGenerator::class;
+            }
+
+            return LaravelTestGenerator::class;
         }
 
         return BasicTestGenerator::class;
+    }
+
+    /**
+     * Check if Laravel class is declared.
+     *
+     * @return bool
+     */
+    protected function isLaravelProject(): bool
+    {
+        return class_exists('Illuminate\\Foundation\\Application');
     }
 
     /**
