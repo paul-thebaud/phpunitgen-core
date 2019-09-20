@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Container;
 
-use League\Container\Definition\DefinitionInterface;
 use League\Container\ReflectionContainer;
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
 use PhpUnitGen\Core\Contracts\Aware\ClassFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
@@ -42,10 +40,6 @@ use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Renderers\Renderer;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionMethod;
-use ReflectionParameter;
 
 /**
  * Class CoreServiceProvider.
@@ -57,7 +51,7 @@ use ReflectionParameter;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class CoreServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
+class CoreServiceProvider extends ReflectionServiceProvider implements BootableServiceProviderInterface
 {
     /**
      * @var array The contracts that this service provider provides.
@@ -194,66 +188,6 @@ class CoreServiceProvider extends AbstractServiceProvider implements BootableSer
             throw new InvalidArgumentException("class {$concrete} does not implements {$contract}");
         }
 
-        $definition = $this->leagueContainer->add($contract, $concrete);
-
-        $this->addDefinitionArguments($definition);
-    }
-
-    /**
-     * Add the necessary arguments to the definition.
-     *
-     * @param DefinitionInterface $definition
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function addDefinitionArguments(DefinitionInterface $definition): void
-    {
-        $constructor = $this->getClassConstructor($definition);
-
-        if (! $constructor) {
-            return;
-        }
-
-        foreach ($constructor->getParameters() as $parameter) {
-            $this->addDefinitionArgument($definition, $parameter);
-        }
-    }
-
-    /**
-     * Add an argument to definition from the given parameter.
-     *
-     * @param DefinitionInterface $definition
-     * @param ReflectionParameter $parameter
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function addDefinitionArgument(DefinitionInterface $definition, ReflectionParameter $parameter): void
-    {
-        $type = $parameter->getType();
-        if (! $type || $type->isBuiltin()) {
-            throw new InvalidArgumentException(
-                "dependency {$parameter->getName()} for class {$definition->getConcrete()} has an unresolvable type"
-            );
-        }
-
-        $definition->addArgument((string) $type);
-    }
-
-    /**
-     * Get the constructor for a definition concrete class.
-     *
-     * @param DefinitionInterface $definition
-     *
-     * @return ReflectionMethod|null
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function getClassConstructor(DefinitionInterface $definition): ?ReflectionMethod
-    {
-        try {
-            return (new ReflectionClass($definition->getConcrete()))->getMethod('__construct');
-        } catch (ReflectionException $exception) {
-            return null;
-        }
+        parent::addDefinition($contract, $concrete);
     }
 }

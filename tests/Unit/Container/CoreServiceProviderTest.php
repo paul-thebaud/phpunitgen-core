@@ -65,6 +65,7 @@ use Tests\PhpUnitGen\Core\TestCase;
  * @covers \PhpUnitGen\Core\Aware\StatementFactoryAwareTrait
  * @covers \PhpUnitGen\Core\Aware\TestGeneratorAwareTrait
  * @covers \PhpUnitGen\Core\Aware\ValueFactoryAwareTrait
+ * @covers \PhpUnitGen\Core\Container\ReflectionServiceProvider
  * @covers \PhpUnitGen\Core\Container\CoreServiceProvider
  */
 class CoreServiceProviderTest extends TestCase
