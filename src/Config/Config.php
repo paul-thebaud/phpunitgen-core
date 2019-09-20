@@ -58,13 +58,13 @@ class Config implements ConfigContract
      *
      * @return static
      */
-    public static function make(array $config = []): self
+    public static function make(array $config = [])
     {
         $config = static::validate($config);
 
         return new static(
             array_merge(
-                require __DIR__.'/../../config/phpunitgen.php',
+                static::getDefaultConfig(),
                 $config
             )
         );
@@ -98,6 +98,16 @@ class Config implements ConfigContract
         }
 
         return $validated;
+    }
+
+    /**
+     * Retrieve the default configuration as an array.
+     *
+     * @return array
+     */
+    protected static function getDefaultConfig(): array
+    {
+        return require __DIR__.'/../../config/phpunitgen.php';
     }
 
     /**
