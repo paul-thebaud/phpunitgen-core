@@ -81,33 +81,11 @@ class DelegateTestGeneratorTest extends TestCase
         }
     }
 
-    /**
-     * @param bool $expected
-     * @param bool $isInterface
-     * @param bool $isAnonymous
-     *
-     * @dataProvider canGenerateDataProvider
-     */
-    public function testCanGenerate(bool $expected, bool $isInterface, bool $isAnonymous): void
+    public function testCanGenerate(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
 
-        $reflectionClass->shouldReceive([
-            'isInterface' => $isInterface,
-            'isAnonymous' => $isAnonymous,
-        ]);
-
-        $this->assertSame($expected, $this->testGenerator->canGenerateFor($reflectionClass));
-    }
-
-    public function canGenerateDataProvider(): array
-    {
-        return [
-            [false, true, true],
-            [false, true, false],
-            [false, false, true],
-            [true, false, false],
-        ];
+        $this->assertSame(true, $this->testGenerator->canGenerateFor($reflectionClass));
     }
 
     public function testGenerateThrowExceptionWhenCannotGenerate(): void

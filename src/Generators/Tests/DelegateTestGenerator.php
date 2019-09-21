@@ -9,8 +9,8 @@ use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Container\CoreContainerFactory;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
+use PhpUnitGen\Core\Contracts\Generators\DelegateTestGenerator as DelegateTestGeneratorContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
-use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
@@ -26,7 +26,7 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class DelegateTestGenerator implements TestGenerator, ConfigAware
+class DelegateTestGenerator implements DelegateTestGeneratorContract, ConfigAware
 {
     use ConfigAwareTrait;
 
@@ -45,18 +45,7 @@ class DelegateTestGenerator implements TestGenerator, ConfigAware
      */
     public function generate(ReflectionClass $reflectionClass): TestClass
     {
-        if (! $this->canGenerateFor($reflectionClass)) {
-            throw new InvalidArgumentException(
-                'cannot generate tests for given reflection class'
-            );
-        }
-
-        $testGeneratorClass = $this->chooseTestGenerator($reflectionClass);
-        $config = $this->makeNewConfiguration($testGeneratorClass);
-
-        return $this->makeNewContainer($config)
-            ->get(TestGenerator::class)
-            ->generate($reflectionClass);
+        return $this->getDelegate($reflectionClass)->generate($reflectionClass);
     }
 
     /**
@@ -64,7 +53,18 @@ class DelegateTestGenerator implements TestGenerator, ConfigAware
      */
     public function canGenerateFor(ReflectionClass $reflectionClass): bool
     {
-        return ! ($reflectionClass->isInterface() || $reflectionClass->isAnonymous());
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDelegate(ReflectionClass $reflectionClass): TestGenerator
+    {
+        $testGeneratorClass = $this->chooseTestGenerator($reflectionClass);
+        $config = $this->makeNewConfiguration($testGeneratorClass);
+
+        return $this->makeNewContainer($config)->get(TestGenerator::class);
     }
 
     /**

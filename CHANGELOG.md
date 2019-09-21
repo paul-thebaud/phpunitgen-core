@@ -10,6 +10,7 @@
 - `ContainerFactory` class renamed to `CoreContainerFactory`.
 - `LaravelTestGenerator` for any class when Laravel project is declared (Application class exists).
 - `ClassFactory` has two new methods to implement (`getTestBaseNamespace` and `getTestSubNamespace`).
+- `DelegateTestGenerator` introduction, which contains the `getDelegate` method.
 
 ## 1.0.0-alpha3
 
