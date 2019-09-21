@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Generators\Tests\Laravel;
 
 use PhpUnitGen\Core\Generators\Factories\ClassFactory;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Class UnitClassFactory.
