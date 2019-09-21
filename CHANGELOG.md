@@ -2,6 +2,8 @@
 
 ## Not released yet
 
+## 1.0.0-alpha4
+
 **Changed**
 
 - `Str` helper class is no longer internal.
