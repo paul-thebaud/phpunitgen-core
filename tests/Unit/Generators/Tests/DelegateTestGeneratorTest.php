@@ -18,6 +18,7 @@ use PhpUnitGen\Core\Contracts\Generators\Factories\PropertyFactory as PropertyFa
 use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
+use PhpUnitGen\Core\Exceptions\RuntimeException;
 use PhpUnitGen\Core\Generators\Factories\ClassFactory;
 use PhpUnitGen\Core\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Generators\Factories\ImportFactory;
@@ -257,5 +258,13 @@ class DelegateTestGeneratorTest extends TestCase
 
         $this->assertInstanceOf(Container::class, $container);
         $this->assertSame($config, $container->get(ConfigContract::class));
+    }
+
+    public function testGetClassFactory(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('getClassFactory method should not be called on a DelegateTestGenerator');
+
+        $this->testGenerator->getClassFactory();
     }
 }

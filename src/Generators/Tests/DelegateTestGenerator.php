@@ -10,7 +10,9 @@ use PhpUnitGen\Core\Container\CoreContainerFactory;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
 use PhpUnitGen\Core\Contracts\Generators\DelegateTestGenerator as DelegateTestGeneratorContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
+use PhpUnitGen\Core\Exceptions\RuntimeException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
@@ -65,6 +67,16 @@ class DelegateTestGenerator implements DelegateTestGeneratorContract, ConfigAwar
         $config = $this->makeNewConfiguration($testGeneratorClass);
 
         return $this->makeNewContainer($config)->get(TestGenerator::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClassFactory(): ClassFactory
+    {
+        throw new RuntimeException(
+            'getClassFactory method should not be called on a DelegateTestGenerator'
+        );
     }
 
     /**

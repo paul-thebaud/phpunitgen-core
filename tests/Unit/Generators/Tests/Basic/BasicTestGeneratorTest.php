@@ -449,4 +449,9 @@ class BasicTestGeneratorTest extends TestCase
         $this->assertCount(1, $returnedClass->getMethods());
         $this->assertSame($publicMethod, $returnedClass->getMethods()->get(0));
     }
+
+    public function testGetClassFactory(): void
+    {
+        $this->assertSame($this->classFactory, $this->testGenerator->getClassFactory());
+    }
 }

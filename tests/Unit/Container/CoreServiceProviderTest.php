@@ -210,6 +210,10 @@ class InvalidConstructorStubTestGenerator implements TestGenerator
     public function canGenerateFor(ReflectionClass $reflectionClass): bool
     {
     }
+
+    public function getClassFactory(): ClassFactoryContract
+    {
+    }
 }
 
 class StubTestGenerator implements TestGenerator
@@ -224,6 +228,10 @@ class StubTestGenerator implements TestGenerator
     }
 
     public function canGenerateFor(ReflectionClass $reflectionClass): bool
+    {
+    }
+
+    public function getClassFactory(): ClassFactoryContract
     {
     }
 }

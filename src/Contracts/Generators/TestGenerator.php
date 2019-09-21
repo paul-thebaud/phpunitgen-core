@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Contracts\Generators;
 
+use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Models\TestClass;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -45,4 +46,11 @@ interface TestGenerator
      * @return bool
      */
     public function canGenerateFor(ReflectionClass $reflectionClass): bool;
+
+    /**
+     * Retrieve the class factory (used when generating path of test case on command line).
+     *
+     * @return ClassFactory
+     */
+    public function getClassFactory(): ClassFactory;
 }

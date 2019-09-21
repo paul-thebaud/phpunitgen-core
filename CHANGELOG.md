@@ -11,6 +11,7 @@
 - `LaravelTestGenerator` for any class when Laravel project is declared (Application class exists).
 - `ClassFactory` has two new methods to implement (`getTestBaseNamespace` and `getTestSubNamespace`).
 - `DelegateTestGenerator` introduction, which contains the `getDelegate` method.
+- `TestGenerator` contains a new method `getClassFactory` used for path generation.
 
 ## 1.0.0-alpha3
 
