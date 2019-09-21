@@ -32,7 +32,7 @@ class ClassFactory implements ClassFactoryContract, ConfigAware, DocumentationFa
     {
         $class = new TestClass(
             $reflectionClass,
-            $this->makeNamespace($reflectionClass).'\\'.$this->makeShortName($reflectionClass)
+            $this->makeName($reflectionClass)
         );
 
         $class->setDocumentation(
@@ -43,25 +43,29 @@ class ClassFactory implements ClassFactoryContract, ConfigAware, DocumentationFa
     }
 
     /**
-     * Get the test class namespace.
-     *
-     * @param ReflectionClass $reflectionClass
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    protected function makeNamespace(ReflectionClass $reflectionClass): string
+    public function getTestBaseNamespace(): string
     {
         return trim($this->config->baseTestNamespace(), '\\');
     }
 
     /**
-     * Get the test class short name.
+     * {@inheritdoc}
+     */
+    public function getTestSubNamespace(): string
+    {
+        return '';
+    }
+
+    /**
+     * Get the test class name.
      *
      * @param ReflectionClass $reflectionClass
      *
      * @return string
      */
-    protected function makeShortName(ReflectionClass $reflectionClass): string
+    public function makeName(ReflectionClass $reflectionClass): string
     {
         $name = $reflectionClass->getName();
 
@@ -70,6 +74,6 @@ class ClassFactory implements ClassFactoryContract, ConfigAware, DocumentationFa
             $name = trim(Str::replaceFirst($baseNamespace, '', $name), '\\');
         }
 
-        return $name.'Test';
+        return trim($this->getTestBaseNamespace().$this->getTestSubNamespace(), '\\').'\\'.$name.'Test';
     }
 }

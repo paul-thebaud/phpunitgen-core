@@ -19,8 +19,8 @@ class UnitClassFactory extends ClassFactory
     /**
      * {@inheritdoc}
      */
-    protected function makeNamespace(ReflectionClass $reflectionClass): string
+    public function getTestSubNamespace(): string
     {
-        return parent::makeNamespace($reflectionClass).'\\Unit';
+        return '\\Unit';
     }
 }

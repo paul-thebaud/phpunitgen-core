@@ -9,6 +9,7 @@
 - `Application` class renamed to `CoreApplication`.
 - `ContainerFactory` class renamed to `CoreContainerFactory`.
 - `LaravelTestGenerator` for any class when Laravel project is declared (Application class exists).
+- `ClassFactory` has two new methods to implement (`getTestBaseNamespace` and `getTestSubNamespace`).
 
 ## 1.0.0-alpha3
 

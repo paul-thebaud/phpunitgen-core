@@ -26,4 +26,18 @@ interface ClassFactory
      * @return TestClass
      */
     public function make(ReflectionClass $reflectionClass): TestClass;
+
+    /**
+     * Get the base namespace of a test case.
+     *
+     * @return string
+     */
+    public function getTestBaseNamespace(): string;
+
+    /**
+     * Get the sub namespace of a test case (for example "Unit" or "Feature" on Laravel).
+     *
+     * @return string
+     */
+    public function getTestSubNamespace(): string;
 }
