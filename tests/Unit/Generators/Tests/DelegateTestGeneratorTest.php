@@ -88,21 +88,6 @@ class DelegateTestGeneratorTest extends TestCase
         $this->assertSame(true, $this->testGenerator->canGenerateFor($reflectionClass));
     }
 
-    public function testGenerateThrowExceptionWhenCannotGenerate(): void
-    {
-        $reflectionClass = Mockery::mock(ReflectionClass::class);
-
-        $reflectionClass->shouldReceive([
-            'isInterface' => true,
-            'isAnonymous' => false,
-        ]);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('cannot generate tests for given reflection class');
-
-        $this->testGenerator->generate($reflectionClass);
-    }
-
     public function testGenerateDelegatesToLaravelClass(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
