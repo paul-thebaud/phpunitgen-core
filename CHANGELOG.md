@@ -2,6 +2,10 @@
 
 ## Not released yet
 
+**Changed**
+
+- New `context` option, used in `DelegateTestGenerator` to know if it is a Laravel project instead of using `class_exists`.
+
 ## 1.0.0-alpha4
 
 **Changed**

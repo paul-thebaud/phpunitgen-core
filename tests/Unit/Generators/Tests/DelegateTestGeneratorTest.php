@@ -63,7 +63,7 @@ class DelegateTestGeneratorTest extends TestCase
 
         $this->config = Mockery::mock(ConfigContract::class);
         $this->testGenerator = $this->getMockBuilder(DelegateTestGenerator::class)
-            ->onlyMethods(['makeNewContainer', 'isLaravelProject'])
+            ->onlyMethods(['makeNewContainer'])
             ->getMock();
         $this->testGenerator->setConfig($this->config);
     }
@@ -110,10 +110,10 @@ class DelegateTestGeneratorTest extends TestCase
                 ],
             ],
         ]);
+        $this->config->shouldReceive('getOption')
+            ->with('context')
+            ->andReturn('laravel');
 
-        $this->testGenerator->expects($this->once())
-            ->method('isLaravelProject')
-            ->willReturn(true);
         $this->testGenerator->expects($this->once())
             ->method('makeNewContainer')
             ->with($this->callback(function (ConfigContract $config) {
@@ -164,10 +164,10 @@ class DelegateTestGeneratorTest extends TestCase
                 ],
             ],
         ]);
+        $this->config->shouldReceive('getOption')
+            ->with('context')
+            ->andReturn('laravel');
 
-        $this->testGenerator->expects($this->once())
-            ->method('isLaravelProject')
-            ->willReturn(true);
         $this->testGenerator->expects($this->once())
             ->method('makeNewContainer')
             ->with($this->callback(function (ConfigContract $config) {
@@ -218,10 +218,10 @@ class DelegateTestGeneratorTest extends TestCase
                 ],
             ],
         ]);
+        $this->config->shouldReceive('getOption')
+            ->with('context')
+            ->andReturn(null);
 
-        $this->testGenerator->expects($this->once())
-            ->method('isLaravelProject')
-            ->willReturn(false);
         $this->testGenerator->expects($this->once())
             ->method('makeNewContainer')
             ->with($this->callback(function (ConfigContract $config) {

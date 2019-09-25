@@ -35,7 +35,9 @@ class ConfigTest extends TestCase
                 'version',
             ],
             'phpDoc'              => [],
-            'options'             => [],
+            'options'             => [
+                'context' => 'laravel',
+            ],
         ], Config::make()->toArray());
     }
 

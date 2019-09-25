@@ -106,7 +106,7 @@ class DelegateTestGenerator implements DelegateTestGeneratorContract, ConfigAwar
      */
     protected function isLaravelProject(): bool
     {
-        return class_exists('Illuminate\\Foundation\\Application');
+        return $this->config->getOption('context') === 'laravel';
     }
 
     /**
