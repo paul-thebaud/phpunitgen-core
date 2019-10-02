@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.0-alpha6
+
+**Changed**
+
+- Allow `phpdocumentor/reflection-docblock` dependency `^4.1` instead of `4.3`.
+
 ## 1.0.0-alpha5
 
 **Changed**
