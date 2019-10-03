@@ -1,5 +1,11 @@
 # Change Log
 
+## Not released yet
+
+**Changed**
+
+- Code parser will throw an exception if invalid syntax is detected.
+
 ## 1.0.0-alpha6
 
 **Changed**

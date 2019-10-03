@@ -10,6 +10,7 @@ use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflector\ClassReflector;
+use Roave\BetterReflection\SourceLocator\Ast\Exception\ParseToAstFailure;
 use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
 
@@ -46,11 +47,19 @@ class CodeParser implements CodeParserContract
             new StringSourceLocator($source->toString(), $this->astLocator)
         );
 
-        $classes = $reflector->getAllClasses();
+        try {
+            $classes = $reflector->getAllClasses();
+        } catch (ParseToAstFailure $exception) {
+            throw new InvalidArgumentException(
+                'code might have an invalid syntax because AST failed to parse it'
+            );
+        }
+
+
         $classesCount = count($classes);
         if ($classesCount !== 1) {
             throw new InvalidArgumentException(
-                "code must contains exactly one class/interface/trait, found {$classesCount}"
+                'code must contains exactly one class/interface/trait, found '.$classesCount
             );
         }
 

@@ -38,6 +38,16 @@ class CodeParserTest extends TestCase
         $this->codeParser = new CodeParser(new BetterReflection());
     }
 
+    public function testItThrowsAnExceptionWhenSyntaxError(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'code might have an invalid syntax because AST failed to parse it'
+        );
+
+        $this->codeParser->parse(new StringSource('<?php class H {'));
+    }
+
     public function testItThrowsAnExceptionWhenNoClassInCode(): void
     {
         $this->expectException(InvalidArgumentException::class);
