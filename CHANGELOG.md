@@ -2,6 +2,8 @@
 
 ## Not released yet
 
+## 1.0.0-alpha7
+
 **Changed**
 
 - Code parser will throw an exception if invalid syntax is detected.
