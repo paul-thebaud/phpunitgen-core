@@ -55,7 +55,6 @@ class CodeParser implements CodeParserContract
             );
         }
 
-
         $classesCount = count($classes);
         if ($classesCount !== 1) {
             throw new InvalidArgumentException(
