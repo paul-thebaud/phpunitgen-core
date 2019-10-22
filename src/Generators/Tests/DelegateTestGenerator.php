@@ -118,16 +118,18 @@ class DelegateTestGenerator implements DelegateTestGeneratorContract, ConfigAwar
      */
     protected function makeNewConfiguration(string $testGeneratorClass): ConfigContract
     {
-        $configArray = $this->config->toArray();
-        $oldImplementations = $configArray['implementations'];
+        $implementationsKey = 'implementations';
 
-        $configArray['implementations'] = call_user_func([
+        $configArray = $this->config->toArray();
+        $oldImplementations = $configArray[$implementationsKey];
+
+        $configArray[$implementationsKey] = call_user_func([
             $testGeneratorClass,
-            'implementations',
+            $implementationsKey,
         ]);
         unset($oldImplementations[TestGenerator::class]);
-        $configArray['implementations'] = array_merge(
-            $configArray['implementations'],
+        $configArray[$implementationsKey] = array_merge(
+            $configArray[$implementationsKey],
             $oldImplementations
         );
 
