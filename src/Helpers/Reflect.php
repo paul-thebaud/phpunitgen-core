@@ -18,8 +18,6 @@ use Tightenco\Collect\Support\Collection;
  *
  * Helper methods for reflection.
  *
- * @internal
- *
  * @author  Paul Thébaud <paul.thebaud29@gmail.com>
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
