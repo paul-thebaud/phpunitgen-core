@@ -47,7 +47,7 @@ class MethodFactory implements
      */
     public function makeSetUp(TestClass $class): TestMethod
     {
-        $method = new TestMethod('setUp', TestMethod::VISIBILITY_PROTECTED);
+        $method = new TestMethod('setUp', 'protected');
 
         $this->makeMethodInherited($method);
 
@@ -66,7 +66,7 @@ class MethodFactory implements
      */
     public function makeTearDown(TestClass $class): TestMethod
     {
-        $method = new TestMethod('tearDown', TestMethod::VISIBILITY_PROTECTED);
+        $method = new TestMethod('tearDown', 'protected');
 
         $this->makeMethodInherited($method);
 

@@ -6,6 +6,11 @@
 
 - `Renderer` implementations must return the instance on each `visit...()` methods.
 
+**Removed**
+
+- Removed useless `$reflectionProperty` property on `TestMethod`.
+- Removed useless `VISIBILITY...` constants on `TestMethod`.
+
 ## 1.0.0-alpha7
 
 **Changed**

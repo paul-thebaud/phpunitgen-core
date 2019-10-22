@@ -24,26 +24,6 @@ class TestMethod implements Renderable
     use HasTestDocumentation;
 
     /**
-     * The public visibility.
-     */
-    public const VISIBILITY_PUBLIC = 'public';
-
-    /**
-     * The protected visibility.
-     */
-    public const VISIBILITY_PROTECTED = 'protected';
-
-    /**
-     * The private visibility.
-     */
-    public const VISIBILITY_PRIVATE = 'private';
-
-    /**
-     * @var ReflectionMethod|null The method for which this test method is created.
-     */
-    protected $reflectionMethod;
-
-    /**
      * @var string The name of the method.
      */
     protected $name;
@@ -74,7 +54,7 @@ class TestMethod implements Renderable
      * @param string $name
      * @param string $visibility
      */
-    public function __construct(string $name, string $visibility = self::VISIBILITY_PUBLIC)
+    public function __construct(string $name, string $visibility = 'public')
     {
         $this->name = $name;
         $this->visibility = $visibility;
