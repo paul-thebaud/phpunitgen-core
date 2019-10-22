@@ -36,62 +36,80 @@ interface Renderer
      * Visit and render a test import.
      *
      * @param TestImport $import
+     *
+     * @return static
      */
-    public function visitTestImport(TestImport $import): void;
+    public function visitTestImport(TestImport $import): self;
 
     /**
      * Visit and render a test class.
      *
      * @param TestClass $class
+     *
+     * @return static
      */
-    public function visitTestClass(TestClass $class): void;
+    public function visitTestClass(TestClass $class): self;
 
     /**
      * Visit and render a test trait.
      *
      * @param TestTrait $trait
+     *
+     * @return static
      */
-    public function visitTestTrait(TestTrait $trait): void;
+    public function visitTestTrait(TestTrait $trait): self;
 
     /**
      * Visit and render a test property.
      *
      * @param TestProperty $property
+     *
+     * @return static
      */
-    public function visitTestProperty(TestProperty $property): void;
+    public function visitTestProperty(TestProperty $property): self;
 
     /**
      * Visit and render a test method.
      *
      * @param TestMethod $method
+     *
+     * @return static
      */
-    public function visitTestMethod(TestMethod $method): void;
+    public function visitTestMethod(TestMethod $method): self;
 
     /**
      * Visit and render a test parameter.
      *
      * @param TestParameter $parameter
+     *
+     * @return static
      */
-    public function visitTestParameter(TestParameter $parameter): void;
+    public function visitTestParameter(TestParameter $parameter): self;
 
     /**
      * Visit and render a test provider.
      *
      * @param TestProvider $provider
+     *
+     * @return static
      */
-    public function visitTestProvider(TestProvider $provider): void;
+    public function visitTestProvider(TestProvider $provider): self;
 
     /**
      * Visit and render a test statement.
      *
      * @param TestStatement $statement
+     *
+     * @return static
      */
-    public function visitTestStatement(TestStatement $statement): void;
+    public function visitTestStatement(TestStatement $statement): self;
 
     /**
      * Visit and render a test documentation.
      *
      * @param TestDocumentation $documentation
+     *
+     * @return static
      */
-    public function visitTestDocumentation(TestDocumentation $documentation): void;
+    public function visitTestDocumentation(TestDocumentation $documentation): self;
 }

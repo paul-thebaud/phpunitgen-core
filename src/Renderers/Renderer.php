@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Renderers;
 
+use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Rendered;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Helpers\Str;
@@ -63,9 +64,9 @@ class Renderer implements RendererContract
     /**
      * {@inheritdoc}
      */
-    public function visitTestImport(TestImport $import): void
+    public function visitTestImport(TestImport $import): RendererContract
     {
-        $this->addLine('use '.$import->getName())
+        return $this->addLine('use '.$import->getName())
             ->when($import->getAlias(), function (string $alias) {
                 $this->append(' as '.$alias);
             })
@@ -75,9 +76,9 @@ class Renderer implements RendererContract
     /**
      * {@inheritdoc}
      */
-    public function visitTestClass(TestClass $class): void
+    public function visitTestClass(TestClass $class): RendererContract
     {
-        $this->addLine('<?php')
+        return $this->addLine('<?php')
             ->addLine()
             ->when($class->getNamespace(), function (string $namespace) {
                 $this->addLine("namespace {$namespace};")
@@ -94,9 +95,7 @@ class Renderer implements RendererContract
 
                 $this->addLine();
             })
-            ->when($class->getDocumentation(), function (TestDocumentation $documentation) {
-                $documentation->accept($this);
-            })
+            ->optionalAccept($class->getDocumentation())
             ->addLine("class {$class->getShortName()} extends TestCase")
             ->addLine('{')
             ->augmentIndent()
@@ -132,20 +131,17 @@ class Renderer implements RendererContract
     /**
      * {@inheritdoc}
      */
-    public function visitTestTrait(TestTrait $trait): void
+    public function visitTestTrait(TestTrait $trait): RendererContract
     {
-        $this->addLine("use {$trait->getName()};");
+        return $this->addLine("use {$trait->getName()};");
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitTestProperty(TestProperty $property): void
+    public function visitTestProperty(TestProperty $property): RendererContract
     {
-        $this
-            ->when($property->getDocumentation(), function (TestDocumentation $documentation) {
-                $documentation->accept($this);
-            })
+        return $this->optionalAccept($property->getDocumentation())
             ->addLine("protected \${$property->getName()};")
             ->addLine();
     }
@@ -153,12 +149,9 @@ class Renderer implements RendererContract
     /**
      * {@inheritdoc}
      */
-    public function visitTestMethod(TestMethod $method): void
+    public function visitTestMethod(TestMethod $method): RendererContract
     {
-        $this
-            ->when($method->getDocumentation(), function (TestDocumentation $documentation) {
-                $documentation->accept($this);
-            })
+        return $this->optionalAccept($method->getDocumentation())
             ->addLine("{$method->getVisibility()} function {$method->getName()}(")
             ->whenNotEmpty($method->getParameters(), function (Collection $parameters) {
                 $lastKey = $parameters->keys()->last();
@@ -181,18 +174,16 @@ class Renderer implements RendererContract
             })
             ->reduceIndent()
             ->addLine('}')
-            ->when($method->getProvider(), function (TestProvider $provider) {
-                $provider->accept($this);
-            })
+            ->optionalAccept($method->getProvider())
             ->addLine();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitTestParameter(TestParameter $parameter): void
+    public function visitTestParameter(TestParameter $parameter): RendererContract
     {
-        $this
+        return $this
             ->when($parameter->getType(), function (string $type) {
                 $this->append($type.' ');
             })
@@ -202,12 +193,9 @@ class Renderer implements RendererContract
     /**
      * {@inheritdoc}
      */
-    public function visitTestProvider(TestProvider $provider): void
+    public function visitTestProvider(TestProvider $provider): RendererContract
     {
-        $this
-            ->when($provider->getDocumentation(), function (TestDocumentation $documentation) {
-                $documentation->accept($this);
-            })
+        return $this->optionalAccept($provider->getDocumentation())
             ->addLine("public function {$provider->getName()}(): array")
             ->addLine('{')
             ->augmentIndent()
@@ -232,9 +220,9 @@ class Renderer implements RendererContract
     /**
      * {@inheritdoc}
      */
-    public function visitTestStatement(TestStatement $statement): void
+    public function visitTestStatement(TestStatement $statement): RendererContract
     {
-        $this->whenNotEmpty($statement->getLines(), function (Collection $lines) {
+        return $this->whenNotEmpty($statement->getLines(), function (Collection $lines) {
             $firstLine = $lines->shift();
             $this->addLine($firstLine);
 
@@ -259,9 +247,9 @@ class Renderer implements RendererContract
     /**
      * {@inheritdoc}
      */
-    public function visitTestDocumentation(TestDocumentation $documentation): void
+    public function visitTestDocumentation(TestDocumentation $documentation): RendererContract
     {
-        $this->whenNotEmpty($documentation->getLines(), function (Collection $lines) {
+        return $this->whenNotEmpty($documentation->getLines(), function (Collection $lines) {
             $this->addLine('/**');
 
             $lines->each(function (string $line) {
@@ -341,6 +329,20 @@ class Renderer implements RendererContract
         }
 
         return $this;
+    }
+
+    /**
+     * Call the "accept" method if the renderable is defined.
+     *
+     * @param Renderable|null $renderable
+     *
+     * @return static
+     */
+    protected function optionalAccept(?Renderable $renderable): self
+    {
+        return $this->when($renderable, function (Renderable $renderable) {
+            $renderable->accept($this);
+        });
     }
 
     /**

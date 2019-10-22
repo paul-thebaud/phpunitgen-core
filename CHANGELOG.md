@@ -2,6 +2,10 @@
 
 ## Not released yet
 
+**Changed**
+
+- `Renderer` implementations must return the instance on each `visit...()` methods.
+
 ## 1.0.0-alpha7
 
 **Changed**

@@ -63,10 +63,7 @@ class CoreApplication
         $reflectionClass = $this->getCodeParser()->parse($source);
         $testClass = $this->getTestGenerator()->generate($reflectionClass);
 
-        $renderer = $this->getRenderer();
-        $renderer->visitTestClass($testClass);
-
-        return $renderer->getRendered();
+        return $this->getRenderer()->visitTestClass($testClass)->getRendered();
     }
 
     /**

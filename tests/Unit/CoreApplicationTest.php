@@ -73,7 +73,7 @@ class CoreApplicationTest extends TestCase
         $renderer->shouldReceive('visitTestClass')
             ->once()
             ->with($testClass)
-            ->andReturnNull();
+            ->andReturnSelf();
         $renderer->shouldReceive('getRendered')
             ->once()
             ->withNoArgs()
