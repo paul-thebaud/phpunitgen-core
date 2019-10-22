@@ -39,9 +39,9 @@ class TestProperty implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function accept(Renderer $renderer): void
+    public function accept(Renderer $renderer): Renderer
     {
-        $renderer->visitTestProperty($this);
+        return $renderer->visitTestProperty($this);
     }
 
     /**

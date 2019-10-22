@@ -34,8 +34,8 @@ class TestStatement implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function accept(Renderer $renderer): void
+    public function accept(Renderer $renderer): Renderer
     {
-        $renderer->visitTestStatement($this);
+        return $renderer->visitTestStatement($this);
     }
 }

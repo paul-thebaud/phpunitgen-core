@@ -66,9 +66,9 @@ class TestMethod implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function accept(Renderer $renderer): void
+    public function accept(Renderer $renderer): Renderer
     {
-        $renderer->visitTestMethod($this);
+        return $renderer->visitTestMethod($this);
     }
 
     /**

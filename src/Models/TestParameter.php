@@ -44,9 +44,9 @@ class TestParameter implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function accept(Renderer $renderer): void
+    public function accept(Renderer $renderer): Renderer
     {
-        $renderer->visitTestParameter($this);
+        return $renderer->visitTestParameter($this);
     }
 
     /**

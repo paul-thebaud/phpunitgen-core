@@ -19,6 +19,8 @@ interface Renderable
      * Accept a renderer to visit render this object.
      *
      * @param Renderer $renderer
+     *
+     * @return Renderer
      */
-    public function accept(Renderer $renderer): void;
+    public function accept(Renderer $renderer): Renderer;
 }

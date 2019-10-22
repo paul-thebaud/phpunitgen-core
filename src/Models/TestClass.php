@@ -72,9 +72,9 @@ class TestClass implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function accept(Renderer $renderer): void
+    public function accept(Renderer $renderer): Renderer
     {
-        $renderer->visitTestClass($this);
+        return $renderer->visitTestClass($this);
     }
 
     /**

@@ -45,9 +45,9 @@ class TestImport implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function accept(Renderer $renderer): void
+    public function accept(Renderer $renderer): Renderer
     {
-        $renderer->visitTestImport($this);
+        return $renderer->visitTestImport($this);
     }
 
     /**

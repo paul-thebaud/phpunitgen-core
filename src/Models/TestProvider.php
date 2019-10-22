@@ -46,9 +46,9 @@ class TestProvider implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function accept(Renderer $renderer): void
+    public function accept(Renderer $renderer): Renderer
     {
-        $renderer->visitTestProvider($this);
+        return $renderer->visitTestProvider($this);
     }
 
     /**

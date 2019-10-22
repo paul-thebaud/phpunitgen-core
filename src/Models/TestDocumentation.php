@@ -32,8 +32,8 @@ class TestDocumentation implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function accept(Renderer $renderer): void
+    public function accept(Renderer $renderer): Renderer
     {
-        $renderer->visitTestDocumentation($this);
+        return $renderer->visitTestDocumentation($this);
     }
 }

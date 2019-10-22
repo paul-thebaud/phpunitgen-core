@@ -5,6 +5,7 @@
 **Changed**
 
 - `Renderer` implementations must return the instance on each `visit...()` methods.
+- `Renderable` implementations must return the instance of Renderer on `accept()`.
 
 **Removed**
 

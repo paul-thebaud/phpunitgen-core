@@ -37,9 +37,9 @@ class TestTrait implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function accept(Renderer $renderer): void
+    public function accept(Renderer $renderer): Renderer
     {
-        $renderer->visitTestTrait($this);
+        return $renderer->visitTestTrait($this);
     }
 
     /**
