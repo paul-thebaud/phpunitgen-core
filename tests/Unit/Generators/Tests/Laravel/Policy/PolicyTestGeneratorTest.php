@@ -24,7 +24,6 @@ use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyMethodFactory;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UnitClassFactory;
 use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestProperty;
 use ReflectionException;
@@ -130,7 +129,7 @@ class PolicyTestGeneratorTest extends TestCase
         $class = Mockery::mock(TestClass::class);
         $userImport = Mockery::mock(TestImport::class);
         $classProperty = Mockery::mock(TestProperty::class);
-        $userDoc = Mockery::mock(TestDocumentation::class);
+        $userProperty = Mockery::mock(TestProperty::class);
         $propertyFactory = Mockery::mock(PropertyFactoryContract::class);
         $config = Mockery::mock(Config::class);
         $documentationFactory = Mockery::mock(DocumentationFactoryContract::class);
@@ -152,22 +151,15 @@ class PolicyTestGeneratorTest extends TestCase
             ->with('laravel.user', 'App\\User')
             ->andReturn('App\\Models\\User');
 
-        $importFactory->shouldReceive('make')
-            ->with($class, 'App\\Models\\User')
-            ->andReturn($userImport);
-
-        $documentationFactory->shouldReceive('makeForProperty')
-            ->with(Mockery::type(TestProperty::class), $userImport)
-            ->andReturn($userDoc);
+        $propertyFactory->shouldReceive('makeCustom')
+            ->with($class, 'user', 'App\\Models\\User', false, false)
+            ->andReturn($userProperty);
 
         $class->shouldReceive(['getReflectionClass' => $reflectionClass]);
         $class->shouldReceive('addProperty')
             ->with($classProperty);
         $class->shouldReceive('addProperty')
-            ->with(Mockery::on(function (TestProperty $property) use ($userDoc) {
-                return $property->getName() === 'user'
-                    && $property->getDocumentation() === $userDoc;
-            }));
+            ->with($userProperty);
 
         $this->callProtectedMethod($testGenerator, 'addProperties', $class);
     }

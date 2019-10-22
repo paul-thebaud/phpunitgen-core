@@ -145,8 +145,14 @@ class PropertyFactoryTest extends TestCase
         $selfType = Mockery::mock(ReflectionType::class);
         $barType = Mockery::mock(ReflectionType::class);
 
-        $parentType->shouldReceive(['__toString' => 'parent']);
-        $selfType->shouldReceive(['__toString' => 'self']);
+        $parentType->shouldReceive([
+            '__toString' => 'parent',
+            'isBuiltIn'  => true,
+        ]);
+        $selfType->shouldReceive([
+            '__toString' => 'self',
+            'isBuiltIn'  => true,
+        ]);
         $barType->shouldReceive([
             '__toString' => 'App\\Bar',
             'isBuiltIn'  => false,

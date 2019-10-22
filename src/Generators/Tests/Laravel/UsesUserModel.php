@@ -28,15 +28,36 @@ trait UsesUserModel
      */
     protected function getUserClass(TestClass $class): TestImport
     {
-        if ($this instanceof ConfigAware && $this instanceof ImportFactoryAware) {
-            return $this->getImportFactory()->make(
-                $class,
-                $this->getConfig()->getOption('laravel.user', 'App\\User')
+        return $this->checkAwareAreImplemented()
+            ->getImportFactory()
+            ->make($class, $this->getUserClassAsString());
+    }
+
+    /**
+     * Get the Laravel user class as a string.
+     *
+     * @return string
+     */
+    protected function getUserClassAsString(): string
+    {
+        return $this->checkAwareAreImplemented()
+            ->getConfig()
+            ->getOption('laravel.user', 'App\\User');
+    }
+
+    /**
+     * Check necessary aware are implemented.
+     *
+     * @return static|ConfigAware|ImportFactoryAware
+     */
+    private function checkAwareAreImplemented(): self
+    {
+        if (! $this instanceof ConfigAware || ! $this instanceof ImportFactoryAware) {
+            throw new RuntimeException(
+                'trait UsesUserModel must implements ConfigAware and ImportFactoryAware'
             );
         }
 
-        throw new RuntimeException(
-            'trait UsesUserModel must implements ConfigAware and ImportFactoryAware'
-        );
+        return $this;
     }
 }

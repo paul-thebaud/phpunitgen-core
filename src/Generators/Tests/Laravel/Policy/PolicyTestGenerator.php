@@ -10,7 +10,6 @@ use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactor
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UsesUserModel;
 use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestProperty;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 /**
@@ -51,12 +50,8 @@ class PolicyTestGenerator extends LaravelTestGenerator implements DocumentationF
     {
         parent::addProperties($class);
 
-        $userImport = $this->getUserClass($class);
-
-        $userProperty = new TestProperty('user');
-        $userProperty->setDocumentation(
-            $this->documentationFactory->makeForProperty($userProperty, $userImport)
+        $class->addProperty(
+            $this->propertyFactory->makeCustom($class, 'user', $this->getUserClassAsString(), false, false)
         );
-        $class->addProperty($userProperty);
     }
 }

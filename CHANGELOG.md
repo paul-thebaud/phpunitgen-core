@@ -2,6 +2,10 @@
 
 ## Not released yet
 
+**Added**
+
+- `PropertyFactory` must implement new method `makeCustom`.
+
 **Changed**
 
 - `Renderer` implementations must return the instance on each `visit...()` methods.

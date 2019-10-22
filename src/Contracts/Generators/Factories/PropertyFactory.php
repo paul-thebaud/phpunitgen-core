@@ -37,4 +37,23 @@ interface PropertyFactory
      * @return TestProperty
      */
     public function makeForParameter(TestClass $class, ReflectionParameter $reflectionParameter): TestProperty;
+
+    /**
+     * Create the property for a class with custom specs.
+     *
+     * @param TestClass $class
+     * @param string    $name
+     * @param string    $type
+     * @param bool      $isBuiltIn
+     * @param bool      $isMock
+     *
+     * @return TestProperty
+     */
+    public function makeCustom(
+        TestClass $class,
+        string $name,
+        string $type,
+        bool $isBuiltIn = false,
+        bool $isMock = true
+    ): TestProperty;
 }

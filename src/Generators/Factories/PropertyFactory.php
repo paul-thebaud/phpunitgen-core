@@ -16,7 +16,6 @@ use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestProperty;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
-use Roave\BetterReflection\Reflection\ReflectionType;
 use Tightenco\Collect\Support\Collection;
 
 /**
@@ -60,10 +59,31 @@ class PropertyFactory implements
      */
     public function makeForParameter(TestClass $class, ReflectionParameter $reflectionParameter): TestProperty
     {
-        $property = new TestProperty($reflectionParameter->getName());
+        $stringType = 'mixed';
+        $isBuiltIn = true;
 
-        $typeHint = $this->makeDocType($class, $reflectionParameter->getType());
-        if ($typeHint instanceof TestImport) {
+        if ($reflectionParameter->getType()) {
+            $stringType = strval($reflectionParameter->getType());
+            $isBuiltIn = $reflectionParameter->getType()->isBuiltin();
+        }
+
+        return $this->makeCustom($class, $reflectionParameter->getName(), $stringType, $isBuiltIn);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function makeCustom(
+        TestClass $class,
+        string $name,
+        string $type,
+        bool $isBuiltIn = false,
+        bool $isMock = true
+    ): TestProperty {
+        $property = new TestProperty($name);
+
+        $typeHint = $this->makeDocTypeFromString($class, $type, $isBuiltIn);
+        if ($isMock && $typeHint instanceof TestImport) {
             $typeHint = new Collection([$typeHint, $this->mockGenerator->getMockType($class)]);
         }
 
@@ -75,25 +95,24 @@ class PropertyFactory implements
     }
 
     /**
-     * Get the type hint that will be added in documentation.
+     * Get the type hint that will be added in documentation with the string version of type.
      *
-     * @param TestClass           $class
-     * @param ReflectionType|null $reflectionType
+     * @param TestClass $class
+     * @param string    $type
+     * @param bool      $isBuiltIn
      *
      * @return TestImport|string
      */
-    protected function makeDocType(TestClass $class, ?ReflectionType $reflectionType)
+    protected function makeDocTypeFromString(TestClass $class, string $type, bool $isBuiltIn)
     {
-        $stringType = $reflectionType ? strval($reflectionType) : 'mixed';
-
-        if (in_array($stringType, ['parent', 'self'])) {
+        if (in_array($type, ['parent', 'self'])) {
             return $this->importFactory->make($class, $class->getReflectionClass()->getName());
         }
 
-        if ($stringType === 'mixed' || $reflectionType->isBuiltin()) {
-            return $stringType;
+        if ($type === 'mixed' || $isBuiltIn) {
+            return $type;
         }
 
-        return $this->importFactory->make($class, $stringType);
+        return $this->importFactory->make($class, $type);
     }
 }
