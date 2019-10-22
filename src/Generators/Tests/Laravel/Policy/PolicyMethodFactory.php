@@ -37,8 +37,6 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
     {
         $method = parent::makeSetUp($class);
 
-        $userImport = $this->getUserClass($class)->getFinalName();
-
         $reflectionClass = $class->getReflectionClass();
 
         $method->addStatement(new TestStatement(''));
@@ -50,9 +48,7 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
                 ->append(')')
         );
         $method->addStatement(new TestStatement(''));
-        $method->addStatement(
-            $this->statementFactory->makeAffect('user', "new {$userImport}()")
-        );
+        $this->makeUserAffectStatement($class, $method);
 
         return $method;
     }

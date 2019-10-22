@@ -24,7 +24,6 @@ use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyMethodFactory;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UnitClassFactory;
 use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestProperty;
 use ReflectionException;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -127,18 +126,15 @@ class PolicyTestGeneratorTest extends TestCase
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $class = Mockery::mock(TestClass::class);
-        $userImport = Mockery::mock(TestImport::class);
         $classProperty = Mockery::mock(TestProperty::class);
         $userProperty = Mockery::mock(TestProperty::class);
         $propertyFactory = Mockery::mock(PropertyFactoryContract::class);
         $config = Mockery::mock(Config::class);
-        $documentationFactory = Mockery::mock(DocumentationFactoryContract::class);
         $importFactory = Mockery::mock(ImportFactoryContract::class);
 
         $testGenerator = new PolicyTestGenerator();
         $testGenerator->setPropertyFactory($propertyFactory);
         $testGenerator->setConfig($config);
-        $testGenerator->setDocumentationFactory($documentationFactory);
         $testGenerator->setImportFactory($importFactory);
 
         $propertyFactory->shouldReceive('makeForClass')

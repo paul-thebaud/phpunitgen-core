@@ -22,7 +22,9 @@ class UsesUserModelTest extends TestCase
     public function testGetUserClassWhenNotImplementingInterfaces(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('trait UsesUserModel must have ConfigAware and ImportFactoryAware implemented');
+        $this->expectExceptionMessage(
+            'trait UsesUserModel must have ConfigAware, ImportFactoryAware and StatementFactoryAware implemented'
+        );
 
         $this->getUserClass(Mockery::mock(TestClass::class));
     }

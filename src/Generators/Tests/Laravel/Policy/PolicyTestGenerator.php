@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Policy;
 
-use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
-use PhpUnitGen\Core\Contracts\Aware\DocumentationFactoryAware;
+use PhpUnitGen\Core\Aware\StatementFactoryAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\StatementFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UsesUserModel;
@@ -19,9 +19,9 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class PolicyTestGenerator extends LaravelTestGenerator implements DocumentationFactoryAware
+class PolicyTestGenerator extends LaravelTestGenerator implements StatementFactoryAware
 {
-    use DocumentationFactoryAwareTrait;
+    use StatementFactoryAwareTrait;
     use UsesUserModel;
 
     /**
