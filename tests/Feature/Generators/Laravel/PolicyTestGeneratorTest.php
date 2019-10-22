@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\PhpUnitGen\Core\Feature\Generators\Basic;
+namespace Tests\PhpUnitGen\Core\Feature\Generators\Laravel\Policy;
 
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
 use Tests\PhpUnitGen\Core\Feature\Generators\AbstractGeneratorTester;

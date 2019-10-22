@@ -47,6 +47,6 @@ class AbstractGeneratorTester extends TestCase
     {
         $basePath = realpath(__DIR__.'/../Resources/Generators');
 
-        return "/{$basePath}/{$file}.txt";
+        return "/{$basePath}/{$file}.stub";
     }
 }
