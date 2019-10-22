@@ -54,7 +54,7 @@ trait UsesUserModel
     {
         if (! $this instanceof ConfigAware || ! $this instanceof ImportFactoryAware) {
             throw new RuntimeException(
-                'trait UsesUserModel must implements ConfigAware and ImportFactoryAware'
+                'trait UsesUserModel must have ConfigAware and ImportFactoryAware implemented'
             );
         }
 
