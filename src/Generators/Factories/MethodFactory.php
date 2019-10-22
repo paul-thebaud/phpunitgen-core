@@ -185,7 +185,7 @@ class MethodFactory implements
     ): void {
         $parameters = Reflect::parameters($constructor)
             ->each(function (ReflectionParameter $reflectionParameter) use ($class, $method) {
-                $value = $this->valueFactory->make($class, $reflectionParameter->getType());
+                $value = $this->valueFactory->make($class, Reflect::parameterType($reflectionParameter));
 
                 $method->addStatement(
                     $this->statementFactory->makeAffect($reflectionParameter->getName(), $value)

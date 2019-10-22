@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Contracts\Generators\Factories;
 
 use PhpUnitGen\Core\Models\TestClass;
-use Roave\BetterReflection\Reflection\ReflectionType;
+use PhpUnitGen\Core\Reflection\ReflectionType;
 
 /**
  * Interface ValueFactory.

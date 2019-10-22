@@ -18,6 +18,7 @@ use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestStatement;
+use PhpUnitGen\Core\Reflection\ReflectionType as PugReflectionType;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -148,10 +149,11 @@ class PolicyMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'getBar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => false,
+            'getShortName'           => 'getBar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => false,
         ]);
 
         $reflectionProperty->shouldReceive([
@@ -304,13 +306,20 @@ class PolicyMethodFactoryTest extends TestCase
             'getType' => $reflectionTypeProduct,
         ]);
 
+        $reflectionTypeProduct->shouldReceive([
+            '__toString' => 'string',
+            'allowsNull' => false,
+        ]);
+
         $this->valueFactory->shouldReceive('make')
-            ->with($class, $reflectionTypeProduct)
+            ->with($class, Mockery::on(function (PugReflectionType $reflectionType) {
+                return $reflectionType->getType() === 'string';
+            }))
             ->andReturn('42');
 
         $this->statementFactory->shouldReceive('makeAffect')
             ->twice()
-            ->with('product', 42, false)
+            ->with('product', '42', false)
             ->andReturn(new TestStatement('$product = 42'));
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
@@ -389,22 +398,33 @@ class PolicyMethodFactoryTest extends TestCase
             'getType' => $reflectionTypeCategory,
         ]);
 
+        $reflectionTypeProduct->shouldReceive([
+            '__toString' => 'string',
+            'allowsNull' => false,
+        ]);
+        $reflectionTypeCategory->shouldReceive([
+            '__toString' => '\\App\\Category',
+            'allowsNull' => false,
+        ]);
+
         $this->valueFactory->shouldReceive('make')
-            ->twice()
-            ->with($class, $reflectionTypeProduct)
+            ->with($class, Mockery::on(function (PugReflectionType $reflectionType) {
+                return $reflectionType->getType() === 'string';
+            }))
             ->andReturn('42');
         $this->valueFactory->shouldReceive('make')
-            ->twice()
-            ->with($class, $reflectionTypeCategory)
+            ->with($class, Mockery::on(function (PugReflectionType $reflectionType) {
+                return $reflectionType->getType() === 'App\\Category';
+            }))
             ->andReturn('84');
 
         $this->statementFactory->shouldReceive('makeAffect')
             ->twice()
-            ->with('product', 42, false)
+            ->with('product', '42', false)
             ->andReturn(new TestStatement('$product = 42'));
         $this->statementFactory->shouldReceive('makeAffect')
             ->twice()
-            ->with('category', 84, false)
+            ->with('category', '84', false)
             ->andReturn(new TestStatement('$category = 84'));
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()

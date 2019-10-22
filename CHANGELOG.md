@@ -5,6 +5,7 @@
 **Added**
 
 - `PropertyFactory` must implement new method `makeCustom`.
+- Support for method's parameters/return types retrieved from phpDoc.
 
 **Changed**
 

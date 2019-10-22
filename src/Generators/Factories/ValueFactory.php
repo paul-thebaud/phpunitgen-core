@@ -8,7 +8,7 @@ use PhpUnitGen\Core\Aware\MockGeneratorAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Models\TestClass;
-use Roave\BetterReflection\Reflection\ReflectionType;
+use PhpUnitGen\Core\Reflection\ReflectionType;
 
 /**
  * Class ValueFactory.
@@ -44,7 +44,7 @@ class ValueFactory implements ValueFactoryContract, MockGeneratorAware
             return 'null';
         }
 
-        $type = (string) $reflectionType;
+        $type = $reflectionType->getType();
 
         if ($reflectionType->isBuiltin()) {
             return $this->createForBuiltIn($class, $type);

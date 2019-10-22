@@ -16,6 +16,7 @@ use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestProperty;
 use PhpUnitGen\Core\Models\TestStatement;
+use PhpUnitGen\Core\Reflection\ReflectionType as PugReflectionType;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -176,12 +177,19 @@ class MethodFactoryTest extends TestCase
         ]);
 
         $reflectionParameter1->shouldReceive([
-            'getType' => null,
-            'getName' => 'bar',
+            'getType'                => null,
+            'getDocBlockTypeStrings' => [],
+            'getName'                => 'bar',
         ]);
         $reflectionParameter2->shouldReceive([
-            'getType' => $reflectionType,
-            'getName' => 'baz',
+            'getType'                => $reflectionType,
+            'getDocBlockTypeStrings' => [],
+            'getName'                => 'baz',
+        ]);
+
+        $reflectionType->shouldReceive([
+            '__toString' => 'string',
+            'allowsNull' => false,
         ]);
 
         $this->documentationFactory->shouldReceive('makeForInheritedMethod')
@@ -192,7 +200,9 @@ class MethodFactoryTest extends TestCase
             ->with($class, null)
             ->andReturn('null');
         $this->valueFactory->shouldReceive('make')
-            ->with($class, $reflectionType)
+            ->with($class, Mockery::on(function (PugReflectionType $reflectionType) {
+                return $reflectionType->getType() === 'string';
+            }))
             ->andReturn('42');
 
         $this->statementFactory->shouldReceive('makeAffect')

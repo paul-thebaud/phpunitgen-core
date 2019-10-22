@@ -7,10 +7,14 @@ namespace Tests\PhpUnitGen\Core\Unit\Helpers;
 use Mockery;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
+use phpDocumentor\Reflection\Types\Null_;
+use phpDocumentor\Reflection\Types\String_;
 use PhpUnitGen\Core\Helpers\Reflect;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
+use Roave\BetterReflection\Reflection\ReflectionType;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
@@ -92,6 +96,108 @@ class ReflectTest extends TestCase
             ->andReturn([]);
 
         $this->assertSame([], Reflect::parameters($reflectionMethod)->toArray());
+    }
+
+    public function testParameterTypeWithReflectionType(): void
+    {
+        $reflectionParameter = Mockery::mock(ReflectionParameter::class);
+        $reflectionType = Mockery::mock(ReflectionType::class);
+
+        $reflectionParameter->shouldReceive([
+            'getType' => $reflectionType,
+        ]);
+        $reflectionType->shouldReceive([
+            '__toString' => 'string',
+            'allowsNull' => false,
+        ]);
+
+        $newReflectionType = Reflect::parameterType($reflectionParameter);
+
+        $this->assertNotNull($newReflectionType);
+        $this->assertFalse($newReflectionType->isNullable());
+        $this->assertSame('string', $newReflectionType->getType());
+    }
+
+    public function testParameterTypeWithDocBlockType(): void
+    {
+        $reflectionParameter = Mockery::mock(ReflectionParameter::class);
+
+        $reflectionParameter->shouldReceive([
+            'getType'                => null,
+            'getDocBlockTypeStrings' => ['string', 'null'],
+        ]);
+
+        $newReflectionType = Reflect::parameterType($reflectionParameter);
+
+        $this->assertNotNull($newReflectionType);
+        $this->assertTrue($newReflectionType->isNullable());
+        $this->assertSame('string', $newReflectionType->getType());
+    }
+
+    public function testParameterTypeWithNone(): void
+    {
+        $reflectionParameter = Mockery::mock(ReflectionParameter::class);
+
+        $reflectionParameter->shouldReceive([
+            'getType'                => null,
+            'getDocBlockTypeStrings' => [],
+        ]);
+
+        $newReflectionType = Reflect::parameterType($reflectionParameter);
+
+        $this->assertNull($newReflectionType);
+    }
+
+    public function testReturnTypeWithReflectionType(): void
+    {
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionType = Mockery::mock(ReflectionType::class);
+
+        $reflectionMethod->shouldReceive([
+            'getReturnType' => $reflectionType,
+        ]);
+        $reflectionType->shouldReceive([
+            '__toString' => 'string',
+            'allowsNull' => false,
+        ]);
+
+        $newReflectionType = Reflect::returnType($reflectionMethod);
+
+        $this->assertNotNull($newReflectionType);
+        $this->assertFalse($newReflectionType->isNullable());
+        $this->assertSame('string', $newReflectionType->getType());
+    }
+
+    public function testReturnTypeWithDocBlockType(): void
+    {
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $stringType = new String_();
+        $nullType = new Null_();
+
+        $reflectionMethod->shouldReceive([
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [$stringType, $nullType],
+        ]);
+
+        $newReflectionType = Reflect::returnType($reflectionMethod);
+
+        $this->assertNotNull($newReflectionType);
+        $this->assertTrue($newReflectionType->isNullable());
+        $this->assertSame('string', $newReflectionType->getType());
+    }
+
+    public function testReturnTypeWithNone(): void
+    {
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+
+        $reflectionMethod->shouldReceive([
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+        ]);
+
+        $newReflectionType = Reflect::returnType($reflectionMethod);
+
+        $this->assertNull($newReflectionType);
     }
 
     public function testDocBlockWhenDefaultFactoryAndEmptyDocComment(): void

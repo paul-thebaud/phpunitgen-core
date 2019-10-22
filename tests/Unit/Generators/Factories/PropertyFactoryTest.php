@@ -148,14 +148,17 @@ class PropertyFactoryTest extends TestCase
         $parentType->shouldReceive([
             '__toString' => 'parent',
             'isBuiltIn'  => true,
+            'allowsNull' => false,
         ]);
         $selfType->shouldReceive([
             '__toString' => 'self',
             'isBuiltIn'  => true,
+            'allowsNull' => false,
         ]);
         $barType->shouldReceive([
             '__toString' => 'App\\Bar',
             'isBuiltIn'  => false,
+            'allowsNull' => false,
         ]);
 
         return [
@@ -186,8 +189,9 @@ class PropertyFactoryTest extends TestCase
         ]);
 
         $reflectionParameter->shouldReceive([
-            'getName' => 'bar',
-            'getType' => $reflectionType,
+            'getName'                => 'bar',
+            'getType'                => $reflectionType,
+            'getDocBlockTypeStrings' => [],
         ]);
 
         $this->documentationFactory->shouldReceive('makeForProperty')
@@ -210,6 +214,7 @@ class PropertyFactoryTest extends TestCase
         $intType->shouldReceive([
             '__toString' => 'int',
             'isBuiltIn'  => true,
+            'allowsNull' => false,
         ]);
 
         return [

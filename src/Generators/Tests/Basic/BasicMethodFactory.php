@@ -10,9 +10,9 @@ use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestStatement;
+use PhpUnitGen\Core\Reflection\ReflectionType;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
-use Roave\BetterReflection\Reflection\ReflectionType;
 
 /**
  * Class BasicMethodFactory.
@@ -55,7 +55,7 @@ class BasicMethodFactory extends MethodFactory
      */
     protected function handleGetterMethod(TestClass $class, ReflectionMethod $reflectionMethod): void
     {
-        $method = $this->handlePropertyMethod($class, $reflectionMethod, $reflectionMethod->getReturnType(), 'get');
+        $method = $this->handlePropertyMethod($class, $reflectionMethod, Reflect::returnType($reflectionMethod), 'get');
 
         [$callTarget, $actualValueTarget] = $this->getCallTargetAndValueTarget($class, $reflectionMethod);
 
@@ -77,7 +77,7 @@ class BasicMethodFactory extends MethodFactory
     {
         /** @var ReflectionParameter|null $reflectionParameter */
         $reflectionParameter = Reflect::parameters($reflectionMethod)->first();
-        $type = $reflectionParameter ? $reflectionParameter->getType() : null;
+        $type = $reflectionParameter ? Reflect::parameterType($reflectionParameter) : null;
 
         $method = $this->handlePropertyMethod($class, $reflectionMethod, $type, 'set');
 

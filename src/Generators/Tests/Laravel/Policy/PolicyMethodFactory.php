@@ -114,7 +114,10 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
         $parametersNotEmpty = $parameters
             ->each(function (ReflectionParameter $reflectionParameter) use ($method) {
                 $name = $reflectionParameter->getName();
-                $value = $this->valueFactory->make($method->getTestClass(), $reflectionParameter->getType());
+                $value = $this->valueFactory->make(
+                    $method->getTestClass(),
+                    Reflect::parameterType($reflectionParameter)
+                );
 
                 $method->addStatement(
                     $this->statementFactory->makeAffect($name, $value, false)

@@ -7,6 +7,7 @@ namespace PhpUnitGen\Core\Helpers;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
+use PhpUnitGen\Core\Reflection\ReflectionType;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -111,6 +112,46 @@ class Reflect
     public static function parameters(ReflectionMethod $reflectionMethod): Collection
     {
         return new Collection($reflectionMethod->getParameters());
+    }
+
+    /**
+     * Get the parameter type using Reflection or DocBlock.
+     *
+     * @param ReflectionParameter $reflectionParameter
+     *
+     * @return ReflectionType|null
+     */
+    public static function parameterType(ReflectionParameter $reflectionParameter): ?ReflectionType
+    {
+        if ($reflectionParameter->getType()) {
+            return ReflectionType::makeForBetterReflectionType(
+                $reflectionParameter->getType()
+            );
+        }
+
+        return ReflectionType::makeForPhpDocumentorTypes(
+            $reflectionParameter->getDocBlockTypeStrings()
+        );
+    }
+
+    /**
+     * Get the return type of a method using Reflection or DocBlock.
+     *
+     * @param ReflectionMethod $reflectionMethod
+     *
+     * @return ReflectionType|null
+     */
+    public static function returnType(ReflectionMethod $reflectionMethod): ?ReflectionType
+    {
+        if ($reflectionMethod->getReturnType()) {
+            return ReflectionType::makeForBetterReflectionType(
+                $reflectionMethod->getReturnType()
+            );
+        }
+
+        return ReflectionType::makeForPhpDocumentorTypes(
+            array_map('strval', $reflectionMethod->getDocBlockReturnTypes())
+        );
     }
 
     /**

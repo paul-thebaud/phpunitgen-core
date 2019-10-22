@@ -112,10 +112,11 @@ class BasicMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'getBar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => $isStatic,
+            'getShortName'           => 'getBar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => $isStatic,
         ]);
 
         $reflectionProperty->shouldReceive([
@@ -221,7 +222,8 @@ class BasicMethodFactoryTest extends TestCase
         ]);
 
         $reflectionParameter->shouldReceive([
-            'getType' => null,
+            'getType'                => null,
+            'getDocBlockTypeStrings' => [],
         ]);
 
         $reflectionProperty->shouldReceive([
