@@ -8,6 +8,7 @@ use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\HasInstanceBinding;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\UsesUserModel;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Models\TestClass;
@@ -28,6 +29,7 @@ use Tightenco\Collect\Support\Collection;
 class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
 {
     use ConfigAwareTrait;
+    use HasInstanceBinding;
     use UsesUserModel;
 
     /**
@@ -37,15 +39,9 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
     {
         $method = parent::makeSetUp($class);
 
-        $reflectionClass = $class->getReflectionClass();
-
         $this->makeUserAffectStatement($class, $method);
         $method->addStatement(
-            (new TestStatement('$this->app->instance('))
-                ->append($reflectionClass->getShortName())
-                ->append('::class, $this->')
-                ->append($this->getPropertyName($reflectionClass))
-                ->append(')')
+            $this->makeInstanceBindingStatement($class->getReflectionClass())
         );
 
         return $method;
