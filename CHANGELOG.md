@@ -2,12 +2,15 @@
 
 ## Not released yet
 
+## 1.0.0-alpha8
+
 **Added**
 
 - `PropertyFactory` must implement new method `makeCustom`.
 - Support for method's parameters/return types retrieved from phpDoc.
 - Add a test generator for Laravel Broadcasting channel.
 - Add a test generator for Laravel command.
+- Add a Laravel command and channel test generators in Delegate test generator.
 
 **Changed**
 
