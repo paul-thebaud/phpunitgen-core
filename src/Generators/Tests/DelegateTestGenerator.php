@@ -14,6 +14,7 @@ use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
 use PhpUnitGen\Core\Exceptions\RuntimeException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Channel\ChannelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
 use PhpUnitGen\Core\Helpers\Str;
@@ -89,6 +90,10 @@ class DelegateTestGenerator implements DelegateTestGeneratorContract, ConfigAwar
     protected function chooseTestGenerator(ReflectionClass $reflectionClass): string
     {
         if ($this->isLaravelProject()) {
+            if (Str::contains('\\Broadcasting\\', $reflectionClass->getName())) {
+                return ChannelTestGenerator::class;
+            }
+
             if (Str::contains('\\Policies\\', $reflectionClass->getName())) {
                 return PolicyTestGenerator::class;
             }

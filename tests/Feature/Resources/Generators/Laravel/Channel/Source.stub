@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Broadcasting;
+
+use App\Services\EventService;
+use App\User;
+
+class EventChannel
+{
+    protected $eventService;
+
+    public function __construct(EventService $eventService)
+    {
+    }
+
+    public function join(User $user)
+    {
+    }
+
+    public function getEventService(): EventService
+    {
+    }
+
+    public function setEventService(EventService $eventService): void
+    {
+    }
+}

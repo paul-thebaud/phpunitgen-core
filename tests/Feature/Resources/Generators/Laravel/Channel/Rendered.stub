@@ -1,0 +1,88 @@
+<?php
+
+namespace Tests\Unit\App\Broadcasting;
+
+use App\Broadcasting\EventChannel;
+use App\Services\EventService;
+use App\User;
+use Mockery;
+use Mockery\Mock;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+
+/**
+ * Class EventChannelTest.
+ *
+ * @covers \App\Broadcasting\EventChannel
+ */
+class EventChannelTest extends TestCase
+{
+    /**
+     * @var EventChannel
+     */
+    protected $eventChannel;
+
+    /**
+     * @var EventService|Mock
+     */
+    protected $eventService;
+
+    /**
+     * @var User
+     */
+    protected $user;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->eventService = Mockery::mock(EventService::class);
+        $this->eventChannel = new EventChannel($this->eventService);
+        $this->user = new User();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->eventChannel);
+        unset($this->eventService);
+        unset($this->user);
+    }
+
+    public function testJoinWhenUnauthorized(): void
+    {
+        $this->assertFalse($this->eventChannel->join($this->user));
+    }
+
+    public function testJoinWhenAuthorized(): void
+    {
+        $this->assertTrue($this->eventChannel->join($this->user));
+    }
+
+    public function testGetEventService(): void
+    {
+        $expected = Mockery::mock(EventService::class);
+        $property = (new ReflectionClass(EventChannel::class))
+            ->getProperty('eventService');
+        $property->setAccessible(true);
+        $property->setValue($this->eventChannel, $expected);
+        $this->assertSame($expected, $this->eventChannel->getEventService());
+    }
+
+    public function testSetEventService(): void
+    {
+        $expected = Mockery::mock(EventService::class);
+        $property = (new ReflectionClass(EventChannel::class))
+            ->getProperty('eventService');
+        $property->setAccessible(true);
+        $this->eventChannel->setEventService($expected);
+        $this->assertSame($expected, $property->getValue($this->eventChannel));
+    }
+}
