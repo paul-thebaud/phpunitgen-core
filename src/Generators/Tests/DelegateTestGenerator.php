@@ -90,33 +90,54 @@ class DelegateTestGenerator implements DelegateTestGeneratorContract, ConfigAwar
      */
     protected function chooseTestGenerator(ReflectionClass $reflectionClass): string
     {
-        if ($this->isLaravelProject()) {
-            if (Str::contains('\\Broadcasting\\', $reflectionClass->getName())) {
-                return ChannelTestGenerator::class;
-            }
-
-            if (Str::contains('\\Console\\Commands\\', $reflectionClass->getName())) {
-                return CommandTestGenerator::class;
-            }
-
-            if (Str::contains('\\Policies\\', $reflectionClass->getName())) {
-                return PolicyTestGenerator::class;
-            }
-
-            return LaravelTestGenerator::class;
+        if ($this->isLaravelContext()) {
+            return $this->chooseTestGeneratorForLaravel($reflectionClass);
         }
 
         return BasicTestGenerator::class;
     }
 
     /**
-     * Check if Laravel class is declared.
+     * Check if the context of class is a Laravel project.
      *
      * @return bool
      */
-    protected function isLaravelProject(): bool
+    protected function isLaravelContext(): bool
     {
         return $this->config->getOption('context') === 'laravel';
+    }
+
+    /**
+     * Choose TestGenerator which should be used for the given reflection class in a Laravel context.
+     *
+     * @param ReflectionClass $reflectionClass
+     *
+     * @return string
+     */
+    protected function chooseTestGeneratorForLaravel(ReflectionClass $reflectionClass): string
+    {
+        $reflectionClassName = $reflectionClass->getName();
+        foreach ($this->getNamespaceGeneratorMappingForLaravel() as $namespace => $generator) {
+            if (Str::contains($namespace, $reflectionClassName)) {
+                return $generator;
+            }
+        }
+
+        return LaravelTestGenerator::class;
+    }
+
+    /**
+     * Get the mapping between the namespace the class should be in and the associated generator.
+     *
+     * @return array
+     */
+    protected function getNamespaceGeneratorMappingForLaravel(): array
+    {
+        return [
+            '\\Broadcasting\\'      => ChannelTestGenerator::class,
+            '\\Console\\Commands\\' => CommandTestGenerator::class,
+            '\\Policies\\'          => PolicyTestGenerator::class,
+        ];
     }
 
     /**
