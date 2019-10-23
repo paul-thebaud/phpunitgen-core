@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Tests\PhpUnitGen\Core\Unit\Generators\Tests\Laravel;
+namespace Tests\PhpUnitGen\Core\Unit\Generators\Tests\Laravel\Concerns;
 
 use Mockery;
 use PhpUnitGen\Core\Exceptions\RuntimeException;
-use PhpUnitGen\Core\Generators\Tests\Laravel\UsesUserModel;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\UsesUserModel;
 use PhpUnitGen\Core\Models\TestClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**
  * Class UsesUserModelTest.
  *
- * @covers \PhpUnitGen\Core\Generators\Tests\Laravel\UsesUserModel
+ * @covers \PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\UsesUserModel
  */
 class UsesUserModelTest extends TestCase
 {

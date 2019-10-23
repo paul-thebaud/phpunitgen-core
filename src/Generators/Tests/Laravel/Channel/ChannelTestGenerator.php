@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Channel;
 
 use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
+use PhpUnitGen\Core\Generators\Tests\Concerns\ChecksMethods;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -18,7 +19,7 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  */
 class ChannelTestGenerator extends PolicyTestGenerator
 {
-    use HasChannelJoinMethod;
+    use ChecksMethods;
 
     /**
      * {@inheritdoc}
@@ -36,6 +37,6 @@ class ChannelTestGenerator extends PolicyTestGenerator
     protected function isTestable(TestClass $class, ReflectionMethod $reflectionMethod): bool
     {
         return $this->config->automaticGeneration()
-            && ($this->isGetterOrSetter($reflectionMethod) || $this->isChannelJoinMethod($reflectionMethod));
+            && ($this->isGetterOrSetter($reflectionMethod) || $this->isMethod($reflectionMethod, 'join'));
     }
 }

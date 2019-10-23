@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PhpUnitGen\Core\Generators\Tests\Laravel;
+namespace PhpUnitGen\Core\Generators\Tests\Laravel\Concerns;
 
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;

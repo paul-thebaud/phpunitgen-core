@@ -8,7 +8,7 @@ use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
-use PhpUnitGen\Core\Generators\Tests\Laravel\UsesUserModel;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\UsesUserModel;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;

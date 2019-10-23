@@ -8,7 +8,8 @@ use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
-use PhpUnitGen\Core\Generators\Tests\Laravel\UsesUserModel;
+use PhpUnitGen\Core\Generators\Tests\Concerns\ChecksMethods;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\UsesUserModel;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -22,8 +23,8 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  */
 class ChannelMethodFactory extends BasicMethodFactory implements ConfigAware
 {
+    use ChecksMethods;
     use ConfigAwareTrait;
-    use HasChannelJoinMethod;
     use UsesUserModel;
 
     /**
@@ -49,7 +50,7 @@ class ChannelMethodFactory extends BasicMethodFactory implements ConfigAware
             return;
         }
 
-        if (! $this->isChannelJoinMethod($reflectionMethod)) {
+        if (! $this->isMethod($reflectionMethod, 'join')) {
             throw new InvalidArgumentException(
                 "cannot generate tests for method {$reflectionMethod->getShortName()}, not a \"join\" method"
             );
