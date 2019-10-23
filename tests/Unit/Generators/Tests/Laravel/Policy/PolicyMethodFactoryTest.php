@@ -124,10 +124,8 @@ class PolicyMethodFactoryTest extends TestCase
             [''],
             ['/** @todo Instantiate tested object to use it. */'],
             ['$this->foo = null'],
-            [''],
-            ['$this->app->instance(Foo::class, $this->foo)'],
-            [''],
             ['$this->user = new User()'],
+            ['$this->app->instance(Foo::class, $this->foo)'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());

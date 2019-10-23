@@ -42,10 +42,8 @@ class ProductPolicyTest extends TestCase
 
         $this->roleService = Mockery::mock(RoleService::class);
         $this->productPolicy = new ProductPolicy($this->roleService);
-
-        $this->app->instance(ProductPolicy::class, $this->productPolicy);
-
         $this->user = new User();
+        $this->app->instance(ProductPolicy::class, $this->productPolicy);
     }
 
     /**

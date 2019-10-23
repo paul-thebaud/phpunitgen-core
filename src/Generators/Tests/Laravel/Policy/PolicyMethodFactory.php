@@ -39,7 +39,7 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
 
         $reflectionClass = $class->getReflectionClass();
 
-        $method->addStatement(new TestStatement(''));
+        $this->makeUserAffectStatement($class, $method);
         $method->addStatement(
             (new TestStatement('$this->app->instance('))
                 ->append($reflectionClass->getShortName())
@@ -47,8 +47,6 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
                 ->append($this->getPropertyName($reflectionClass))
                 ->append(')')
         );
-        $method->addStatement(new TestStatement(''));
-        $this->makeUserAffectStatement($class, $method);
 
         return $method;
     }
