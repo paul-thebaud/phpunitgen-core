@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Console\Commands;
+
+use App\Services\UserService;
+
+class PruneUsersCommand
+{
+    protected $signature = 'users:prune';
+
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+    }
+
+    public function handle()
+    {
+    }
+
+    public function getUserService(): UserService
+    {
+    }
+
+    public function setUserService(UserService $userService): void
+    {
+    }
+}

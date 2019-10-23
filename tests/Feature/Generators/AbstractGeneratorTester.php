@@ -29,6 +29,7 @@ class AbstractGeneratorTester extends TestCase
         $actual = $application->run(
             new LocalFileSource($this->getFileAbsolutePath($sourcePath))
         );
+        //echo "\n{$actual->toString()}\n";die;
 
         $this->assertSame(
             file_get_contents($this->getFileAbsolutePath($expectedPath)),

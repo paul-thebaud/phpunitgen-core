@@ -1,0 +1,79 @@
+<?php
+
+namespace Tests\Feature\App\Console\Commands;
+
+use App\Console\Commands\PruneUsersCommand;
+use App\Services\UserService;
+use Mockery;
+use Mockery\Mock;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+
+/**
+ * Class PruneUsersCommandTest.
+ *
+ * @covers \App\Console\Commands\PruneUsersCommand
+ */
+class PruneUsersCommandTest extends TestCase
+{
+    /**
+     * @var PruneUsersCommand
+     */
+    protected $pruneUsersCommand;
+
+    /**
+     * @var UserService|Mock
+     */
+    protected $userService;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->userService = Mockery::mock(UserService::class);
+        $this->pruneUsersCommand = new PruneUsersCommand($this->userService);
+        $this->app->instance(PruneUsersCommand::class, $this->pruneUsersCommand);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->pruneUsersCommand);
+        unset($this->userService);
+    }
+
+    public function testHandle(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->artisan('users:prune')
+            ->expectsOutput('Some expected output')
+            ->assertExitCode(0);
+    }
+
+    public function testGetUserService(): void
+    {
+        $expected = Mockery::mock(UserService::class);
+        $property = (new ReflectionClass(PruneUsersCommand::class))
+            ->getProperty('userService');
+        $property->setAccessible(true);
+        $property->setValue($this->pruneUsersCommand, $expected);
+        $this->assertSame($expected, $this->pruneUsersCommand->getUserService());
+    }
+
+    public function testSetUserService(): void
+    {
+        $expected = Mockery::mock(UserService::class);
+        $property = (new ReflectionClass(PruneUsersCommand::class))
+            ->getProperty('userService');
+        $property->setAccessible(true);
+        $this->pruneUsersCommand->setUserService($expected);
+        $this->assertSame($expected, $property->getValue($this->pruneUsersCommand));
+    }
+}
