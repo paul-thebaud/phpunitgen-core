@@ -41,7 +41,7 @@ class ReflectionTypeTest extends TestCase
         $this->assertNull($reflectionType);
     }
 
-    public function testMakeForPhpDocumentorTypesWitRealTypes(): void
+    public function testMakeForPhpDocumentorTypesWitRealNullableType(): void
     {
         $reflectionType = ReflectionType::makeForPhpDocumentorTypes([
             'null',
@@ -56,6 +56,17 @@ class ReflectionTypeTest extends TestCase
         $this->assertFalse($reflectionType->isBuiltin());
         $this->assertTrue($reflectionType->isNullable());
         $this->assertSame('App\\User', $reflectionType->getType());
+    }
+
+    public function testMakeForPhpDocumentorTypesWitRealNotNullableArray(): void
+    {
+        $reflectionType = ReflectionType::makeForPhpDocumentorTypes([
+            '\\App\\User[]',
+        ]);
+
+        $this->assertTrue($reflectionType->isBuiltin());
+        $this->assertFalse($reflectionType->isNullable());
+        $this->assertSame('array', $reflectionType->getType());
     }
 
     /**

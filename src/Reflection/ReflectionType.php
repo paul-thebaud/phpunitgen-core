@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Reflection;
 
+use PhpUnitGen\Core\Helpers\Str;
 use Roave\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
 use Tightenco\Collect\Support\Collection;
 
@@ -89,7 +90,12 @@ class ReflectionType
             return null;
         }
 
-        return new self($stringTypes->first(), $nullable);
+        $stringType = $stringTypes->first();
+        if (Str::endsWith('[]', $stringType)) {
+            $stringType = 'array';
+        }
+
+        return new self($stringType, $nullable);
     }
 
     /**
