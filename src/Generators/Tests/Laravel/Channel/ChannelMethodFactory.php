@@ -77,6 +77,7 @@ class ChannelMethodFactory extends BasicMethodFactory implements ConfigAware
         $instanceName = $this->getPropertyName($class->getReflectionClass());
 
         $method = $this->makeEmpty($reflectionMethod, 'When'.$suffix);
+        $method->addStatement($this->statementFactory->makeTodo('This test is incomplete.'));
         $method->addStatement(
             $this->statementFactory->makeAssert($assert, "\$this->{$instanceName}->join(\$this->user)")
         );

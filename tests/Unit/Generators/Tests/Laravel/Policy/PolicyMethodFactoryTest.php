@@ -237,6 +237,10 @@ class PolicyMethodFactoryTest extends TestCase
             'getType' => $reflectionTypeUser,
         ]);
 
+        $this->statementFactory->shouldReceive('makeTodo')
+            ->twice()
+            ->with('This test is incomplete.')
+            ->andReturn(new TestStatement('/** @todo This test is incomplete. */'));
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('false', '$this->user->can(\'bar\', [Foo::class])')
@@ -254,6 +258,7 @@ class PolicyMethodFactoryTest extends TestCase
         $this->assertSame('public', $method1->getVisibility());
         $this->assertNull($method1->getDocumentation());
         $this->assertSame([
+            ['/** @todo This test is incomplete. */'],
             ['$this->assertFalse($this->user->can(\'bar\', [Foo::class]))'],
         ], $method1->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
@@ -265,6 +270,7 @@ class PolicyMethodFactoryTest extends TestCase
         $this->assertSame('public', $method2->getVisibility());
         $this->assertNull($method2->getDocumentation());
         $this->assertSame([
+            ['/** @todo This test is incomplete. */'],
             ['$this->assertTrue($this->user->can(\'bar\', [Foo::class]))'],
         ], $method2->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
@@ -315,6 +321,10 @@ class PolicyMethodFactoryTest extends TestCase
             }))
             ->andReturn('42');
 
+        $this->statementFactory->shouldReceive('makeTodo')
+            ->twice()
+            ->with('This test is incomplete.')
+            ->andReturn(new TestStatement('/** @todo This test is incomplete. */'));
         $this->statementFactory->shouldReceive('makeAffect')
             ->twice()
             ->with('product', '42', false)
@@ -336,6 +346,7 @@ class PolicyMethodFactoryTest extends TestCase
         $this->assertSame('public', $method1->getVisibility());
         $this->assertNull($method1->getDocumentation());
         $this->assertSame([
+            ['/** @todo This test is incomplete. */'],
             ['$product = 42'],
             [''],
             ['$this->assertFalse($this->user->can(\'bar\', $product))'],
@@ -349,6 +360,7 @@ class PolicyMethodFactoryTest extends TestCase
         $this->assertSame('public', $method2->getVisibility());
         $this->assertNull($method2->getDocumentation());
         $this->assertSame([
+            ['/** @todo This test is incomplete. */'],
             ['$product = 42'],
             [''],
             ['$this->assertTrue($this->user->can(\'bar\', $product))'],
@@ -416,6 +428,10 @@ class PolicyMethodFactoryTest extends TestCase
             }))
             ->andReturn('84');
 
+        $this->statementFactory->shouldReceive('makeTodo')
+            ->twice()
+            ->with('This test is incomplete.')
+            ->andReturn(new TestStatement('/** @todo This test is incomplete. */'));
         $this->statementFactory->shouldReceive('makeAffect')
             ->twice()
             ->with('product', '42', false)
@@ -441,6 +457,7 @@ class PolicyMethodFactoryTest extends TestCase
         $this->assertSame('public', $method1->getVisibility());
         $this->assertNull($method1->getDocumentation());
         $this->assertSame([
+            ['/** @todo This test is incomplete. */'],
             ['$product = 42'],
             ['$category = 84'],
             [''],
@@ -455,6 +472,7 @@ class PolicyMethodFactoryTest extends TestCase
         $this->assertSame('public', $method2->getVisibility());
         $this->assertNull($method2->getDocumentation());
         $this->assertSame([
+            ['/** @todo This test is incomplete. */'],
             ['$product = 42'],
             ['$category = 84'],
             [''],

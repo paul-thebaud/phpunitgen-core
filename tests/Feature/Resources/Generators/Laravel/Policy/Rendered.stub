@@ -60,16 +60,19 @@ class ProductPolicyTest extends TestCase
 
     public function testCreateWhenUnauthorized(): void
     {
+        /** @todo This test is incomplete. */
         $this->assertFalse($this->user->can('create', [ProductPolicy::class]));
     }
 
     public function testCreateWhenAuthorized(): void
     {
+        /** @todo This test is incomplete. */
         $this->assertTrue($this->user->can('create', [ProductPolicy::class]));
     }
 
     public function testUpdateWhenUnauthorized(): void
     {
+        /** @todo This test is incomplete. */
         $product = Mockery::mock(Product::class);
 
         $this->assertFalse($this->user->can('update', $product));
@@ -77,6 +80,7 @@ class ProductPolicyTest extends TestCase
 
     public function testUpdateWhenAuthorized(): void
     {
+        /** @todo This test is incomplete. */
         $product = Mockery::mock(Product::class);
 
         $this->assertTrue($this->user->can('update', $product));
@@ -84,6 +88,7 @@ class ProductPolicyTest extends TestCase
 
     public function testDeleteWhenUnauthorized(): void
     {
+        /** @todo This test is incomplete. */
         $product = Mockery::mock(Product::class);
 
         $this->assertFalse($this->user->can('delete', $product));
@@ -91,6 +96,7 @@ class ProductPolicyTest extends TestCase
 
     public function testDeleteWhenAuthorized(): void
     {
+        /** @todo This test is incomplete. */
         $product = Mockery::mock(Product::class);
 
         $this->assertTrue($this->user->can('delete', $product));

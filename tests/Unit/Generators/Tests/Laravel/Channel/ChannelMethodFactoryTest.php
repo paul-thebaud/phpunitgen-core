@@ -224,6 +224,10 @@ class ChannelMethodFactoryTest extends TestCase
             'isStatic'          => false,
         ]);
 
+        $this->statementFactory->shouldReceive('makeTodo')
+            ->twice()
+            ->with('This test is incomplete.')
+            ->andReturn(new TestStatement('/** @todo This test is incomplete. */'));
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('false', '$this->foo->join($this->user)')
@@ -241,6 +245,7 @@ class ChannelMethodFactoryTest extends TestCase
         $this->assertSame('public', $method1->getVisibility());
         $this->assertNull($method1->getDocumentation());
         $this->assertSame([
+            ['/** @todo This test is incomplete. */'],
             ['$this->assertFalse($this->foo->join($this->user))'],
         ], $method1->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
@@ -252,6 +257,7 @@ class ChannelMethodFactoryTest extends TestCase
         $this->assertSame('public', $method2->getVisibility());
         $this->assertNull($method2->getDocumentation());
         $this->assertSame([
+            ['/** @todo This test is incomplete. */'],
             ['$this->assertTrue($this->foo->join($this->user))'],
         ], $method2->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();

@@ -58,11 +58,13 @@ class EventChannelTest extends TestCase
 
     public function testJoinWhenUnauthorized(): void
     {
+        /** @todo This test is incomplete. */
         $this->assertFalse($this->eventChannel->join($this->user));
     }
 
     public function testJoinWhenAuthorized(): void
     {
+        /** @todo This test is incomplete. */
         $this->assertTrue($this->eventChannel->join($this->user));
     }
 
