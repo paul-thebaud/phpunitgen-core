@@ -22,6 +22,7 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 use Tests\PhpUnitGen\Core\TestCase;
+use Tightenco\Collect\Support\Collection;
 
 /**
  * Class CommandMethodFactoryTest.
@@ -90,19 +91,21 @@ class CommandMethodFactoryTest extends TestCase
         ]);
 
         $this->statementFactory->shouldReceive('makeTodo')
-            ->with('Instantiate tested object to use it.')
-            ->andReturn(new TestStatement('/** @todo Instantiate tested object to use it. */'));
-        $this->statementFactory->shouldReceive('makeAffect')
-            ->with('foo', 'null')
-            ->andReturn(new TestStatement('$this->foo = null'));
+            ->with('Correctly instantiate tested object to use it.')
+            ->andReturn(new TestStatement('/** @todo Correctly instantiate tested object to use it. */'));
+        $this->statementFactory->shouldReceive('makeInstantiation')
+            ->with($class, Mockery::on(function ($value) {
+                return $value instanceof Collection && $value->isEmpty();
+            }))
+            ->andReturn(new TestStatement('$this->foo = new Foo()'));
 
         $method = $this->methodFactory->makeSetUp($class);
 
         $this->assertSame([
             ['parent::setUp()'],
             [''],
-            ['/** @todo Instantiate tested object to use it. */'],
-            ['$this->foo = null'],
+            ['/** @todo Correctly instantiate tested object to use it. */'],
+            ['$this->foo = new Foo()'],
             ['$this->app->instance(Foo::class, $this->foo)'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();

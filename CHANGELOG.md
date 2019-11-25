@@ -2,6 +2,10 @@
 
 ## Not released yet
 
+**Changed**
+
+- When there is no constructor inside tested class, instantiate without parameters instead of affecting a `null` value.
+
 ## 1.0.0-alpha8
 
 **Added**

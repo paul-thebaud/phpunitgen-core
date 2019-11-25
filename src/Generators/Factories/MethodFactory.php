@@ -21,6 +21,7 @@ use PhpUnitGen\Core\Models\TestProperty;
 use PhpUnitGen\Core\Models\TestStatement;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
+use Tightenco\Collect\Support\Collection;
 
 /**
  * Class MethodFactory.
@@ -161,13 +162,10 @@ class MethodFactory implements
     protected function completeSetUpWithoutConstructor(TestClass $class, TestMethod $method): void
     {
         $method->addStatement(
-            $this->statementFactory->makeTodo('Instantiate tested object to use it.')
+            $this->statementFactory->makeTodo('Correctly instantiate tested object to use it.')
         );
         $method->addStatement(
-            $this->statementFactory->makeAffect(
-                $this->getPropertyName($class->getReflectionClass()),
-                'null'
-            )
+            $this->statementFactory->makeInstantiation($class, new Collection())
         );
     }
 

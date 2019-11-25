@@ -25,6 +25,7 @@ use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 use Roave\BetterReflection\Reflection\ReflectionType;
 use Tests\PhpUnitGen\Core\TestCase;
+use Tightenco\Collect\Support\Collection;
 
 /**
  * Class PolicyMethodFactoryTest.
@@ -108,11 +109,13 @@ class PolicyMethodFactoryTest extends TestCase
             ->andReturn(new TestImport('App\\User'));
 
         $this->statementFactory->shouldReceive('makeTodo')
-            ->with('Instantiate tested object to use it.')
-            ->andReturn(new TestStatement('/** @todo Instantiate tested object to use it. */'));
-        $this->statementFactory->shouldReceive('makeAffect')
-            ->with('foo', 'null')
-            ->andReturn(new TestStatement('$this->foo = null'));
+            ->with('Correctly instantiate tested object to use it.')
+            ->andReturn(new TestStatement('/** @todo Correctly instantiate tested object to use it. */'));
+        $this->statementFactory->shouldReceive('makeInstantiation')
+            ->with($class, Mockery::on(function ($value) {
+                return $value instanceof Collection && $value->isEmpty();
+            }))
+            ->andReturn(new TestStatement('$this->foo = new Foo()'));
         $this->statementFactory->shouldReceive('makeAffect')
             ->with('user', 'new User()')
             ->andReturn(new TestStatement('$this->user = new User()'));
@@ -122,8 +125,8 @@ class PolicyMethodFactoryTest extends TestCase
         $this->assertSame([
             ['parent::setUp()'],
             [''],
-            ['/** @todo Instantiate tested object to use it. */'],
-            ['$this->foo = null'],
+            ['/** @todo Correctly instantiate tested object to use it. */'],
+            ['$this->foo = new Foo()'],
             ['$this->user = new User()'],
             ['$this->app->instance(Foo::class, $this->foo)'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
