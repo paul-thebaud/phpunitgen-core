@@ -2,6 +2,10 @@
 
 ## Not released yet
 
+**Added**
+
+- Add a test generator for Laravel Controller.
+
 **Changed**
 
 - When there is no constructor inside tested class, instantiate without parameters instead of affecting a `null` value.
