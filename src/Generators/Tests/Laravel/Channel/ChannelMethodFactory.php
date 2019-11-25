@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Channel;
 
-use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
@@ -24,7 +23,6 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
 class ChannelMethodFactory extends BasicMethodFactory implements ConfigAware
 {
     use ChecksMethods;
-    use ConfigAwareTrait;
     use UsesUserModel;
 
     /**

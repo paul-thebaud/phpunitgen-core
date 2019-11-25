@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Policy;
 
-use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
@@ -28,7 +27,6 @@ use Tightenco\Collect\Support\Collection;
  */
 class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
 {
-    use ConfigAwareTrait;
     use HasInstanceBinding;
     use MocksParameters;
     use UsesUserModel;

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Concerns;
 
-use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
-use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
-use PhpUnitGen\Core\Contracts\Aware\StatementFactoryAware;
-use PhpUnitGen\Core\Exceptions\RuntimeException;
+use PhpUnitGen\Core\Aware\ConfigAwareTrait;
+use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
+use PhpUnitGen\Core\Aware\StatementFactoryAwareTrait;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestMethod;
@@ -21,6 +20,10 @@ use PhpUnitGen\Core\Models\TestMethod;
  */
 trait UsesUserModel
 {
+    use ConfigAwareTrait;
+    use ImportFactoryAwareTrait;
+    use StatementFactoryAwareTrait;
+
     /**
      * Retrieve the Laravel User model class import.
      *
@@ -30,9 +33,7 @@ trait UsesUserModel
      */
     protected function getUserClass(TestClass $class): TestImport
     {
-        return $this->checkAwareAreImplemented()
-            ->getImportFactory()
-            ->make($class, $this->getUserClassAsString());
+        return $this->importFactory->make($class, $this->getUserClassAsString());
     }
 
     /**
@@ -42,9 +43,7 @@ trait UsesUserModel
      */
     protected function getUserClassAsString(): string
     {
-        return $this->checkAwareAreImplemented()
-            ->getConfig()
-            ->getOption('laravel.user', 'App\\User');
+        return $this->config->getOption('laravel.user', 'App\\User');
     }
 
     /**
@@ -57,26 +56,7 @@ trait UsesUserModel
     {
         $userImport = $this->getUserClass($class)->getFinalName();
         $method->addStatement(
-            $this->checkAwareAreImplemented()->getStatementFactory()->makeAffect('user', "new {$userImport}()")
+            $this->statementFactory->makeAffect('user', "new {$userImport}()")
         );
-    }
-
-    /**
-     * Check necessary aware are implemented.
-     *
-     * @return static|ConfigAware|ImportFactoryAware|StatementFactoryAware
-     */
-    private function checkAwareAreImplemented(): self
-    {
-        if (! $this instanceof ConfigAware
-            || ! $this instanceof ImportFactoryAware
-            || ! $this instanceof StatementFactoryAware
-        ) {
-            throw new RuntimeException(
-                'trait UsesUserModel must have ConfigAware, ImportFactoryAware and StatementFactoryAware implemented'
-            );
-        }
-
-        return $this;
     }
 }
