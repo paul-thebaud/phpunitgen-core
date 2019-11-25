@@ -8,12 +8,12 @@ use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
+use PhpUnitGen\Core\Generators\Tests\Concerns\MocksParameters;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\HasInstanceBinding;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\UsesUserModel;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
-use PhpUnitGen\Core\Models\TestStatement;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -30,6 +30,7 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
 {
     use ConfigAwareTrait;
     use HasInstanceBinding;
+    use MocksParameters;
     use UsesUserModel;
 
     /**
@@ -88,7 +89,7 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
 
         $parameters = Reflect::parameters($reflectionMethod)->forget(0);
 
-        $this->addParametersStatements($method, $parameters);
+        $this->mockParametersAndAddStatements($method, $parameters);
         $parametersString = $this->getParametersString($class->getReflectionClass(), $parameters);
 
         $methodCall = '$this->user->can(\''.$reflectionMethod->getShortName().'\', '.$parametersString.')';
@@ -96,33 +97,6 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
         $method->addStatement(
             $this->statementFactory->makeAssert($expected, $methodCall)
         );
-    }
-
-    /**
-     * Add the policy method parameters affectation statements.
-     *
-     * @param TestMethod $method
-     * @param Collection $parameters
-     */
-    protected function addParametersStatements(TestMethod $method, Collection $parameters): void
-    {
-        $parametersNotEmpty = $parameters
-            ->each(function (ReflectionParameter $reflectionParameter) use ($method) {
-                $name = $reflectionParameter->getName();
-                $value = $this->valueFactory->make(
-                    $method->getTestClass(),
-                    Reflect::parameterType($reflectionParameter)
-                );
-
-                $method->addStatement(
-                    $this->statementFactory->makeAffect($name, $value, false)
-                );
-            })
-            ->isNotEmpty();
-
-        if ($parametersNotEmpty) {
-            $method->addStatement(new TestStatement(''));
-        }
     }
 
     /**
