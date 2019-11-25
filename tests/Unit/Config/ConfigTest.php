@@ -21,9 +21,9 @@ class ConfigTest extends TestCase
         $this->assertSame([
             'automaticGeneration' => true,
             'implementations'     => DelegateTestGenerator::implementations(),
-            'baseNamespace'       => '',
+            'baseNamespace'       => 'App',
             'baseTestNamespace'   => 'Tests',
-            'testCase'            => 'PHPUnit\\Framework\\TestCase',
+            'testCase'            => 'Tests\\TestCase',
             'excludedMethods'     => [
                 '__construct',
                 '__destruct',

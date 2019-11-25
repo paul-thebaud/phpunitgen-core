@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Unit\App\Broadcasting;
+namespace Tests\Unit\Broadcasting;
 
 use App\Broadcasting\EventChannel;
 use App\Services\EventService;
 use App\User;
 use Mockery;
 use Mockery\Mock;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Tests\TestCase;
 
 /**
  * Class EventChannelTest.

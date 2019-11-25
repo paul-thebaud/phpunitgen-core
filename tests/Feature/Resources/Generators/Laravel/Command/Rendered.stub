@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature\App\Console\Commands;
+namespace Tests\Feature\Console\Commands;
 
 use App\Console\Commands\PruneUsersCommand;
 use App\Services\UserService;
 use Mockery;
 use Mockery\Mock;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Tests\TestCase;
 
 /**
  * Class PruneUsersCommandTest.

@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\App\Entity;
+namespace Tests\Entity;
 
 use App\Entity\Person;
 use App\Entity\Work;
 use App\Services\Connection;
 use Mockery;
 use Mockery\Mock;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Tests\TestCase;
 
 /**
  * Class PersonTest.

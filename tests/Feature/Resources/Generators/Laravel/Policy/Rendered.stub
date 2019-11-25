@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Policies;
+namespace Tests\Unit\Policies;
 
 use App\Policies\ProductPolicy;
 use App\Product;
@@ -8,8 +8,8 @@ use App\Services\RoleService;
 use App\User;
 use Mockery;
 use Mockery\Mock;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Tests\TestCase;
 
 /**
  * Class ProductPolicyTest.

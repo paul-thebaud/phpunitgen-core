@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature\App\Http\Controllers;
+namespace Tests\Feature\Http\Controllers;
 
 use App\Http\Controllers\UserController;
 use App\Services\UserService;
 use Mockery;
 use Mockery\Mock;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Tests\TestCase;
 
 /**
  * Class UserControllerTest.
