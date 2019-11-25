@@ -29,7 +29,10 @@ class PolicyMethodFactory extends BasicMethodFactory implements ConfigAware
 {
     use HasInstanceBinding;
     use MocksParameters;
-    use UsesUserModel;
+    use UsesUserModel {
+        UsesUserModel::setStatementFactory insteadof MocksParameters;
+        UsesUserModel::getStatementFactory insteadof MocksParameters;
+    }
 
     /**
      * {@inheritdoc}
