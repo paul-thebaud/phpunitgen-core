@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Jobs;
+
+use App\User;
+use App\Services\UserService;
+
+class SendWelcomeMessageJob
+{
+    protected $user;
+
+    public function __construct(User $user)
+    {
+    }
+
+    public function handle(UserService $userService)
+    {
+    }
+
+    public function getUser(): User
+    {
+    }
+
+    public function setUser(User $user): void
+    {
+    }
+}

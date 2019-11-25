@@ -1,0 +1,79 @@
+<?php
+
+namespace Tests\Unit\Jobs;
+
+use App\Jobs\SendWelcomeMessageJob;
+use App\Services\UserService;
+use App\User;
+use Mockery;
+use Mockery\Mock;
+use ReflectionClass;
+use Tests\TestCase;
+
+/**
+ * Class SendWelcomeMessageJobTest.
+ *
+ * @covers \App\Jobs\SendWelcomeMessageJob
+ */
+class SendWelcomeMessageJobTest extends TestCase
+{
+    /**
+     * @var SendWelcomeMessageJob
+     */
+    protected $sendWelcomeMessageJob;
+
+    /**
+     * @var User|Mock
+     */
+    protected $user;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = Mockery::mock(User::class);
+        $this->sendWelcomeMessageJob = new SendWelcomeMessageJob($this->user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->sendWelcomeMessageJob);
+        unset($this->user);
+    }
+
+    public function testHandle(): void
+    {
+        $userService = Mockery::mock(UserService::class);
+
+        /** @todo This test is incomplete. */
+        $this->sendWelcomeMessageJob->handle($userService);
+    }
+
+    public function testGetUser(): void
+    {
+        $expected = Mockery::mock(User::class);
+        $property = (new ReflectionClass(SendWelcomeMessageJob::class))
+            ->getProperty('user');
+        $property->setAccessible(true);
+        $property->setValue($this->sendWelcomeMessageJob, $expected);
+        $this->assertSame($expected, $this->sendWelcomeMessageJob->getUser());
+    }
+
+    public function testSetUser(): void
+    {
+        $expected = Mockery::mock(User::class);
+        $property = (new ReflectionClass(SendWelcomeMessageJob::class))
+            ->getProperty('user');
+        $property->setAccessible(true);
+        $this->sendWelcomeMessageJob->setUser($expected);
+        $this->assertSame($expected, $property->getValue($this->sendWelcomeMessageJob));
+    }
+}
