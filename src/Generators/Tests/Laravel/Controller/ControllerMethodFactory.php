@@ -20,6 +20,15 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
 class ControllerMethodFactory extends CommandMethodFactory
 {
     /**
+     * The mapping between HTTP method to tests and strings controller methods should starts with.
+     */
+    protected const HTTP_METHODS_MAP = [
+        'post'   => 'store',
+        'put'    => 'update',
+        'delete' => ['delete', 'destroy'],
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function makeTestable(TestClass $class, ReflectionMethod $reflectionMethod): void
@@ -77,16 +86,10 @@ class ControllerMethodFactory extends CommandMethodFactory
     {
         $reflectionMethodName = $reflectionMethod->getShortName();
 
-        if (Str::startsWith(['store'], $reflectionMethodName)) {
-            return 'post';
-        }
-
-        if (Str::startsWith(['update'], $reflectionMethodName)) {
-            return 'put';
-        }
-
-        if (Str::startsWith(['destroy', 'delete'], $reflectionMethodName)) {
-            return 'delete';
+        foreach (self::HTTP_METHODS_MAP as $httpMethod => $search) {
+            if (Str::startsWith($search, $reflectionMethodName)) {
+                return $httpMethod;
+            }
         }
 
         return 'get';
