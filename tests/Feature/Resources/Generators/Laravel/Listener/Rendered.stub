@@ -1,0 +1,79 @@
+<?php
+
+namespace Tests\Unit\Listeners;
+
+use App\Events\NewUser;
+use App\Listeners\NewUserListener;
+use App\Services\UserService;
+use Mockery;
+use Mockery\Mock;
+use ReflectionClass;
+use Tests\TestCase;
+
+/**
+ * Class NewUserListenerTest.
+ *
+ * @covers \App\Listeners\NewUserListener
+ */
+class NewUserListenerTest extends TestCase
+{
+    /**
+     * @var NewUserListener
+     */
+    protected $newUserListener;
+
+    /**
+     * @var UserService|Mock
+     */
+    protected $userService;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->userService = Mockery::mock(UserService::class);
+        $this->newUserListener = new NewUserListener($this->userService);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->newUserListener);
+        unset($this->userService);
+    }
+
+    public function testHandle(): void
+    {
+        $event = Mockery::mock(NewUser::class);
+
+        /** @todo This test is incomplete. */
+        $this->newUserListener->handle($event);
+    }
+
+    public function testGetUserService(): void
+    {
+        $expected = Mockery::mock(UserService::class);
+        $property = (new ReflectionClass(NewUserListener::class))
+            ->getProperty('userService');
+        $property->setAccessible(true);
+        $property->setValue($this->newUserListener, $expected);
+        $this->assertSame($expected, $this->newUserListener->getUserService());
+    }
+
+    public function testSetUserService(): void
+    {
+        $expected = Mockery::mock(UserService::class);
+        $property = (new ReflectionClass(NewUserListener::class))
+            ->getProperty('userService');
+        $property->setAccessible(true);
+        $this->newUserListener->setUserService($expected);
+        $this->assertSame($expected, $property->getValue($this->newUserListener));
+    }
+}

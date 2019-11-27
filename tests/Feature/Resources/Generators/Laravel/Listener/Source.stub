@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Listeners;
+
+use App\Events\NewUser;
+use App\Services\UserService;
+
+class NewUserListener
+{
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+    }
+
+    public function handle(NewUser $event)
+    {
+    }
+
+    public function getUserService(): UserService
+    {
+    }
+
+    public function setUserService(UserService $userService): void
+    {
+    }
+}
