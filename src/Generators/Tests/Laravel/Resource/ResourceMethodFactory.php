@@ -45,7 +45,6 @@ class ResourceMethodFactory extends BasicMethodFactory
         $method = $this->makeEmpty($reflectionMethod);
         $class->addMethod($method);
 
-
         $parameters = Reflect::parameters($reflectionMethod);
         $this->mockParametersAndAddStatements($method, $parameters);
 

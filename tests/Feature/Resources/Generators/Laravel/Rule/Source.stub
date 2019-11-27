@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Rules;
+
+use App\Services\ProductService;
+use Illuminate\Contracts\Validation\Rule;
+
+class ProductRule implements Rule
+{
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+    }
+
+    public function passes($attribute, $value)
+    {
+    }
+
+    public function message()
+    {
+    }
+
+    public function getProductService(): ProductService
+    {
+    }
+
+    public function setProductService(ProductService $productService): void
+    {
+    }
+}

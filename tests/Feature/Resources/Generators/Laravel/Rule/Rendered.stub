@@ -1,0 +1,88 @@
+<?php
+
+namespace Tests\Unit\Rules;
+
+use App\Rules\ProductRule;
+use App\Services\ProductService;
+use Mockery;
+use Mockery\Mock;
+use ReflectionClass;
+use Tests\TestCase;
+
+/**
+ * Class ProductRuleTest.
+ *
+ * @covers \App\Rules\ProductRule
+ */
+class ProductRuleTest extends TestCase
+{
+    /**
+     * @var ProductRule
+     */
+    protected $productRule;
+
+    /**
+     * @var ProductService|Mock
+     */
+    protected $productService;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->productService = Mockery::mock(ProductService::class);
+        $this->productRule = new ProductRule($this->productService);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->productRule);
+        unset($this->productService);
+    }
+
+    public function testPassesWhenOk(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->assertTrue($this->productRule->passes('attribute', 'valid value'));
+    }
+
+    public function testPassesWhenFailed(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->assertFalse($this->productRule->passes('attribute', 'invalid value'));
+    }
+
+    public function testMessage(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->markTestIncomplete();
+    }
+
+    public function testGetProductService(): void
+    {
+        $expected = Mockery::mock(ProductService::class);
+        $property = (new ReflectionClass(ProductRule::class))
+            ->getProperty('productService');
+        $property->setAccessible(true);
+        $property->setValue($this->productRule, $expected);
+        $this->assertSame($expected, $this->productRule->getProductService());
+    }
+
+    public function testSetProductService(): void
+    {
+        $expected = Mockery::mock(ProductService::class);
+        $property = (new ReflectionClass(ProductRule::class))
+            ->getProperty('productService');
+        $property->setAccessible(true);
+        $this->productRule->setProductService($expected);
+        $this->assertSame($expected, $property->getValue($this->productRule));
+    }
+}
