@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Resources;
+
+use App\Services\ProductService;
+use Illuminate\Http\Request;
+
+class ProductResource
+{
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+    }
+
+    public function toArray(Request $request): bool
+    {
+    }
+
+    public function getProductService(): ProductService
+    {
+    }
+
+    public function setProductService(ProductService $productService): void
+    {
+    }
+}

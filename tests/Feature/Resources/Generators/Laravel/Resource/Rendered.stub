@@ -1,0 +1,79 @@
+<?php
+
+namespace Tests\Unit\Http\Resources;
+
+use App\Http\Resources\ProductResource;
+use App\Services\ProductService;
+use Illuminate\Http\Request;
+use Mockery;
+use Mockery\Mock;
+use ReflectionClass;
+use Tests\TestCase;
+
+/**
+ * Class ProductResourceTest.
+ *
+ * @covers \App\Http\Resources\ProductResource
+ */
+class ProductResourceTest extends TestCase
+{
+    /**
+     * @var ProductResource
+     */
+    protected $productResource;
+
+    /**
+     * @var ProductService|Mock
+     */
+    protected $productService;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->productService = Mockery::mock(ProductService::class);
+        $this->productResource = new ProductResource($this->productService);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->productResource);
+        unset($this->productService);
+    }
+
+    public function testToArray(): void
+    {
+        $request = Mockery::mock(Request::class);
+
+        /** @todo This test is incomplete. */
+        $this->assertSame([], $this->productResource->toArray($request));
+    }
+
+    public function testGetProductService(): void
+    {
+        $expected = Mockery::mock(ProductService::class);
+        $property = (new ReflectionClass(ProductResource::class))
+            ->getProperty('productService');
+        $property->setAccessible(true);
+        $property->setValue($this->productResource, $expected);
+        $this->assertSame($expected, $this->productResource->getProductService());
+    }
+
+    public function testSetProductService(): void
+    {
+        $expected = Mockery::mock(ProductService::class);
+        $property = (new ReflectionClass(ProductResource::class))
+            ->getProperty('productService');
+        $property->setAccessible(true);
+        $this->productResource->setProductService($expected);
+        $this->assertSame($expected, $property->getValue($this->productResource));
+    }
+}

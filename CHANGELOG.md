@@ -7,6 +7,7 @@
 - Add a test generator for Laravel Controller.
 - Add a test generator for Laravel Job.
 - Add a test generator for Laravel Listener.
+- Add a test generator for Laravel Resource.
 
 **Changed**
 
