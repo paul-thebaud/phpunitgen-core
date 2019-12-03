@@ -76,7 +76,7 @@ abstract class ReflectionServiceProvider extends AbstractServiceProvider
             );
         }
 
-        $definition->addArgument((string) $type);
+        $definition->addArgument($type->getName());
     }
 
     /**
