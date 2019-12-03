@@ -2,6 +2,8 @@
 
 ## Not released yet
 
+## 1.0.0-alpha9
+
 **Added**
 
 - Add a test generator for Laravel Controller.
