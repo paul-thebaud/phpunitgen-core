@@ -16,8 +16,13 @@ use PhpUnitGen\Core\Exceptions\RuntimeException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Channel\ChannelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Command\CommandTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Controller\ControllerTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Job\JobTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Listener\ListenerTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Resource\ResourceTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Rule\RuleTestGenerator;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
 use Psr\Container\ContainerInterface;
@@ -136,7 +141,12 @@ class DelegateTestGenerator implements DelegateTestGeneratorContract, ConfigAwar
         return [
             '\\Broadcasting\\'      => ChannelTestGenerator::class,
             '\\Console\\Commands\\' => CommandTestGenerator::class,
+            '\\Http\\Controllers\\' => ControllerTestGenerator::class,
+            '\\Jobs\\'              => JobTestGenerator::class,
+            '\\Listeners\\'         => ListenerTestGenerator::class,
             '\\Policies\\'          => PolicyTestGenerator::class,
+            '\\Http\\Resources\\'   => ResourceTestGenerator::class,
+            '\\Rules\\'             => RuleTestGenerator::class,
         ];
     }
 

@@ -30,10 +30,15 @@ use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\DelegateTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Channel\ChannelTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Command\CommandTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Controller\ControllerTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\FeatureClassFactory;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Job\JobTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Listener\ListenerTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyMethodFactory;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Policy\PolicyTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Resource\ResourceTestGenerator;
+use PhpUnitGen\Core\Generators\Tests\Laravel\Rule\RuleTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UnitClassFactory;
 use PhpUnitGen\Core\Models\TestClass;
 use Psr\Container\ContainerInterface;
@@ -91,8 +96,18 @@ class DelegateTestGeneratorTest extends TestCase
         $this->assertSame(true, $this->testGenerator->canGenerateFor($reflectionClass));
     }
 
-    public function testGenerateDelegatesToLaravelClass(): void
-    {
+    /**
+     * @param string $class
+     * @param string $expectedGenerator
+     * @param string $expectedClassFactory
+     *
+     * @dataProvider generateDelegatesToLaravelDataProvider
+     */
+    public function testGenerateDelegatesToLaravel(
+        string $class,
+        string $expectedGenerator,
+        string $expectedClassFactory
+    ): void {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $container = Mockery::mock(ContainerInterface::class);
         $delegatedTestGenerator = Mockery::mock(TestGenerator::class);
@@ -101,7 +116,7 @@ class DelegateTestGeneratorTest extends TestCase
         $reflectionClass->shouldReceive([
             'isInterface' => false,
             'isAnonymous' => false,
-            'getName'     => 'App\\Services\\ProductService',
+            'getName'     => $class,
         ]);
 
         $this->config->shouldReceive([
@@ -119,11 +134,11 @@ class DelegateTestGeneratorTest extends TestCase
 
         $this->testGenerator->expects($this->once())
             ->method('makeNewContainer')
-            ->with($this->callback(function (ConfigContract $config) {
+            ->with($this->callback(function (ConfigContract $config) use ($expectedGenerator, $expectedClassFactory) {
                 return $config->automaticGeneration() === false
                     && $config->implementations() === [
-                        TestGenerator::class                => LaravelTestGenerator::class,
-                        ClassFactoryContract::class         => UnitClassFactory::class,
+                        TestGenerator::class                => $expectedGenerator,
+                        ClassFactoryContract::class         => $expectedClassFactory,
                         DocumentationFactoryContract::class => DocumentationFactory::class,
                         ImportFactoryContract::class        => ImportFactory::class,
                         MethodFactory::class                => BasicMethodFactory::class,
@@ -145,166 +160,20 @@ class DelegateTestGeneratorTest extends TestCase
         $this->assertSame($testClass, $this->testGenerator->generate($reflectionClass));
     }
 
-    public function testGenerateDelegatesToLaravelPolicy(): void
+    public function generateDelegatesToLaravelDataProvider(): array
     {
-        $reflectionClass = Mockery::mock(ReflectionClass::class);
-        $container = Mockery::mock(ContainerInterface::class);
-        $delegatedTestGenerator = Mockery::mock(TestGenerator::class);
-        $testClass = Mockery::mock(TestClass::class);
-
-        $reflectionClass->shouldReceive([
-            'isInterface' => false,
-            'isAnonymous' => false,
-            'getName'     => 'App\\Policies\\ProductPolicy',
-        ]);
-
-        $this->config->shouldReceive([
-            'toArray' => [
-                'automaticGeneration' => false,
-                'implementations'     => [
-                    TestGenerator::class => DelegateTestGenerator::class,
-                    MethodFactory::class => BasicMethodFactory::class,
-                ],
-            ],
-        ]);
-        $this->config->shouldReceive('getOption')
-            ->with('context')
-            ->andReturn('laravel');
-
-        $this->testGenerator->expects($this->once())
-            ->method('makeNewContainer')
-            ->with($this->callback(function (ConfigContract $config) {
-                return $config->automaticGeneration() === false
-                    && $config->implementations() === [
-                        TestGenerator::class                => PolicyTestGenerator::class,
-                        ClassFactoryContract::class         => UnitClassFactory::class,
-                        DocumentationFactoryContract::class => DocumentationFactory::class,
-                        ImportFactoryContract::class        => ImportFactory::class,
-                        MethodFactory::class                => BasicMethodFactory::class,
-                        PropertyFactoryContract::class      => PropertyFactory::class,
-                        StatementFactoryContract::class     => StatementFactory::class,
-                        ValueFactoryContract::class         => ValueFactory::class,
-                    ];
-            }))
-            ->willReturn($container);
-
-        $container->shouldReceive('get')
-            ->with(TestGenerator::class)
-            ->andReturn($delegatedTestGenerator);
-
-        $delegatedTestGenerator->shouldReceive('generate')
-            ->with($reflectionClass)
-            ->andReturn($testClass);
-
-        $this->assertSame($testClass, $this->testGenerator->generate($reflectionClass));
-    }
-
-    public function testGenerateDelegatesToLaravelChannel(): void
-    {
-        $reflectionClass = Mockery::mock(ReflectionClass::class);
-        $container = Mockery::mock(ContainerInterface::class);
-        $delegatedTestGenerator = Mockery::mock(TestGenerator::class);
-        $testClass = Mockery::mock(TestClass::class);
-
-        $reflectionClass->shouldReceive([
-            'isInterface' => false,
-            'isAnonymous' => false,
-            'getName'     => 'App\\Broadcasting\\ProductChannel',
-        ]);
-
-        $this->config->shouldReceive([
-            'toArray' => [
-                'automaticGeneration' => false,
-                'implementations'     => [
-                    TestGenerator::class => DelegateTestGenerator::class,
-                    MethodFactory::class => BasicMethodFactory::class,
-                ],
-            ],
-        ]);
-        $this->config->shouldReceive('getOption')
-            ->with('context')
-            ->andReturn('laravel');
-
-        $this->testGenerator->expects($this->once())
-            ->method('makeNewContainer')
-            ->with($this->callback(function (ConfigContract $config) {
-                return $config->automaticGeneration() === false
-                    && $config->implementations() === [
-                        TestGenerator::class                => ChannelTestGenerator::class,
-                        ClassFactoryContract::class         => UnitClassFactory::class,
-                        DocumentationFactoryContract::class => DocumentationFactory::class,
-                        ImportFactoryContract::class        => ImportFactory::class,
-                        MethodFactory::class                => BasicMethodFactory::class,
-                        PropertyFactoryContract::class      => PropertyFactory::class,
-                        StatementFactoryContract::class     => StatementFactory::class,
-                        ValueFactoryContract::class         => ValueFactory::class,
-                    ];
-            }))
-            ->willReturn($container);
-
-        $container->shouldReceive('get')
-            ->with(TestGenerator::class)
-            ->andReturn($delegatedTestGenerator);
-
-        $delegatedTestGenerator->shouldReceive('generate')
-            ->with($reflectionClass)
-            ->andReturn($testClass);
-
-        $this->assertSame($testClass, $this->testGenerator->generate($reflectionClass));
-    }
-
-    public function testGenerateDelegatesToLaravelCommand(): void
-    {
-        $reflectionClass = Mockery::mock(ReflectionClass::class);
-        $container = Mockery::mock(ContainerInterface::class);
-        $delegatedTestGenerator = Mockery::mock(TestGenerator::class);
-        $testClass = Mockery::mock(TestClass::class);
-
-        $reflectionClass->shouldReceive([
-            'isInterface' => false,
-            'isAnonymous' => false,
-            'getName'     => 'App\\Console\\Commands\\ProductCommand',
-        ]);
-
-        $this->config->shouldReceive([
-            'toArray' => [
-                'automaticGeneration' => false,
-                'implementations'     => [
-                    TestGenerator::class => DelegateTestGenerator::class,
-                    MethodFactory::class => BasicMethodFactory::class,
-                ],
-            ],
-        ]);
-        $this->config->shouldReceive('getOption')
-            ->with('context')
-            ->andReturn('laravel');
-
-        $this->testGenerator->expects($this->once())
-            ->method('makeNewContainer')
-            ->with($this->callback(function (ConfigContract $config) {
-                return $config->automaticGeneration() === false
-                    && $config->implementations() === [
-                        TestGenerator::class                => CommandTestGenerator::class,
-                        ClassFactoryContract::class         => FeatureClassFactory::class,
-                        DocumentationFactoryContract::class => DocumentationFactory::class,
-                        ImportFactoryContract::class        => ImportFactory::class,
-                        MethodFactory::class                => BasicMethodFactory::class,
-                        PropertyFactoryContract::class      => PropertyFactory::class,
-                        StatementFactoryContract::class     => StatementFactory::class,
-                        ValueFactoryContract::class         => ValueFactory::class,
-                    ];
-            }))
-            ->willReturn($container);
-
-        $container->shouldReceive('get')
-            ->with(TestGenerator::class)
-            ->andReturn($delegatedTestGenerator);
-
-        $delegatedTestGenerator->shouldReceive('generate')
-            ->with($reflectionClass)
-            ->andReturn($testClass);
-
-        $this->assertSame($testClass, $this->testGenerator->generate($reflectionClass));
+        return [
+            ['App\\Services\\ProductService', LaravelTestGenerator::class, UnitClassFactory::class],
+            ['App\\Broadcasting\\ProductChannel', ChannelTestGenerator::class, UnitClassFactory::class],
+            ['App\\Console\\Commands\\PruneOldProducts', CommandTestGenerator::class, FeatureClassFactory::class],
+            ['App\\Http\\Controllers\\ProductController', ControllerTestGenerator::class, FeatureClassFactory::class],
+            ['App\\Jobs\\SendNewProduct', JobTestGenerator::class, UnitClassFactory::class],
+            ['App\\Listeners\\NewProductListener', ListenerTestGenerator::class, UnitClassFactory::class],
+            ['App\\Policies\\ProductPolicy', PolicyTestGenerator::class, UnitClassFactory::class],
+            ['App\\Http\\Resources\\ProductResource', ResourceTestGenerator::class, UnitClassFactory::class],
+            ['App\\Rules\\ProductIsPublicRule', RuleTestGenerator::class, UnitClassFactory::class],
+            ['App\\Policies\\ProductPolicy', PolicyTestGenerator::class, UnitClassFactory::class],
+        ];
     }
 
     public function testGenerateDelegatesToBasic(): void

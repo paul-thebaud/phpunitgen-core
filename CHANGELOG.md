@@ -9,6 +9,7 @@
 - Add a test generator for Laravel Listener.
 - Add a test generator for Laravel Resource.
 - Add a test generator for Laravel Rule.
+- Add the previous test generator to possible delegate test generator's solutions.
 
 **Changed**
 
