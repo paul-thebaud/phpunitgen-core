@@ -2,6 +2,12 @@
 
 ## Not released yet
 
+## 1.0.0-alpha10
+
+**Added**
+
+- Require `roave/better-reflection` with `dev-master` version.
+
 ## 1.0.0-alpha9
 
 **Added**
