@@ -1,6 +1,8 @@
 # Change Log
 
-## Not released yet
+## 1.0.0-beta1
+
+Release the package as a beta stage.
 
 ## 1.0.0-alpha10
 
