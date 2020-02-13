@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.0-beta2
+
+**Added**
+
+- Allow `^5.0` of `phpdocumentor/reflection-docblock`.
+
 ## 1.0.0-beta1
 
 Release the package as a beta stage.
