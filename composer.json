@@ -33,12 +33,6 @@
     "mockery/mockery": "^1.2",
     "phpunit/phpunit": "^8.3"
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/paul-thebaud/BetterReflection"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "PhpUnitGen\\Core\\": "src/"
