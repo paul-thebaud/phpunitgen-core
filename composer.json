@@ -26,7 +26,7 @@
     "php": "^7.2",
     "league/container": "^3.2",
     "phpdocumentor/reflection-docblock": "^4.0|^5.0",
-    "roave/better-reflection": "dev-master",
+    "roave/better-reflection": "4.0.x-dev",
     "tightenco/collect": "^6.0"
   },
   "require-dev": {
