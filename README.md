@@ -1,4 +1,4 @@
-<h1 align="center">PhpUnitGen - Core</h1>
+<p align="center"><img src="https://raw.githubusercontent.com/paul-thebaud/phpunitgen-webapp/master/resources/svg/logo.svg?sanitize=true" alt="PhpUnitGen" height="50"></p>
 
 <p align="center">
 <a href="https://packagist.org/packages/phpunitgen/core"><img src="https://poser.pugx.org/phpunitgen/core/d/total.svg" alt="Total Downloads"></a>
