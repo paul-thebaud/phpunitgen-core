@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.1
+
+**Changed**
+
+- Indicates `^4.0` instead of `4.0.x-dev` for `BetterReflection`
+
 ## 1.0.0-beta3
 
 **Changed**
