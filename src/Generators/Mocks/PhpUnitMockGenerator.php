@@ -38,6 +38,6 @@ class PhpUnitMockGenerator implements MockGenerator, ImportFactoryAware
     {
         $mockedType = $this->importFactory->make($class, $type);
 
-        return "\$this->getMock({$mockedType->getFinalName()}::class)";
+        return "\$this->createMock({$mockedType->getFinalName()}::class)";
     }
 }

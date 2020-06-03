@@ -68,6 +68,6 @@ class PhpUnitMockGeneratorTest extends TestCase
             ->once()
             ->andReturn('Foo');
 
-        $this->assertSame('$this->getMock(Foo::class)', $this->phpunitMockGenerator->generateMock($class, 'Foo'));
+        $this->assertSame('$this->createMock(Foo::class)', $this->phpunitMockGenerator->generateMock($class, 'Foo'));
     }
 }
