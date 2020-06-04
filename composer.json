@@ -23,7 +23,7 @@
     }
   ],
   "require": {
-    "php": "^7.2",
+    "php": "^7.1",
     "league/container": "^3.2",
     "phpdocumentor/reflection-docblock": "^4.0|^5.0",
     "roave/better-reflection": "^4.0",

@@ -161,7 +161,7 @@ class Reflect
      *
      * @return DocBlock|null
      */
-    public static function docBlock(object $reflectionObject): ?DocBlock
+    public static function docBlock($reflectionObject): ?DocBlock
     {
         $docComment = $reflectionObject->getDocComment();
 
@@ -175,7 +175,7 @@ class Reflect
      *
      * @return Collection
      */
-    public static function docBlockTags(object $reflectionObject): Collection
+    public static function docBlockTags($reflectionObject): Collection
     {
         $docBlock = self::docBlock($reflectionObject);
 
