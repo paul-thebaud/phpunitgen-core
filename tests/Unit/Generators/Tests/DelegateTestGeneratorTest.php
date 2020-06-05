@@ -70,9 +70,9 @@ class DelegateTestGeneratorTest extends TestCase
         parent::setUp();
 
         $this->config = Mockery::mock(ConfigContract::class);
-        $this->testGenerator = $this->getMockBuilder(DelegateTestGenerator::class)
-            ->onlyMethods(['makeNewContainer'])
-            ->getMock();
+        $this->testGenerator = Mockery::mock(DelegateTestGenerator::class)
+            ->shouldAllowMockingProtectedMethods()
+            ->makePartial();
         $this->testGenerator->setConfig($this->config);
     }
 
@@ -132,9 +132,9 @@ class DelegateTestGeneratorTest extends TestCase
             ->with('context')
             ->andReturn('laravel');
 
-        $this->testGenerator->expects($this->once())
-            ->method('makeNewContainer')
-            ->with($this->callback(function (ConfigContract $config) use ($expectedGenerator, $expectedClassFactory) {
+        $this->testGenerator->shouldReceive('makeNewContainer')
+            ->once()
+            ->with(Mockery::on(function (ConfigContract $config) use ($expectedGenerator, $expectedClassFactory) {
                 return $config->automaticGeneration() === false
                     && $config->implementations() === [
                         TestGenerator::class                => $expectedGenerator,
@@ -147,7 +147,7 @@ class DelegateTestGeneratorTest extends TestCase
                         ValueFactoryContract::class         => ValueFactory::class,
                     ];
             }))
-            ->willReturn($container);
+            ->andReturn($container);
 
         $container->shouldReceive('get')
             ->with(TestGenerator::class)
@@ -202,9 +202,9 @@ class DelegateTestGeneratorTest extends TestCase
             ->with('context')
             ->andReturn(null);
 
-        $this->testGenerator->expects($this->once())
-            ->method('makeNewContainer')
-            ->with($this->callback(function (ConfigContract $config) {
+        $this->testGenerator->shouldReceive('makeNewContainer')
+            ->once()
+            ->with(Mockery::on(function (ConfigContract $config) {
                 return $config->automaticGeneration() === false
                     && $config->implementations() === [
                         TestGenerator::class                => BasicTestGenerator::class,
@@ -217,7 +217,7 @@ class DelegateTestGeneratorTest extends TestCase
                         ValueFactoryContract::class         => ValueFactory::class,
                     ];
             }))
-            ->willReturn($container);
+            ->andReturn($container);
 
         $container->shouldReceive('get')
             ->with(TestGenerator::class)
