@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.1
+
+**Changed**
+
+- Support for `tightenco/collect` `5.8` to `7.0`.
+
 ## 1.1.0
 
 **Added**
