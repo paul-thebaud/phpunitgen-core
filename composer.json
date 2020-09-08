@@ -27,7 +27,7 @@
     "league/container": "^3.2",
     "phpdocumentor/reflection-docblock": "^4.0|^5.0",
     "roave/better-reflection": "^3.3|^4.0",
-    "tightenco/collect": "^5.8|^6.0|^7.0"
+    "tightenco/collect": "^5.8|^6.0|^7.0|^8.0.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.3",
