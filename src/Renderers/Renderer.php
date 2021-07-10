@@ -57,7 +57,7 @@ class Renderer implements RendererContract
                 ->map(function (RenderedLine $line) {
                     return $line->render();
                 })
-                ->implode("\n")
+                ->implode(PHP_EOL)
         );
     }
 

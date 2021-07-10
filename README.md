@@ -3,7 +3,7 @@
 <p align="center">
 <a href="https://packagist.org/packages/phpunitgen/core"><img src="https://poser.pugx.org/phpunitgen/core/d/total.svg" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/phpunitgen/core"><img src="https://poser.pugx.org/phpunitgen/core/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://travis-ci.org/paul-thebaud/phpunitgen-core" target="_blank"><img src="https://travis-ci.org/paul-thebaud/phpunitgen-core.svg?branch=master" alt="Build Status"></a>
+<a href="https://github.com/paul-thebaud/phpunitgen-core/actions/workflows/main.yml" target="_blank"><img src="https://github.com/paul-thebaud/phpunitgen-core/actions/workflows/main.yml/badge.svg" alt="Build Status"></a>
 <a href="https://github.styleci.io/repos/190246590" target="_blank"><img src="https://github.styleci.io/repos/190246590/shield?branch=master&style=flat" alt="StyleCI"></a>
 <a href="https://sonarcloud.io/dashboard?id=paul-thebaud_phpunitgen-core" target="_blank"><img src="https://sonarcloud.io/api/project_badges/measure?project=paul-thebaud_phpunitgen-core&metric=alert_status" alt="Quality Gate Status"></a>
 <a href="https://sonarcloud.io/dashboard?id=paul-thebaud_phpunitgen-core" target="_blank"><img src="https://sonarcloud.io/api/project_badges/measure?project=paul-thebaud_phpunitgen-core&metric=coverage" alt="Coverage"></a>
