@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.3
+
+**Changed**
+
+- Changed line separator `\n` in `Renderer` to `PHP_EOL` (better compatibility with Windows and tests fix).
+
 ## 1.1.2
 
 **Added**
