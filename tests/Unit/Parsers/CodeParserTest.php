@@ -8,7 +8,7 @@ use Mockery\Mock;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Parsers\Sources\StringSource;
-use Roave\BetterReflection\BetterReflection;
+use PHPStan\BetterReflection\BetterReflection;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

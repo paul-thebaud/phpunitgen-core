@@ -8,7 +8,7 @@ use PhpUnitGen\Core\Generators\Tests\Laravel\Command\CommandMethodFactory;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestStatement;
-use Roave\BetterReflection\Reflection\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Class ControllerMethodFactory.

@@ -9,7 +9,7 @@ use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
 use PhpUnitGen\Core\Generators\Tests\Concerns\ChecksMethods;
 use PhpUnitGen\Core\Generators\Tests\Concerns\MocksParameters;
 use PhpUnitGen\Core\Models\TestClass;
-use Roave\BetterReflection\Reflection\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Class RuleMethodFactory.

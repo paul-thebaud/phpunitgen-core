@@ -26,7 +26,7 @@ use PhpUnitGen\Core\Generators\Tests\Laravel\Rule\RuleTestGenerator;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
 use Psr\Container\ContainerInterface;
-use Roave\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Class DelegateTestGenerator.

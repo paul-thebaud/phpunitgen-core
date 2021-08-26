@@ -10,7 +10,7 @@ use PhpUnitGen\Core\Generators\Tests\Concerns\ChecksMethods;
 use PhpUnitGen\Core\Generators\Tests\Laravel\FeatureClassFactory;
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
 use PhpUnitGen\Core\Models\TestClass;
-use Roave\BetterReflection\Reflection\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Class CommandTestGenerator.

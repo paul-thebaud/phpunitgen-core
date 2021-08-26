@@ -42,7 +42,7 @@ use PhpUnitGen\Core\Generators\Tests\Laravel\Rule\RuleTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UnitClassFactory;
 use PhpUnitGen\Core\Models\TestClass;
 use Psr\Container\ContainerInterface;
-use Roave\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

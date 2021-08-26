@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Factories;
 
+use PHPStan\BetterReflection\Reflection\ReflectionParameter;
 use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\MockGeneratorAwareTrait;
@@ -13,10 +14,10 @@ use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\PropertyFactory as PropertyFactoryContract;
 use PhpUnitGen\Core\Generators\Concerns\InstantiatesClass;
 use PhpUnitGen\Core\Helpers\Reflect;
+use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestProperty;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Tightenco\Collect\Support\Collection;
 
 /**

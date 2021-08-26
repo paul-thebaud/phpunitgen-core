@@ -16,7 +16,7 @@ use PhpUnitGen\Core\Models\TestStatement;
 use PhpUnitGen\Core\Models\TestTrait;
 use PhpUnitGen\Core\Renderers\RenderedLine;
 use PhpUnitGen\Core\Renderers\Renderer;
-use Roave\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

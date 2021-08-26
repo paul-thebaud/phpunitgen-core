@@ -10,7 +10,7 @@ use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as Statement
 use PhpUnitGen\Core\Generators\Concerns\InstantiatesClass;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestStatement;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
+use PHPStan\BetterReflection\Reflection\ReflectionParameter;
 use Tightenco\Collect\Support\Collection;
 
 /**

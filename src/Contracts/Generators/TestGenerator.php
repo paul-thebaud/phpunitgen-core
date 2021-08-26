@@ -7,7 +7,7 @@ namespace PhpUnitGen\Core\Contracts\Generators;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Models\TestClass;
-use Roave\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Interface TestGenerator.

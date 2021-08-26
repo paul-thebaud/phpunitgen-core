@@ -49,7 +49,7 @@ use PhpUnitGen\Core\Generators\Tests\DelegateTestGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Renderers\Renderer;
-use Roave\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

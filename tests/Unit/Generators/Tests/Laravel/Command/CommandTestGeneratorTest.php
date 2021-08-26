@@ -25,9 +25,9 @@ use PhpUnitGen\Core\Generators\Tests\Laravel\Command\CommandTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\FeatureClassFactory;
 use PhpUnitGen\Core\Models\TestClass;
 use ReflectionException;
-use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflection\ReflectionMethod;
-use Roave\BetterReflection\Reflection\ReflectionProperty;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\ReflectionProperty;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

@@ -6,7 +6,7 @@ namespace PhpUnitGen\Core\Contracts\Generators\Factories;
 
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestProperty;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
+use PHPStan\BetterReflection\Reflection\ReflectionParameter;
 
 /**
  * Interface PropertyFactory.

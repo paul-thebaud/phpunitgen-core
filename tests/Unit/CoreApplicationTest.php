@@ -14,7 +14,7 @@ use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\CoreApplication;
 use PhpUnitGen\Core\Models\TestClass;
 use Psr\Container\ContainerInterface;
-use Roave\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

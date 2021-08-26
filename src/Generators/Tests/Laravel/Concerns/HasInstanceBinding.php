@@ -4,7 +4,7 @@ namespace PhpUnitGen\Core\Generators\Tests\Laravel\Concerns;
 
 use PhpUnitGen\Core\Generators\Concerns\InstantiatesClass;
 use PhpUnitGen\Core\Models\TestStatement;
-use Roave\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Trait HasInstanceBinding.

@@ -6,8 +6,8 @@ namespace PhpUnitGen\Core\Generators\Tests\Basic;
 
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Helpers\Str;
-use Roave\BetterReflection\Reflection\ReflectionMethod;
-use Roave\BetterReflection\Reflection\ReflectionProperty;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\ReflectionProperty;
 
 /**
  * Trait ManagesGetterAndSetter.
