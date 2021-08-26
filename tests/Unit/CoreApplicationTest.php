@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit;
 
 use Mockery;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
 use PhpUnitGen\Core\Contracts\Parsers\CodeParser;
@@ -14,7 +15,6 @@ use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\CoreApplication;
 use PhpUnitGen\Core\Models\TestClass;
 use Psr\Container\ContainerInterface;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

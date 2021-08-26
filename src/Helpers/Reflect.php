@@ -7,11 +7,11 @@ namespace PhpUnitGen\Core\Helpers;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
-use PhpUnitGen\Core\Reflection\ReflectionType;
 use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\ReflectionProperty;
+use PhpUnitGen\Core\Reflection\ReflectionType;
 use Tightenco\Collect\Support\Collection;
 
 /**

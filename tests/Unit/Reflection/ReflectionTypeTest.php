@@ -3,8 +3,8 @@
 namespace Tests\PhpUnitGen\Core\Unit\Reflection;
 
 use Mockery;
-use PhpUnitGen\Core\Reflection\ReflectionType;
 use PHPStan\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
+use PhpUnitGen\Core\Reflection\ReflectionType;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

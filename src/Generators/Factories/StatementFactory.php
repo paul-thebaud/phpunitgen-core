@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Factories;
 
+use PHPStan\BetterReflection\Reflection\ReflectionParameter;
 use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;
 use PhpUnitGen\Core\Generators\Concerns\InstantiatesClass;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestStatement;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
 use Tightenco\Collect\Support\Collection;
 
 /**

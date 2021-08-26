@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Controller;
 
+use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
 use PhpUnitGen\Core\Generators\Tests\Concerns\ChecksMethods;
 use PhpUnitGen\Core\Generators\Tests\Laravel\FeatureClassFactory;
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;
 use PhpUnitGen\Core\Models\TestClass;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Class ControllerTestGenerator.

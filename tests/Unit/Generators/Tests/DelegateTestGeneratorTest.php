@@ -7,6 +7,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Tests;
 use League\Container\Container;
 use Mockery;
 use Mockery\Mock;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
@@ -42,7 +43,6 @@ use PhpUnitGen\Core\Generators\Tests\Laravel\Rule\RuleTestGenerator;
 use PhpUnitGen\Core\Generators\Tests\Laravel\UnitClassFactory;
 use PhpUnitGen\Core\Models\TestClass;
 use Psr\Container\ContainerInterface;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Contracts\Parsers;
 
-use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PHPStan\BetterReflection\Reflection\ReflectionClass;
+use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 
 /**
  * Interface CodeParser.
