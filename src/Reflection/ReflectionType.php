@@ -54,7 +54,12 @@ class ReflectionType
      */
     public function __construct(string $type, bool $nullable)
     {
-        $this->type = ltrim($type, '\\');
+        $clearedType = ltrim($type, '\\');
+        if (Str::contains('|', $clearedType)) {
+            $clearedType = explode('|', $clearedType)[0];
+        }
+
+        $this->type = $clearedType;
         $this->nullable = $nullable;
     }
 

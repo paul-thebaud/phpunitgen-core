@@ -1,0 +1,136 @@
+<?php
+
+namespace Tests\Entity;
+
+use App\Entity\Person;
+use App\Entity\Work;
+use App\Services\Connection;
+use Mockery;
+use Mockery\Mock;
+use ReflectionClass;
+use Tests\TestCase;
+
+/**
+ * Class PersonTest.
+ *
+ * @covers \App\Entity\Person
+ */
+class PersonTest extends TestCase
+{
+    /**
+     * @var Person
+     */
+    protected $person;
+
+    /**
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * @var Work|Mock
+     */
+    protected $work;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->name = '42';
+        $this->work = Mockery::mock(Work::class);
+        $this->person = new Person($this->name, $this->work);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->person);
+        unset($this->name);
+        unset($this->work);
+    }
+
+    public function testGetConnection(): void
+    {
+        $expected = Mockery::mock(Connection::class);
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('connection');
+        $property->setAccessible(true);
+        $property->setValue(null, $expected);
+        $this->assertSame($expected, Person::getConnection());
+    }
+
+    public function testSetConnection(): void
+    {
+        $expected = Mockery::mock(Connection::class);
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('connection');
+        $property->setAccessible(true);
+        Person::setConnection($expected);
+        $this->assertSame($expected, $property->getValue(null));
+    }
+
+    public function testFind(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->markTestIncomplete();
+    }
+
+    public function testSave(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->markTestIncomplete();
+    }
+
+    public function testDelete(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->markTestIncomplete();
+    }
+
+    public function testGetName(): void
+    {
+        $expected = '42';
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('name');
+        $property->setAccessible(true);
+        $property->setValue($this->person, $expected);
+        $this->assertSame($expected, $this->person->getName());
+    }
+
+    public function testSetName(): void
+    {
+        $expected = '42';
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('name');
+        $property->setAccessible(true);
+        $this->person->setName($expected);
+        $this->assertSame($expected, $property->getValue($this->person));
+    }
+
+    public function testGetWork(): void
+    {
+        $expected = Mockery::mock(Work::class);
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('work');
+        $property->setAccessible(true);
+        $property->setValue($this->person, $expected);
+        $this->assertSame($expected, $this->person->getWork());
+    }
+
+    public function testSetWork(): void
+    {
+        $expected = Mockery::mock(Work::class);
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('work');
+        $property->setAccessible(true);
+        $this->person->setWork($expected);
+        $this->assertSame($expected, $property->getValue($this->person));
+    }
+}

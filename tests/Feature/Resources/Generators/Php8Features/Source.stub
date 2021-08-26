@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Entity;
+
+use App\Services\Connection;
+
+#[Model("persons", methods: ["GET", "POST", "DELETE"])]
+class Person
+{
+    protected static $connection;
+
+    public static function getConnection(): Connection
+    {
+    }
+
+    public static function setConnection(Connection $connection): void
+    {
+    }
+
+    public static function find(string $name): ?self
+    {
+        return $this->getConnection()?->entities?->find(self::class, name: $name);
+    }
+
+    public function __construct(
+        protected string $name,
+        protected Work|SpecialWork $work
+    ) {}
+
+    public function save(): self
+    {
+    }
+
+    public function delete(): self
+    {
+    }
+
+    public function getName(): string
+    {
+    }
+
+    public function setName(string $name): void
+    {
+    }
+
+    public function getWork(): Work|SpecialWork
+    {
+    }
+
+    public function setWork(Work $work): void
+    {
+    }
+}
