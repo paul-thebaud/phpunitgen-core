@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Factories;
 
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
@@ -11,7 +12,6 @@ use PhpUnitGen\Core\Contracts\Aware\DocumentationFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Class ClassFactory.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests;
 
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Container\CoreContainerFactory;
@@ -26,7 +27,6 @@ use PhpUnitGen\Core\Generators\Tests\Laravel\Rule\RuleTestGenerator;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
 use Psr\Container\ContainerInterface;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Class DelegateTestGenerator.

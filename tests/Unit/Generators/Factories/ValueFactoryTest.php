@@ -6,11 +6,11 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Factories;
 
 use Mockery;
 use Mockery\Mock;
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
 use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Reflection\ReflectionType;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Channel;
 
+use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
@@ -11,7 +12,6 @@ use PhpUnitGen\Core\Generators\Tests\Concerns\ChecksMethods;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\UsesUserModel;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
-use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Class ChannelMethodFactory.

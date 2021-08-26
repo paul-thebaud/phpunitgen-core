@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Concerns;
 
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Helpers\Reflect;
-use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Trait InstantiatesClass.

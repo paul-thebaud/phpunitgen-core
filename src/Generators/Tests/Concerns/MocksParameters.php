@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Concerns;
 
+use PHPStan\BetterReflection\Reflection\ReflectionParameter;
 use PhpUnitGen\Core\Aware\StatementFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ValueFactoryAwareTrait;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestStatement;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Tightenco\Collect\Support\Collection;
 
 /**

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Models;
 
+use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\Concerns\HasTestDocumentation;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tightenco\Collect\Support\Collection;
 
 /**
