@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.0-alpha2
+
+**Changed**
+
+- Change `ondrejmirtes/better-reflection` versions constraints to avoid namespace conflicts.
+
 ## 2.0.0-alpha1
 
 **Changed**
