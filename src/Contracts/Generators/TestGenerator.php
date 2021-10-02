@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Contracts\Generators;
 
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Models\TestClass;

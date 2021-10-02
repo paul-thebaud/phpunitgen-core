@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Generators\Factories;
 
 use Mockery;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Generators\Factories\ClassFactory;

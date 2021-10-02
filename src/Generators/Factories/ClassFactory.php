@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Factories;
 
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;

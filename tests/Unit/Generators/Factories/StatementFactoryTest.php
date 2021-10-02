@@ -6,8 +6,8 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Factories;
 
 use Mockery;
 use Mockery\Mock;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Generators\Factories\StatementFactory;
 use PhpUnitGen\Core\Models\TestClass;

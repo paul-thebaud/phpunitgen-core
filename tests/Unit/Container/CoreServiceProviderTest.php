@@ -8,7 +8,7 @@ use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Mockery;
 use Mockery\Mock;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Aware\ClassFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;

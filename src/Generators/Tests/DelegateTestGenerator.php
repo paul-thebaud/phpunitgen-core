@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests;
 
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Container\CoreContainerFactory;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Policy;
 
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Contracts\Aware\StatementFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Concerns\UsesUserModel;

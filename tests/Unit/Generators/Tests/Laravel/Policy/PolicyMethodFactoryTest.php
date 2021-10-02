@@ -6,11 +6,11 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Tests\Laravel\Policy;
 
 use Mockery;
 use Mockery\Mock;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
-use PHPStan\BetterReflection\Reflection\ReflectionProperty;
-use PHPStan\BetterReflection\Reflection\ReflectionType;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionProperty;
+use Roave\BetterReflection\Reflection\ReflectionType;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
@@ -24,6 +24,7 @@ use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestStatement;
 use PhpUnitGen\Core\Reflection\ReflectionType as PugReflectionType;
+use Tests\PhpUnitGen\Core\Helpers\PhpVersionDependents;
 use Tests\PhpUnitGen\Core\TestCase;
 use Tightenco\Collect\Support\Collection;
 
@@ -218,7 +219,7 @@ class PolicyMethodFactoryTest extends TestCase
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParamUser = Mockery::mock(ReflectionParameter::class);
-        $reflectionTypeUser = Mockery::mock(ReflectionType::class);
+        $reflectionTypeUser = PhpVersionDependents::makeReflectionTypeMock();
 
         $class = new TestClass($reflectionClass, 'App\\FooTest');
 
@@ -286,8 +287,8 @@ class PolicyMethodFactoryTest extends TestCase
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParamUser = Mockery::mock(ReflectionParameter::class);
         $reflectionParamProduct = Mockery::mock(ReflectionParameter::class);
-        $reflectionTypeUser = Mockery::mock(ReflectionType::class);
-        $reflectionTypeProduct = Mockery::mock(ReflectionType::class);
+        $reflectionTypeUser = PhpVersionDependents::makeReflectionTypeMock();
+        $reflectionTypeProduct = PhpVersionDependents::makeReflectionTypeMock();
 
         $class = new TestClass($reflectionClass, 'App\\FooTest');
 
@@ -379,9 +380,9 @@ class PolicyMethodFactoryTest extends TestCase
         $reflectionParamUser = Mockery::mock(ReflectionParameter::class);
         $reflectionParamProduct = Mockery::mock(ReflectionParameter::class);
         $reflectionParamCategory = Mockery::mock(ReflectionParameter::class);
-        $reflectionTypeUser = Mockery::mock(ReflectionType::class);
-        $reflectionTypeProduct = Mockery::mock(ReflectionType::class);
-        $reflectionTypeCategory = Mockery::mock(ReflectionType::class);
+        $reflectionTypeUser = PhpVersionDependents::makeReflectionTypeMock();
+        $reflectionTypeProduct = PhpVersionDependents::makeReflectionTypeMock();
+        $reflectionTypeCategory = PhpVersionDependents::makeReflectionTypeMock();
 
         $class = new TestClass($reflectionClass, 'App\\FooTest');
 

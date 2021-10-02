@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Basic;
 
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Factories\MethodFactory;
 use PhpUnitGen\Core\Helpers\Reflect;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Factories;
 
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
 use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\StatementFactoryAwareTrait;

@@ -3,7 +3,7 @@
 namespace Tests\PhpUnitGen\Core\Unit\Reflection;
 
 use Mockery;
-use PHPStan\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
+use Roave\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
 use PhpUnitGen\Core\Reflection\ReflectionType;
 use Tests\PhpUnitGen\Core\TestCase;
 

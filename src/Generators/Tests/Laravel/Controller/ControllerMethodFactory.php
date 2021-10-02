@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Controller;
 
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Command\CommandMethodFactory;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;

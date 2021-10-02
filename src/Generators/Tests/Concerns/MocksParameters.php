@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Concerns;
 
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
 use PhpUnitGen\Core\Aware\StatementFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ValueFactoryAwareTrait;
 use PhpUnitGen\Core\Helpers\Reflect;

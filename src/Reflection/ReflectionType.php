@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Reflection;
 
-use PHPStan\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
+use Roave\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
 use PhpUnitGen\Core\Helpers\Str;
 use Tightenco\Collect\Support\Collection;
 

@@ -6,10 +6,10 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Tests\Basic;
 
 use Mockery;
 use Mockery\Mock;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
-use PHPStan\BetterReflection\Reflection\ReflectionProperty;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionProperty;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory;

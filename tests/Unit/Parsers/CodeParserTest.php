@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Parsers;
 
 use Mockery\Mock;
-use PHPStan\BetterReflection\BetterReflection;
+use Roave\BetterReflection\BetterReflection;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Parsers\Sources\StringSource;

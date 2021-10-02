@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Job;
 
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
 use PhpUnitGen\Core\Generators\Tests\Concerns\ChecksMethods;
 use PhpUnitGen\Core\Generators\Tests\Laravel\LaravelTestGenerator;

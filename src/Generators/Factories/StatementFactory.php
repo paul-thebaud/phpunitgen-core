@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Factories;
 
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
 use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;

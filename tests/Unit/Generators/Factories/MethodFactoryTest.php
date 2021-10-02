@@ -6,10 +6,10 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Factories;
 
 use Mockery;
 use Mockery\Mock;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
-use PHPStan\BetterReflection\Reflection\ReflectionType;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionType;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory;
@@ -21,6 +21,7 @@ use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestProperty;
 use PhpUnitGen\Core\Models\TestStatement;
 use PhpUnitGen\Core\Reflection\ReflectionType as PugReflectionType;
+use Tests\PhpUnitGen\Core\Helpers\PhpVersionDependents;
 use Tests\PhpUnitGen\Core\TestCase;
 use Tightenco\Collect\Support\Collection;
 
@@ -158,7 +159,7 @@ class MethodFactoryTest extends TestCase
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParameter1 = Mockery::mock(ReflectionParameter::class);
         $reflectionParameter2 = Mockery::mock(ReflectionParameter::class);
-        $reflectionType = Mockery::mock(ReflectionType::class);
+        $reflectionType = PhpVersionDependents::makeReflectionTypeMock();
         $doc = Mockery::mock(TestDocumentation::class);
 
         $class = new TestClass($reflectionClass, 'FooTest');
