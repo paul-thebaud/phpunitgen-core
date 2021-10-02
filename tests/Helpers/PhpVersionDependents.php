@@ -3,8 +3,8 @@
 namespace Tests\PhpUnitGen\Core\Helpers;
 
 use Mockery;
-use Mockery\Mock;
 use Mockery\LegacyMockInterface;
+use Mockery\Mock;
 use PhpUnitGen\Core\Helpers\Str;
 use Roave\BetterReflection\Reflection\ReflectionNamedType;
 use Roave\BetterReflection\Reflection\ReflectionType;

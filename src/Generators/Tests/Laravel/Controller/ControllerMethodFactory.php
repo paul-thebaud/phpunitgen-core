@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Controller;
 
-use Roave\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Generators\Tests\Laravel\Command\CommandMethodFactory;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestStatement;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Class ControllerMethodFactory.

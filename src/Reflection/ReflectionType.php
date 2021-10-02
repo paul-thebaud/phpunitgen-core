@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Reflection;
 
-use Roave\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
 use PhpUnitGen\Core\Helpers\Str;
+use Roave\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
 use Tightenco\Collect\Support\Collection;
 
 /**
@@ -72,6 +72,7 @@ class ReflectionType
      */
     public static function makeForBetterReflectionType(BetterReflectionType $reflectionType): self
     {
+        dump(strval($reflectionType), $reflectionType->allowsNull());
         return new self(strval($reflectionType), $reflectionType->allowsNull());
     }
 

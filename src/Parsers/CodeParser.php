@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Parsers;
 
+use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
+use PhpUnitGen\Core\Contracts\Parsers\Source;
+use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\SourceLocator\Ast\Exception\ParseToAstFailure;
 use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
-use PhpUnitGen\Core\Contracts\Parsers\CodeParser as CodeParserContract;
-use PhpUnitGen\Core\Contracts\Parsers\Source;
-use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 
 /**
  * Class CodeParser.

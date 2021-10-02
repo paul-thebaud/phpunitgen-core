@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Renderers;
 
 use Mockery;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
@@ -17,6 +16,7 @@ use PhpUnitGen\Core\Models\TestStatement;
 use PhpUnitGen\Core\Models\TestTrait;
 use PhpUnitGen\Core\Renderers\RenderedLine;
 use PhpUnitGen\Core\Renderers\Renderer;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

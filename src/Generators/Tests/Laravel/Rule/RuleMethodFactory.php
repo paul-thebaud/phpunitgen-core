@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Rule;
 
-use Roave\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
 use PhpUnitGen\Core\Generators\Tests\Concerns\ChecksMethods;
 use PhpUnitGen\Core\Generators\Tests\Concerns\MocksParameters;
 use PhpUnitGen\Core\Models\TestClass;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Class RuleMethodFactory.

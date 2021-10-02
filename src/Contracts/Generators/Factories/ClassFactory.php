@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Contracts\Generators\Factories;
 
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Models\TestClass;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Interface ClassFactory.
