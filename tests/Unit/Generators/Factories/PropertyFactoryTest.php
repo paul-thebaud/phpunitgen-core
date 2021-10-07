@@ -113,8 +113,8 @@ class PropertyFactoryTest extends TestCase
         ]);
 
         $reflectionParameter->shouldReceive([
-            'getName'                => 'bar',
-            'getType'                => $reflectionType,
+            'getName'          => 'bar',
+            'getType'          => $reflectionType,
             'getDocBlockTypes' => [],
         ]);
 
@@ -191,8 +191,8 @@ class PropertyFactoryTest extends TestCase
         ]);
 
         $reflectionParameter->shouldReceive([
-            'getName'                => 'bar',
-            'getType'                => $reflectionType,
+            'getName'          => 'bar',
+            'getType'          => $reflectionType,
             'getDocBlockTypes' => [],
         ]);
 

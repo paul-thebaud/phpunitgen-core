@@ -179,14 +179,14 @@ class MethodFactoryTest extends TestCase
         ]);
 
         $reflectionParameter1->shouldReceive([
-            'getType'                => null,
+            'getType'          => null,
             'getDocBlockTypes' => [],
-            'getName'                => 'bar',
+            'getName'          => 'bar',
         ]);
         $reflectionParameter2->shouldReceive([
-            'getType'                => $reflectionType,
+            'getType'          => $reflectionType,
             'getDocBlockTypes' => [],
-            'getName'                => 'baz',
+            'getName'          => 'baz',
         ]);
 
         $reflectionType->shouldReceive([

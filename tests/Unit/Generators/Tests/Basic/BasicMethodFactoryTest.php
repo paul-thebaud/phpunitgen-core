@@ -222,7 +222,7 @@ class BasicMethodFactoryTest extends TestCase
         ]);
 
         $reflectionParameter->shouldReceive([
-            'getType'                => null,
+            'getType'          => null,
             'getDocBlockTypes' => [],
         ]);
 

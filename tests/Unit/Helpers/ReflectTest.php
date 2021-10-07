@@ -104,7 +104,7 @@ class ReflectTest extends TestCase
         $reflectionType = PhpVersionDependents::makeReflectionTypeMock();
 
         $reflectionParameter->shouldReceive([
-            'getType'                => $reflectionType,
+            'getType'          => $reflectionType,
             'getDocBlockTypes' => [],
         ]);
         $reflectionType->shouldReceive([
@@ -124,7 +124,7 @@ class ReflectTest extends TestCase
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
 
         $reflectionParameter->shouldReceive([
-            'getType'                => null,
+            'getType'          => null,
             'getDocBlockTypes' => ['string', 'null'],
         ]);
 
@@ -140,7 +140,7 @@ class ReflectTest extends TestCase
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
 
         $reflectionParameter->shouldReceive([
-            'getType'                => null,
+            'getType'          => null,
             'getDocBlockTypes' => [],
         ]);
 
