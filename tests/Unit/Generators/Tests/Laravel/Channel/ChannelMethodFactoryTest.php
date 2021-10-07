@@ -197,10 +197,11 @@ class ChannelMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'bar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => true,
+            'getShortName'           => 'bar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => true,
         ]);
 
         $this->expectException(InvalidArgumentException::class);

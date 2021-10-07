@@ -113,8 +113,9 @@ class PropertyFactoryTest extends TestCase
         ]);
 
         $reflectionParameter->shouldReceive([
-            'getName' => 'bar',
-            'getType' => $reflectionType,
+            'getName'                => 'bar',
+            'getType'                => $reflectionType,
+            'getDocBlockTypes' => [],
         ]);
 
         $this->importFactory->shouldReceive('make')
@@ -192,7 +193,7 @@ class PropertyFactoryTest extends TestCase
         $reflectionParameter->shouldReceive([
             'getName'                => 'bar',
             'getType'                => $reflectionType,
-            'getDocBlockTypeStrings' => [],
+            'getDocBlockTypes' => [],
         ]);
 
         $this->documentationFactory->shouldReceive('makeForProperty')

@@ -201,10 +201,11 @@ class PolicyMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'bar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => true,
+            'getShortName'           => 'bar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => true,
         ]);
 
         $this->expectException(InvalidArgumentException::class);
@@ -228,16 +229,18 @@ class PolicyMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'bar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => false,
-            'getParameters'     => [$reflectionParamUser],
+            'getShortName'           => 'bar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => false,
+            'getParameters'          => [$reflectionParamUser],
         ]);
 
         $reflectionParamUser->shouldReceive([
-            'getName' => 'user',
-            'getType' => $reflectionTypeUser,
+            'getName'          => 'user',
+            'getType'          => $reflectionTypeUser,
+            'getDocBlockTypes' => [],
         ]);
 
         $this->statementFactory->shouldReceive('makeTodo')
@@ -297,20 +300,23 @@ class PolicyMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'bar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => false,
-            'getParameters'     => [$reflectionParamUser, $reflectionParamProduct],
+            'getShortName'           => 'bar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => false,
+            'getParameters'          => [$reflectionParamUser, $reflectionParamProduct],
         ]);
 
         $reflectionParamUser->shouldReceive([
-            'getName' => 'user',
-            'getType' => $reflectionTypeUser,
+            'getName'          => 'user',
+            'getType'          => $reflectionTypeUser,
+            'getDocBlockTypes' => [],
         ]);
         $reflectionParamProduct->shouldReceive([
-            'getName' => 'product',
-            'getType' => $reflectionTypeProduct,
+            'getName'          => 'product',
+            'getType'          => $reflectionTypeProduct,
+            'getDocBlockTypes' => [],
         ]);
 
         $reflectionTypeProduct->shouldReceive([
@@ -391,24 +397,28 @@ class PolicyMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'bar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => false,
-            'getParameters'     => [$reflectionParamUser, $reflectionParamProduct, $reflectionParamCategory],
+            'getShortName'           => 'bar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => false,
+            'getParameters'          => [$reflectionParamUser, $reflectionParamProduct, $reflectionParamCategory],
         ]);
 
         $reflectionParamUser->shouldReceive([
-            'getName' => 'user',
-            'getType' => $reflectionTypeUser,
+            'getName'          => 'user',
+            'getType'          => $reflectionTypeUser,
+            'getDocBlockTypes' => [],
         ]);
         $reflectionParamProduct->shouldReceive([
-            'getName' => 'product',
-            'getType' => $reflectionTypeProduct,
+            'getName'          => 'product',
+            'getType'          => $reflectionTypeProduct,
+            'getDocBlockTypes' => [],
         ]);
         $reflectionParamCategory->shouldReceive([
-            'getName' => 'category',
-            'getType' => $reflectionTypeCategory,
+            'getName'          => 'category',
+            'getType'          => $reflectionTypeCategory,
+            'getDocBlockTypes' => [],
         ]);
 
         $reflectionTypeProduct->shouldReceive([

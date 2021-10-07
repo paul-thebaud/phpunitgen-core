@@ -12,7 +12,6 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
-use Roave\BetterReflection\Reflection\ReflectionUnionType;
 use Tightenco\Collect\Support\Collection;
 
 /**
@@ -124,14 +123,9 @@ class Reflect
      */
     public static function parameterType(ReflectionParameter $reflectionParameter): ?ReflectionType
     {
-        if ($reflectionParameter->getType()) {
-            return ReflectionType::makeForBetterReflectionType(
-                $reflectionParameter->getType()
-            );
-        }
-
-        return ReflectionType::makeForPhpDocumentorTypes(
-            $reflectionParameter->getDocBlockTypeStrings()
+        return ReflectionType::make(
+            $reflectionParameter->getType(),
+            $reflectionParameter->getDocBlockTypes()
         );
     }
 
@@ -144,14 +138,9 @@ class Reflect
      */
     public static function returnType(ReflectionMethod $reflectionMethod): ?ReflectionType
     {
-        if ($reflectionMethod->getReturnType()) {
-            return ReflectionType::makeForBetterReflectionType(
-                $reflectionMethod->getReturnType()
-            );
-        }
-
-        return ReflectionType::makeForPhpDocumentorTypes(
-            array_map('strval', $reflectionMethod->getDocBlockReturnTypes())
+        return ReflectionType::make(
+            $reflectionMethod->getReturnType(),
+            $reflectionMethod->getDocBlockReturnTypes()
         );
     }
 

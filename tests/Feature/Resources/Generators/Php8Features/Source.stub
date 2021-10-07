@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Services\Connection;
 
 #[Model("persons", methods: ["GET", "POST", "DELETE"])]
-class Person
+class Person extends Model
 {
     protected static $connection;
 
@@ -22,9 +22,15 @@ class Person
         return $this->getConnection()?->entities?->find(self::class, name: $name);
     }
 
+    /**
+     * @param mixed $foo
+     * @param Post|Video $bar
+     */
     public function __construct(
         protected string $name,
-        protected Work|SpecialWork $work
+        protected Work|SpecialWork $work,
+        protected Post|Video|null $foo,
+        protected mixed $bar,
     ) {}
 
     public function save(): self

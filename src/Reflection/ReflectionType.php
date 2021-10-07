@@ -34,6 +34,7 @@ class ReflectionType
         'iterable',
         'object',
         'void',
+        'mixed',
     ];
 
     /**
@@ -64,6 +65,30 @@ class ReflectionType
     }
 
     /**
+     * Make a type from the native or doc type.
+     *
+     * @param BetterReflectionType|null $reflectionType
+     * @param array                     $docTypes
+     *
+     * @return static|null
+     */
+    public static function make(?BetterReflectionType $reflectionType, array $docTypes): ?self
+    {
+        $type = null;
+        if ($reflectionType) {
+            $type = static::makeForBetterReflectionType($reflectionType);
+
+            // When native type is not precisely defined (mixed or object),
+            // try to retrieve the doc type instead.
+            if ($type->getType() !== 'mixed' && $type->getType() !== 'object') {
+                return $type;
+            }
+        }
+
+        return static::makeForPhpDocumentorTypes($docTypes) ?? $type;
+    }
+
+    /**
      * Make an instance from a BetterReflection ReflectionType instance.
      *
      * @param BetterReflectionType $reflectionType
@@ -72,7 +97,6 @@ class ReflectionType
      */
     public static function makeForBetterReflectionType(BetterReflectionType $reflectionType): self
     {
-        dump(strval($reflectionType), $reflectionType->allowsNull());
         return new self(strval($reflectionType), $reflectionType->allowsNull());
     }
 

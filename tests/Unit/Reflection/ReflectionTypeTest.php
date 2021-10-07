@@ -22,16 +22,34 @@ class ReflectionTypeTest extends TestCase
             'allowsNull' => false,
         ]);
 
-        $reflectionType = ReflectionType::makeForBetterReflectionType($betterReflectionType);
+        $reflectionType = ReflectionType::make($betterReflectionType, []);
 
         $this->assertFalse($reflectionType->isBuiltin());
         $this->assertFalse($reflectionType->isNullable());
         $this->assertSame('App\\User', $reflectionType->getType());
     }
 
+    public function testMakeForBetterReflectionTypeAndDocumentor(): void
+    {
+        $betterReflectionType = Mockery::mock(BetterReflectionType::class);
+        $betterReflectionType->shouldReceive([
+            '__toString' => 'mixed',
+            'allowsNull' => false,
+        ]);
+
+        $reflectionType = ReflectionType::make($betterReflectionType, [
+            '\\App\\User',
+            'null',
+        ]);
+
+        $this->assertFalse($reflectionType->isBuiltin());
+        $this->assertTrue($reflectionType->isNullable());
+        $this->assertSame('App\\User', $reflectionType->getType());
+    }
+
     public function testMakeForPhpDocumentorTypesWithUnrealTypes(): void
     {
-        $reflectionType = ReflectionType::makeForPhpDocumentorTypes([
+        $reflectionType = ReflectionType::make(null, [
             'null',
             'null',
             'mixed',
@@ -43,7 +61,7 @@ class ReflectionTypeTest extends TestCase
 
     public function testMakeForPhpDocumentorTypesWitRealNullableType(): void
     {
-        $reflectionType = ReflectionType::makeForPhpDocumentorTypes([
+        $reflectionType = ReflectionType::make(null, [
             'null',
             'null',
             '\\App\\User',
@@ -60,7 +78,7 @@ class ReflectionTypeTest extends TestCase
 
     public function testMakeForPhpDocumentorTypesWitRealNotNullableArray(): void
     {
-        $reflectionType = ReflectionType::makeForPhpDocumentorTypes([
+        $reflectionType = ReflectionType::make(null, [
             '\\App\\User[]',
         ]);
 
@@ -94,6 +112,7 @@ class ReflectionTypeTest extends TestCase
             [true, 'iterable'],
             [true, 'object'],
             [true, 'void'],
+            [true, 'mixed'],
             [false, '\\App\\User'],
             [false, 'String'],
         ];

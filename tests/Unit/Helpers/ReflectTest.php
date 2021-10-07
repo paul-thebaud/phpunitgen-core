@@ -104,7 +104,8 @@ class ReflectTest extends TestCase
         $reflectionType = PhpVersionDependents::makeReflectionTypeMock();
 
         $reflectionParameter->shouldReceive([
-            'getType' => $reflectionType,
+            'getType'                => $reflectionType,
+            'getDocBlockTypes' => [],
         ]);
         $reflectionType->shouldReceive([
             '__toString' => 'string',
@@ -124,7 +125,7 @@ class ReflectTest extends TestCase
 
         $reflectionParameter->shouldReceive([
             'getType'                => null,
-            'getDocBlockTypeStrings' => ['string', 'null'],
+            'getDocBlockTypes' => ['string', 'null'],
         ]);
 
         $newReflectionType = Reflect::parameterType($reflectionParameter);
@@ -140,7 +141,7 @@ class ReflectTest extends TestCase
 
         $reflectionParameter->shouldReceive([
             'getType'                => null,
-            'getDocBlockTypeStrings' => [],
+            'getDocBlockTypes' => [],
         ]);
 
         $newReflectionType = Reflect::parameterType($reflectionParameter);
@@ -154,7 +155,8 @@ class ReflectTest extends TestCase
         $reflectionType = PhpVersionDependents::makeReflectionTypeMock();
 
         $reflectionMethod->shouldReceive([
-            'getReturnType' => $reflectionType,
+            'getReturnType'          => $reflectionType,
+            'getDocBlockReturnTypes' => [],
         ]);
         $reflectionType->shouldReceive([
             '__toString' => 'string',
