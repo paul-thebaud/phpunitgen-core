@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Reflection;
 
-use PHPStan\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
 use PhpUnitGen\Core\Helpers\Str;
+use Roave\BetterReflection\Reflection\ReflectionType as BetterReflectionType;
 use Tightenco\Collect\Support\Collection;
 
 /**
@@ -34,6 +34,7 @@ class ReflectionType
         'iterable',
         'object',
         'void',
+        'mixed',
     ];
 
     /**
@@ -61,6 +62,30 @@ class ReflectionType
 
         $this->type = $clearedType;
         $this->nullable = $nullable;
+    }
+
+    /**
+     * Make a type from the native or doc type.
+     *
+     * @param BetterReflectionType|null $reflectionType
+     * @param array                     $docTypes
+     *
+     * @return static|null
+     */
+    public static function make(?BetterReflectionType $reflectionType, array $docTypes): ?self
+    {
+        $type = null;
+        if ($reflectionType) {
+            $type = static::makeForBetterReflectionType($reflectionType);
+
+            // When native type is not precisely defined (mixed or object),
+            // try to retrieve the doc type instead.
+            if ($type->getType() !== 'mixed' && $type->getType() !== 'object') {
+                return $type;
+            }
+        }
+
+        return static::makeForPhpDocumentorTypes($docTypes) ?? $type;
     }
 
     /**

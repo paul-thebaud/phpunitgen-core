@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Basic;
 
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\ReflectionProperty;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Helpers\Str;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 /**
  * Trait ManagesGetterAndSetter.

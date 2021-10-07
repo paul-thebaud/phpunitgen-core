@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Generators\Tests\Laravel;
 
 use Mockery;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Generators\Tests\Laravel\FeatureClassFactory;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Command;
 
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicMethodFactory;
 use PhpUnitGen\Core\Generators\Tests\Concerns\ChecksMethods;
@@ -14,6 +12,8 @@ use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestStatement;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Throwable;
 
 /**

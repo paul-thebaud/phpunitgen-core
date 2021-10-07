@@ -2,9 +2,9 @@
 
 namespace PhpUnitGen\Core\Generators\Tests\Laravel\Concerns;
 
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Generators\Concerns\InstantiatesClass;
 use PhpUnitGen\Core\Models\TestStatement;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 
 /**
  * Trait HasInstanceBinding.

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Tests;
 
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
 use PhpUnitGen\Core\Aware\ClassFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
@@ -38,6 +35,9 @@ use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Helpers\Str;
 use PhpUnitGen\Core\Models\TestClass;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 /**
  * Class AbstractTestGenerator.

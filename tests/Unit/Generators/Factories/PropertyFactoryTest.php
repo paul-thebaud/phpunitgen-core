@@ -6,9 +6,6 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Factories;
 
 use Mockery;
 use Mockery\Mock;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
-use PHPStan\BetterReflection\Reflection\ReflectionType;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
@@ -17,6 +14,10 @@ use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestProperty;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionType;
+use Tests\PhpUnitGen\Core\Helpers\PhpVersionDependents;
 use Tests\PhpUnitGen\Core\TestCase;
 use Tightenco\Collect\Support\Collection;
 
@@ -112,8 +113,9 @@ class PropertyFactoryTest extends TestCase
         ]);
 
         $reflectionParameter->shouldReceive([
-            'getName' => 'bar',
-            'getType' => $reflectionType,
+            'getName'          => 'bar',
+            'getType'          => $reflectionType,
+            'getDocBlockTypes' => [],
         ]);
 
         $this->importFactory->shouldReceive('make')
@@ -141,9 +143,9 @@ class PropertyFactoryTest extends TestCase
 
     public function makeForParameterWithObjectTypeDataProvider(): array
     {
-        $parentType = Mockery::mock(ReflectionType::class);
-        $selfType = Mockery::mock(ReflectionType::class);
-        $barType = Mockery::mock(ReflectionType::class);
+        $parentType = PhpVersionDependents::makeReflectionTypeMock();
+        $selfType = PhpVersionDependents::makeReflectionTypeMock();
+        $barType = PhpVersionDependents::makeReflectionTypeMock();
 
         $parentType->shouldReceive([
             '__toString' => 'parent',
@@ -189,9 +191,9 @@ class PropertyFactoryTest extends TestCase
         ]);
 
         $reflectionParameter->shouldReceive([
-            'getName'                => 'bar',
-            'getType'                => $reflectionType,
-            'getDocBlockTypeStrings' => [],
+            'getName'          => 'bar',
+            'getType'          => $reflectionType,
+            'getDocBlockTypes' => [],
         ]);
 
         $this->documentationFactory->shouldReceive('makeForProperty')
@@ -209,7 +211,7 @@ class PropertyFactoryTest extends TestCase
 
     public function makeForParameterWithBuiltInTypeDataProvider(): array
     {
-        $intType = Mockery::mock(ReflectionType::class);
+        $intType = PhpVersionDependents::makeReflectionTypeMock();
 
         $intType->shouldReceive([
             '__toString' => 'int',

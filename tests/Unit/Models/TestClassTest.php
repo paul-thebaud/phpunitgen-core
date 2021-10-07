@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Models;
 
 use Mockery;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
@@ -13,6 +12,7 @@ use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestProperty;
 use PhpUnitGen\Core\Models\TestTrait;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

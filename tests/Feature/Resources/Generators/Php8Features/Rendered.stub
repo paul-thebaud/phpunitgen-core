@@ -3,6 +3,7 @@
 namespace Tests\Entity;
 
 use App\Entity\Person;
+use App\Entity\Post;
 use App\Entity\Work;
 use App\Services\Connection;
 use Mockery;
@@ -33,6 +34,16 @@ class PersonTest extends TestCase
     protected $work;
 
     /**
+     * @var Post|Mock
+     */
+    protected $foo;
+
+    /**
+     * @var Post|Mock
+     */
+    protected $bar;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -41,7 +52,9 @@ class PersonTest extends TestCase
 
         $this->name = '42';
         $this->work = Mockery::mock(Work::class);
-        $this->person = new Person($this->name, $this->work);
+        $this->foo = Mockery::mock(Post::class);
+        $this->bar = Mockery::mock(Post::class);
+        $this->person = new Person($this->name, $this->work, $this->foo, $this->bar);
     }
 
     /**
@@ -54,6 +67,8 @@ class PersonTest extends TestCase
         unset($this->person);
         unset($this->name);
         unset($this->work);
+        unset($this->foo);
+        unset($this->bar);
     }
 
     public function testGetConnection(): void

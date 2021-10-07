@@ -8,7 +8,6 @@ use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Mockery;
 use Mockery\Mock;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
 use PhpUnitGen\Core\Aware\ClassFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
@@ -50,6 +49,7 @@ use PhpUnitGen\Core\Generators\Tests\DelegateTestGenerator;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Parsers\CodeParser;
 use PhpUnitGen\Core\Renderers\Renderer;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Tests\PhpUnitGen\Core\TestCase;
 
 /**

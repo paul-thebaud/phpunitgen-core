@@ -6,11 +6,6 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Tests\Laravel\Policy;
 
 use Mockery;
 use Mockery\Mock;
-use PHPStan\BetterReflection\Reflection\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter;
-use PHPStan\BetterReflection\Reflection\ReflectionProperty;
-use PHPStan\BetterReflection\Reflection\ReflectionType;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
@@ -24,6 +19,11 @@ use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestStatement;
 use PhpUnitGen\Core\Reflection\ReflectionType as PugReflectionType;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionProperty;
+use Tests\PhpUnitGen\Core\Helpers\PhpVersionDependents;
 use Tests\PhpUnitGen\Core\TestCase;
 use Tightenco\Collect\Support\Collection;
 
@@ -201,10 +201,11 @@ class PolicyMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'bar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => true,
+            'getShortName'           => 'bar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => true,
         ]);
 
         $this->expectException(InvalidArgumentException::class);
@@ -218,7 +219,7 @@ class PolicyMethodFactoryTest extends TestCase
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParamUser = Mockery::mock(ReflectionParameter::class);
-        $reflectionTypeUser = Mockery::mock(ReflectionType::class);
+        $reflectionTypeUser = PhpVersionDependents::makeReflectionTypeMock();
 
         $class = new TestClass($reflectionClass, 'App\\FooTest');
 
@@ -228,16 +229,18 @@ class PolicyMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'bar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => false,
-            'getParameters'     => [$reflectionParamUser],
+            'getShortName'           => 'bar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => false,
+            'getParameters'          => [$reflectionParamUser],
         ]);
 
         $reflectionParamUser->shouldReceive([
-            'getName' => 'user',
-            'getType' => $reflectionTypeUser,
+            'getName'          => 'user',
+            'getType'          => $reflectionTypeUser,
+            'getDocBlockTypes' => [],
         ]);
 
         $this->statementFactory->shouldReceive('makeTodo')
@@ -286,8 +289,8 @@ class PolicyMethodFactoryTest extends TestCase
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParamUser = Mockery::mock(ReflectionParameter::class);
         $reflectionParamProduct = Mockery::mock(ReflectionParameter::class);
-        $reflectionTypeUser = Mockery::mock(ReflectionType::class);
-        $reflectionTypeProduct = Mockery::mock(ReflectionType::class);
+        $reflectionTypeUser = PhpVersionDependents::makeReflectionTypeMock();
+        $reflectionTypeProduct = PhpVersionDependents::makeReflectionTypeMock();
 
         $class = new TestClass($reflectionClass, 'App\\FooTest');
 
@@ -297,20 +300,23 @@ class PolicyMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'bar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => false,
-            'getParameters'     => [$reflectionParamUser, $reflectionParamProduct],
+            'getShortName'           => 'bar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => false,
+            'getParameters'          => [$reflectionParamUser, $reflectionParamProduct],
         ]);
 
         $reflectionParamUser->shouldReceive([
-            'getName' => 'user',
-            'getType' => $reflectionTypeUser,
+            'getName'          => 'user',
+            'getType'          => $reflectionTypeUser,
+            'getDocBlockTypes' => [],
         ]);
         $reflectionParamProduct->shouldReceive([
-            'getName' => 'product',
-            'getType' => $reflectionTypeProduct,
+            'getName'          => 'product',
+            'getType'          => $reflectionTypeProduct,
+            'getDocBlockTypes' => [],
         ]);
 
         $reflectionTypeProduct->shouldReceive([
@@ -379,9 +385,9 @@ class PolicyMethodFactoryTest extends TestCase
         $reflectionParamUser = Mockery::mock(ReflectionParameter::class);
         $reflectionParamProduct = Mockery::mock(ReflectionParameter::class);
         $reflectionParamCategory = Mockery::mock(ReflectionParameter::class);
-        $reflectionTypeUser = Mockery::mock(ReflectionType::class);
-        $reflectionTypeProduct = Mockery::mock(ReflectionType::class);
-        $reflectionTypeCategory = Mockery::mock(ReflectionType::class);
+        $reflectionTypeUser = PhpVersionDependents::makeReflectionTypeMock();
+        $reflectionTypeProduct = PhpVersionDependents::makeReflectionTypeMock();
+        $reflectionTypeCategory = PhpVersionDependents::makeReflectionTypeMock();
 
         $class = new TestClass($reflectionClass, 'App\\FooTest');
 
@@ -391,24 +397,28 @@ class PolicyMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'      => 'bar',
-            'getDeclaringClass' => $class->getReflectionClass(),
-            'getReturnType'     => null,
-            'isStatic'          => false,
-            'getParameters'     => [$reflectionParamUser, $reflectionParamProduct, $reflectionParamCategory],
+            'getShortName'           => 'bar',
+            'getDeclaringClass'      => $class->getReflectionClass(),
+            'getReturnType'          => null,
+            'getDocBlockReturnTypes' => [],
+            'isStatic'               => false,
+            'getParameters'          => [$reflectionParamUser, $reflectionParamProduct, $reflectionParamCategory],
         ]);
 
         $reflectionParamUser->shouldReceive([
-            'getName' => 'user',
-            'getType' => $reflectionTypeUser,
+            'getName'          => 'user',
+            'getType'          => $reflectionTypeUser,
+            'getDocBlockTypes' => [],
         ]);
         $reflectionParamProduct->shouldReceive([
-            'getName' => 'product',
-            'getType' => $reflectionTypeProduct,
+            'getName'          => 'product',
+            'getType'          => $reflectionTypeProduct,
+            'getDocBlockTypes' => [],
         ]);
         $reflectionParamCategory->shouldReceive([
-            'getName' => 'category',
-            'getType' => $reflectionTypeCategory,
+            'getName'          => 'category',
+            'getType'          => $reflectionTypeCategory,
+            'getDocBlockTypes' => [],
         ]);
 
         $reflectionTypeProduct->shouldReceive([

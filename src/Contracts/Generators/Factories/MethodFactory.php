@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Contracts\Generators\Factories;
 
-use PHPStan\BetterReflection\Reflection\ReflectionMethod;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 /**
  * Interface MethodFactory.
