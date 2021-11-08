@@ -9,7 +9,7 @@ use PhpUnitGen\Core\Contracts\Parsers\Source;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflector\ClassReflector;
+use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Ast\Exception\ParseToAstFailure;
 use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
@@ -43,12 +43,12 @@ class CodeParser implements CodeParserContract
      */
     public function parse(Source $source): ReflectionClass
     {
-        $reflector = new ClassReflector(
+        $reflector = new DefaultReflector(
             new StringSourceLocator($source->toString(), $this->astLocator)
         );
 
         try {
-            $classes = $reflector->getAllClasses();
+            $classes = $reflector->reflectAllClasses();
         } catch (ParseToAstFailure $exception) {
             throw new InvalidArgumentException(
                 'code might have an invalid syntax because AST failed to parse it'
