@@ -27,6 +27,8 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: xdebug
+        env:
+          update: true
 
       - name: Install dependencies
         run: |
