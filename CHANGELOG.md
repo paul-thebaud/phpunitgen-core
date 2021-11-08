@@ -4,7 +4,7 @@
 
 **Changed**
 
-- Add support for PHP `^8.0`.
+- Add support for PHP `~8.0.12` and `~8.1.0`.
 - Drop support for PHP `7`.
 - When param or return `native` type is `mixed` or `object`, use the documentation type if available.
 
