@@ -9,7 +9,6 @@ use PhpUnitGen\Core\Contracts\Parsers\Source;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Ast\Exception\ParseToAstFailure;
 use Roave\BetterReflection\SourceLocator\Ast\Locator;
