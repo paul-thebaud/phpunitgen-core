@@ -1,0 +1,113 @@
+<?php
+
+namespace Tests\Feature\Http\Api\Controllers;
+
+use App\Http\Api\Controllers\UserController;
+use App\Services\UserService;
+use Mockery;
+use Mockery\Mock;
+use ReflectionClass;
+use Tests\TestCase;
+
+/**
+ * Class UserControllerTest.
+ *
+ * @covers \App\Http\Api\Controllers\UserController
+ */
+class UserControllerTest extends TestCase
+{
+    /**
+     * @var UserController
+     */
+    protected $userController;
+
+    /**
+     * @var UserService|Mock
+     */
+    protected $userService;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->userService = Mockery::mock(UserService::class);
+        $this->userController = new UserController($this->userService);
+        $this->app->instance(UserController::class, $this->userController);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->userController);
+        unset($this->userService);
+    }
+
+    public function testIndex(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->getJson('/path')
+            ->assertStatus(200);
+    }
+
+    public function testStore(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->postJson('/path', [ /* data */ ])
+            ->assertStatus(200);
+    }
+
+    public function testCreateNewUser(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->getJson('/path')
+            ->assertStatus(200);
+    }
+
+    public function testEditUser(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->getJson('/path')
+            ->assertStatus(200);
+    }
+
+    public function testUpdateUser(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->putJson('/path', [ /* data */ ])
+            ->assertStatus(200);
+    }
+
+    public function testDestroy(): void
+    {
+        /** @todo This test is incomplete. */
+        $this->deleteJson('/path')
+            ->assertStatus(200);
+    }
+
+    public function testGetUserService(): void
+    {
+        $expected = Mockery::mock(UserService::class);
+        $property = (new ReflectionClass(UserController::class))
+            ->getProperty('userService');
+        $property->setAccessible(true);
+        $property->setValue($this->userController, $expected);
+        $this->assertSame($expected, $this->userController->getUserService());
+    }
+
+    public function testSetUserService(): void
+    {
+        $expected = Mockery::mock(UserService::class);
+        $property = (new ReflectionClass(UserController::class))
+            ->getProperty('userService');
+        $property->setAccessible(true);
+        $this->userController->setUserService($expected);
+        $this->assertSame($expected, $property->getValue($this->userController));
+    }
+}
