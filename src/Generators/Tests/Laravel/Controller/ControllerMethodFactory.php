@@ -68,7 +68,7 @@ class ControllerMethodFactory extends CommandMethodFactory
     {
         $httpMethodToTest = $this->resolveHttpMethodToTest($reflectionMethod);
 
-        if (Str::containsRegex('#\\api\\#i', $class->getReflectionClass()->getName())) {
+        if (Str::containsRegex('\\\\api\\\\', $class->getReflectionClass()->getName())) {
             return $httpMethodToTest.'Json';
         }
 
