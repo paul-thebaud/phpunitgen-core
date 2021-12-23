@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.2.0
+
+**Changed**
+
+- Test generator will now ensure public and testable methods exists in class in `canGenerate`.
+
+**Fixed**
+
+- Laravel Controller test generator will correctly handle API controllers.
+
 ## 1.1.3
 
 **Changed**
