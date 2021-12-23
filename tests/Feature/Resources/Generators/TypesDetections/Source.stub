@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Current;
+
+use App\Other\{ Far1 as Faz1 };
+use App\Other\Foo1;
+use App\Other\Bar1 as Baz1;
+use App\Other\{ Far2 as Faz2 };
+use App\Other\Foo2;
+use App\Other\Bar2 as Baz2;
+
+/**
+ * Class TypesDetectionStub.
+ */
+class TypesDetectionStub
+{
+    /**
+     * @param int $mixedUsesDoc
+     * @param int $scalarFromDoc
+     * @param int|null $scalarNullableOrFromDoc
+     * @param Post2 $currentClassFromDoc
+     * @param \Throwable2 $rootClassFromDoc
+     * @param Other\OtherPost2 $subClassFromDoc
+     * @param Foo2 $importedClassFromDoc
+     * @param Baz2 $aliasedClassFromDoc
+     * @param Faz2 $groupAliasedClassFromDoc
+     */
+    public function __construct(
+        protected $noType,
+        protected mixed $mixed,
+        protected mixed $mixedUsesDoc,
+        protected int $scalar,
+        protected ?int $scalarNullable,
+        protected int|null $scalarNullableOr,
+        protected $scalarFromDoc,
+        protected $scalarNullableOrFromDoc,
+        protected Post1 $currentClass,
+        protected \Throwable1 $rootClass,
+        protected Other\OtherPost1 $subClass,
+        protected Foo1 $importedClass,
+        protected Baz1 $aliasedClass,
+        protected Faz1 $groupAliasedClass,
+        protected $currentClassFromDoc,
+        protected $rootClassFromDoc,
+        protected $subClassFromDoc,
+        protected $importedClassFromDoc,
+        protected $aliasedClassFromDoc,
+        protected $groupAliasedClassFromDoc,
+    ) {}
+
+    public function getCurrentClass(): Post1
+    {
+    }
+}

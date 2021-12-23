@@ -6,6 +6,7 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Factories;
 
 use Mockery;
 use Mockery\Mock;
+use PhpParser\Node\Stmt\Namespace_;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Models\TestClass;
@@ -63,6 +64,9 @@ class DocumentationFactoryTest extends TestCase
         $reflectionClass->shouldReceive('getDocComment')
             ->withNoArgs()
             ->andReturn('');
+        $reflectionClass->shouldReceive('getDeclaringNamespaceAst')
+            ->withNoArgs()
+            ->andReturn(new Namespace_());
 
         $class->shouldReceive('getShortName')
             ->withNoArgs()
@@ -95,6 +99,9 @@ class DocumentationFactoryTest extends TestCase
         $reflectionClass->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('App\\Foo');
+        $reflectionClass->shouldReceive('getDeclaringNamespaceAst')
+            ->withNoArgs()
+            ->andReturn(new Namespace_());
         $reflectionClass->shouldReceive('getDocComment')
             ->withNoArgs()
             ->andReturn("/**\n * @author John\n * @since 1.0.0\n * @internal\n*/");

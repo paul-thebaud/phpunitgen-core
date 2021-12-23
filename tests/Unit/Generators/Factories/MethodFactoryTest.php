@@ -175,18 +175,19 @@ class MethodFactoryTest extends TestCase
             'isPublic'      => true,
             'isAbstract'    => false,
             'isStatic'      => false,
+            'getDocComment' => '',
             'getParameters' => [$reflectionParameter1, $reflectionParameter2],
         ]);
 
         $reflectionParameter1->shouldReceive([
-            'getType'          => null,
-            'getDocBlockTypes' => [],
-            'getName'          => 'bar',
+            'getType'              => null,
+            'getName'              => 'bar',
+            'getDeclaringFunction' => $reflectionMethod,
         ]);
         $reflectionParameter2->shouldReceive([
-            'getType'          => $reflectionType,
-            'getDocBlockTypes' => [],
-            'getName'          => 'baz',
+            'getType'              => $reflectionType,
+            'getName'              => 'baz',
+            'getDeclaringFunction' => $reflectionMethod,
         ]);
 
         $reflectionType->shouldReceive([

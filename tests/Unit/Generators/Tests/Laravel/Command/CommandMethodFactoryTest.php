@@ -128,11 +128,11 @@ class CommandMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'           => 'getBar',
-            'getDeclaringClass'      => $class->getReflectionClass(),
-            'getReturnType'          => null,
-            'getDocBlockReturnTypes' => [],
-            'isStatic'               => false,
+            'getShortName'      => 'getBar',
+            'getDeclaringClass' => $class->getReflectionClass(),
+            'getReturnType'     => null,
+            'getDocComment'     => '',
+            'isStatic'          => false,
         ]);
 
         $reflectionProperty->shouldReceive([
@@ -179,11 +179,10 @@ class CommandMethodFactoryTest extends TestCase
         ]);
 
         $reflectionMethod->shouldReceive([
-            'getShortName'           => 'bar',
-            'getDeclaringClass'      => $class->getReflectionClass(),
-            'getReturnType'          => null,
-            'getDocBlockReturnTypes' => [],
-            'isStatic'               => true,
+            'getShortName'      => 'bar',
+            'getDeclaringClass' => $class->getReflectionClass(),
+            'getReturnType'     => null,
+            'isStatic'          => true,
         ]);
 
         $this->expectException(InvalidArgumentException::class);
