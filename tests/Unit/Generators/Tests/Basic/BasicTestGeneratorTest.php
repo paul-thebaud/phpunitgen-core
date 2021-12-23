@@ -116,10 +116,11 @@ class BasicTestGeneratorTest extends TestCase
      * @param bool $expected
      * @param bool $isInterface
      * @param bool $isAnonymous
+     * @param bool $hasMethod
      *
      * @dataProvider canGenerateDataProvider
      */
-    public function testCanGenerate(bool $expected, bool $isInterface, bool $isAnonymous): void
+    public function testCanGenerate(bool $expected, bool $isInterface, bool $isAnonymous, array $methods = []): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
 
@@ -128,16 +129,44 @@ class BasicTestGeneratorTest extends TestCase
             'isAnonymous' => $isAnonymous,
         ]);
 
+        if (! $isInterface && ! $isAnonymous) {
+            $this->config->shouldReceive([
+                'excludedMethods' => [],
+            ]);
+
+            $this->classFactory->shouldReceive('make')
+                ->once()
+                ->with($reflectionClass)
+                ->andReturn(new TestClass($reflectionClass, 'FooTest'));
+
+            $reflectionClass->shouldReceive('getImmediateMethods')
+                ->once()
+                ->andReturn($methods);
+        }
+
         $this->assertSame($expected, $this->testGenerator->canGenerateFor($reflectionClass));
     }
 
     public function canGenerateDataProvider(): array
     {
+        $publicMethod = Mockery::mock(ReflectionMethod::class);
+        $publicMethod->shouldReceive([
+            'isPublic'     => true,
+            'getShortName' => 'foo',
+        ]);
+        $privateMethod = Mockery::mock(ReflectionMethod::class);
+        $privateMethod->shouldReceive([
+            'isPublic'     => false,
+            'getShortName' => 'foo',
+        ]);
+
         return [
             [false, true, true],
             [false, true, false],
             [false, false, true],
-            [true, false, false],
+            [false, false, false, [$privateMethod]],
+            [true, false, false, [$publicMethod]],
+            [true, false, false, [$privateMethod, $publicMethod]],
         ];
     }
 

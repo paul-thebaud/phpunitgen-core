@@ -126,7 +126,16 @@ abstract class AbstractTestGenerator implements
      */
     public function canGenerateFor(ReflectionClass $reflectionClass): bool
     {
-        return ! ($reflectionClass->isInterface() || $reflectionClass->isAnonymous());
+        if ($reflectionClass->isInterface() || $reflectionClass->isAnonymous()) {
+            return false;
+        }
+
+        $class = $this->makeClass($reflectionClass);
+
+        return Reflect::methods($reflectionClass)
+            ->some(function (ReflectionMethod $reflectionMethod) use ($class) {
+                return $this->shouldAddMethod($class, $reflectionMethod);
+            });
     }
 
     /*
