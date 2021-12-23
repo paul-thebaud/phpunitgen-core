@@ -1,0 +1,204 @@
+<?php
+
+namespace Tests\Current;
+
+use App\Current\Other\OtherPost1;
+use App\Current\Other\OtherPost2;
+use App\Current\Post1;
+use App\Current\Post2;
+use App\Current\TypesDetectionStub;
+use App\Other\Bar1;
+use App\Other\Bar2;
+use App\Other\Far1;
+use App\Other\Far2;
+use App\Other\Foo1;
+use App\Other\Foo2;
+use Mockery;
+use Mockery\Mock;
+use ReflectionClass;
+use Tests\TestCase;
+use Throwable1;
+use Throwable2;
+
+/**
+ * Class TypesDetectionStubTest.
+ *
+ * @covers \App\Current\TypesDetectionStub
+ */
+class TypesDetectionStubTest extends TestCase
+{
+    /**
+     * @var TypesDetectionStub
+     */
+    protected $typesDetectionStub;
+
+    /**
+     * @var mixed
+     */
+    protected $noType;
+
+    /**
+     * @var mixed
+     */
+    protected $mixed;
+
+    /**
+     * @var int
+     */
+    protected $mixedUsesDoc;
+
+    /**
+     * @var int
+     */
+    protected $scalar;
+
+    /**
+     * @var int
+     */
+    protected $scalarNullable;
+
+    /**
+     * @var int
+     */
+    protected $scalarNullableOr;
+
+    /**
+     * @var int
+     */
+    protected $scalarFromDoc;
+
+    /**
+     * @var int
+     */
+    protected $scalarNullableOrFromDoc;
+
+    /**
+     * @var Post1|Mock
+     */
+    protected $currentClass;
+
+    /**
+     * @var Throwable1|Mock
+     */
+    protected $rootClass;
+
+    /**
+     * @var OtherPost1|Mock
+     */
+    protected $subClass;
+
+    /**
+     * @var Foo1|Mock
+     */
+    protected $importedClass;
+
+    /**
+     * @var Bar1|Mock
+     */
+    protected $aliasedClass;
+
+    /**
+     * @var Far1|Mock
+     */
+    protected $groupAliasedClass;
+
+    /**
+     * @var Post2|Mock
+     */
+    protected $currentClassFromDoc;
+
+    /**
+     * @var Throwable2|Mock
+     */
+    protected $rootClassFromDoc;
+
+    /**
+     * @var OtherPost2|Mock
+     */
+    protected $subClassFromDoc;
+
+    /**
+     * @var Foo2|Mock
+     */
+    protected $importedClassFromDoc;
+
+    /**
+     * @var Bar2|Mock
+     */
+    protected $aliasedClassFromDoc;
+
+    /**
+     * @var Far2|Mock
+     */
+    protected $groupAliasedClassFromDoc;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->noType = null;
+        $this->mixed = null;
+        $this->mixedUsesDoc = 42;
+        $this->scalar = 42;
+        $this->scalarNullable = 42;
+        $this->scalarNullableOr = 42;
+        $this->scalarFromDoc = 42;
+        $this->scalarNullableOrFromDoc = 42;
+        $this->currentClass = Mockery::mock(Post1::class);
+        $this->rootClass = Mockery::mock(Throwable1::class);
+        $this->subClass = Mockery::mock(OtherPost1::class);
+        $this->importedClass = Mockery::mock(Foo1::class);
+        $this->aliasedClass = Mockery::mock(Bar1::class);
+        $this->groupAliasedClass = Mockery::mock(Far1::class);
+        $this->currentClassFromDoc = Mockery::mock(Post2::class);
+        $this->rootClassFromDoc = Mockery::mock(Throwable2::class);
+        $this->subClassFromDoc = Mockery::mock(OtherPost2::class);
+        $this->importedClassFromDoc = Mockery::mock(Foo2::class);
+        $this->aliasedClassFromDoc = Mockery::mock(Bar2::class);
+        $this->groupAliasedClassFromDoc = Mockery::mock(Far2::class);
+        $this->typesDetectionStub = new TypesDetectionStub($this->noType, $this->mixed, $this->mixedUsesDoc, $this->scalar, $this->scalarNullable, $this->scalarNullableOr, $this->scalarFromDoc, $this->scalarNullableOrFromDoc, $this->currentClass, $this->rootClass, $this->subClass, $this->importedClass, $this->aliasedClass, $this->groupAliasedClass, $this->currentClassFromDoc, $this->rootClassFromDoc, $this->subClassFromDoc, $this->importedClassFromDoc, $this->aliasedClassFromDoc, $this->groupAliasedClassFromDoc);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->typesDetectionStub);
+        unset($this->noType);
+        unset($this->mixed);
+        unset($this->mixedUsesDoc);
+        unset($this->scalar);
+        unset($this->scalarNullable);
+        unset($this->scalarNullableOr);
+        unset($this->scalarFromDoc);
+        unset($this->scalarNullableOrFromDoc);
+        unset($this->currentClass);
+        unset($this->rootClass);
+        unset($this->subClass);
+        unset($this->importedClass);
+        unset($this->aliasedClass);
+        unset($this->groupAliasedClass);
+        unset($this->currentClassFromDoc);
+        unset($this->rootClassFromDoc);
+        unset($this->subClassFromDoc);
+        unset($this->importedClassFromDoc);
+        unset($this->aliasedClassFromDoc);
+        unset($this->groupAliasedClassFromDoc);
+    }
+
+    public function testGetCurrentClass(): void
+    {
+        $expected = Mockery::mock(Post1::class);
+        $property = (new ReflectionClass(TypesDetectionStub::class))
+            ->getProperty('currentClass');
+        $property->setAccessible(true);
+        $property->setValue($this->typesDetectionStub, $expected);
+        $this->assertSame($expected, $this->typesDetectionStub->getCurrentClass());
+    }
+}

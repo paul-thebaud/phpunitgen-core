@@ -52,8 +52,6 @@ class ReflectionTypeTest extends TestCase
         $reflectionType = ReflectionType::make(null, [
             'null',
             'null',
-            'mixed',
-            'null',
         ]);
 
         $this->assertNull($reflectionType);

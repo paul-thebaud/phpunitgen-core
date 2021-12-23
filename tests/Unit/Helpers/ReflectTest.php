@@ -7,8 +7,8 @@ namespace Tests\PhpUnitGen\Core\Unit\Helpers;
 use Mockery;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
-use phpDocumentor\Reflection\Types\Null_;
-use phpDocumentor\Reflection\Types\String_;
+use phpDocumentor\Reflection\Types\Context;
+use PhpParser\Node\Stmt\Namespace_;
 use PhpUnitGen\Core\Helpers\Reflect;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -100,12 +100,16 @@ class ReflectTest extends TestCase
 
     public function testParameterTypeWithReflectionType(): void
     {
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
         $reflectionType = PhpVersionDependents::makeReflectionTypeMock();
 
+        $reflectionMethod->shouldReceive([
+            'getDocComment' => '',
+        ]);
         $reflectionParameter->shouldReceive([
-            'getType'          => $reflectionType,
-            'getDocBlockTypes' => [],
+            'getType'              => $reflectionType,
+            'getDeclaringFunction' => $reflectionMethod,
         ]);
         $reflectionType->shouldReceive([
             '__toString' => 'string',
@@ -121,11 +125,21 @@ class ReflectTest extends TestCase
 
     public function testParameterTypeWithDocBlockType(): void
     {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
 
+        $reflectionClass->shouldReceive([
+            'getDeclaringNamespaceAst' => new Namespace_(),
+        ]);
+        $reflectionMethod->shouldReceive([
+            'getDocComment'     => "/*\n * @param string|null \$foo\n */",
+            'getDeclaringClass' => $reflectionClass,
+        ]);
         $reflectionParameter->shouldReceive([
-            'getType'          => null,
-            'getDocBlockTypes' => ['string', 'null'],
+            'getName'              => 'foo',
+            'getType'              => null,
+            'getDeclaringFunction' => $reflectionMethod,
         ]);
 
         $newReflectionType = Reflect::parameterType($reflectionParameter);
@@ -137,11 +151,20 @@ class ReflectTest extends TestCase
 
     public function testParameterTypeWithNone(): void
     {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
 
+        $reflectionClass->shouldReceive([
+            'getDeclaringNamespaceAst' => new Namespace_(),
+        ]);
+        $reflectionMethod->shouldReceive([
+            'getDocComment'     => '',
+            'getDeclaringClass' => $reflectionClass,
+        ]);
         $reflectionParameter->shouldReceive([
-            'getType'          => null,
-            'getDocBlockTypes' => [],
+            'getType'              => null,
+            'getDeclaringFunction' => $reflectionMethod,
         ]);
 
         $newReflectionType = Reflect::parameterType($reflectionParameter);
@@ -155,8 +178,8 @@ class ReflectTest extends TestCase
         $reflectionType = PhpVersionDependents::makeReflectionTypeMock();
 
         $reflectionMethod->shouldReceive([
-            'getReturnType'          => $reflectionType,
-            'getDocBlockReturnTypes' => [],
+            'getReturnType' => $reflectionType,
+            'getDocComment' => '',
         ]);
         $reflectionType->shouldReceive([
             '__toString' => 'string',
@@ -172,13 +195,16 @@ class ReflectTest extends TestCase
 
     public function testReturnTypeWithDocBlockType(): void
     {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
-        $stringType = new String_();
-        $nullType = new Null_();
 
+        $reflectionClass->shouldReceive([
+            'getDeclaringNamespaceAst' => new Namespace_(),
+        ]);
         $reflectionMethod->shouldReceive([
-            'getReturnType'          => null,
-            'getDocBlockReturnTypes' => [$stringType, $nullType],
+            'getReturnType'     => null,
+            'getDocComment'     => "/*\n * @return string|null\n */",
+            'getDeclaringClass' => $reflectionClass,
         ]);
 
         $newReflectionType = Reflect::returnType($reflectionMethod);
@@ -193,8 +219,8 @@ class ReflectTest extends TestCase
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
 
         $reflectionMethod->shouldReceive([
-            'getReturnType'          => null,
-            'getDocBlockReturnTypes' => [],
+            'getReturnType' => null,
+            'getDocComment' => '',
         ]);
 
         $newReflectionType = Reflect::returnType($reflectionMethod);
@@ -214,26 +240,44 @@ class ReflectTest extends TestCase
 
     public function testDocBlockWhenDefaultFactoryAndNotEmptyDocComment(): void
     {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+
+        $reflectionClass->shouldReceive([
+            'getDeclaringNamespaceAst' => new Namespace_(),
+        ]);
         $reflectionMethod->shouldReceive('getDocComment')
             ->withNoArgs()
             ->andReturn('/** @author John Doe */');
+        $reflectionMethod->shouldReceive('getDeclaringClass')
+            ->withNoArgs()
+            ->andReturn($reflectionClass);
 
         $this->assertInstanceOf(DocBlock::class, Reflect::docBlock($reflectionMethod));
     }
 
     public function testDocBlockWhenCustomFactory(): void
     {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+
+        $reflectionClass->shouldReceive([
+            'getDeclaringNamespaceAst' => new Namespace_(),
+        ]);
         $reflectionMethod->shouldReceive('getDocComment')
             ->withNoArgs()
             ->andReturn('/** @author John Doe */');
+        $reflectionMethod->shouldReceive('getDeclaringClass')
+            ->withNoArgs()
+            ->andReturn($reflectionClass);
 
         $docBlock = new DocBlock();
 
         $docBlockFactory = Mockery::mock(DocBlockFactoryInterface::class);
         $docBlockFactory->shouldReceive('create')
-            ->with('/** @author John Doe */')
+            ->with('/** @author John Doe */', Mockery::on(function ($arg) {
+                return $arg instanceof Context;
+            }))
             ->andReturn($docBlock);
 
         Reflect::setDocBlockFactory($docBlockFactory);
@@ -257,13 +301,21 @@ class ReflectTest extends TestCase
 
     public function testDocBlockTagsWhenNotEmptyDocComment(): void
     {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+
+        $reflectionClass->shouldReceive([
+            'getDeclaringNamespaceAst' => new Namespace_(),
+        ]);
         $reflectionMethod->shouldReceive('getDocComment')
             ->withNoArgs()
             ->andReturn('/**
             * @author John Doe
             * @see https://example.com
             */');
+        $reflectionMethod->shouldReceive('getDeclaringClass')
+            ->withNoArgs()
+            ->andReturn($reflectionClass);
 
         $tags = Reflect::docBlockTags($reflectionMethod);
 

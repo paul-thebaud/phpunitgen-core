@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\PhpUnitGen\Core\Feature\Generators\Basic;
+namespace Tests\PhpUnitGen\Core\Feature\Generators\TypesDetections;
 
 use PhpUnitGen\Core\Generators\Tests\Basic\BasicTestGenerator;
 use Tests\PhpUnitGen\Core\Feature\Generators\AbstractGeneratorTester;
 
 /**
- * Class Php8FeaturesTestGeneratorTest.
+ * Class TypesDetectionsTest.
  */
-class Php8FeaturesTestGeneratorTest extends AbstractGeneratorTester
+class TypesDetectionsTest extends AbstractGeneratorTester
 {
     public function testItGeneratesTests(): void
     {
-        $this->assertGeneratedIs('Php8Features/Rendered', 'Php8Features/Source', [
+        $this->assertGeneratedIs('TypesDetections/Rendered', 'TypesDetections/Source', [
             'implementations' => BasicTestGenerator::implementations(),
         ]);
     }

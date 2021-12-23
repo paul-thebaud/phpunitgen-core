@@ -15,6 +15,7 @@ use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestProperty;
 use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflection\ReflectionType;
 use Tests\PhpUnitGen\Core\Helpers\PhpVersionDependents;
@@ -102,6 +103,7 @@ class PropertyFactoryTest extends TestCase
         TestImport $expectedTypeHint
     ): void {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
         $doc = Mockery::mock(TestDocumentation::class);
         $mockImport = Mockery::mock(TestImport::class);
@@ -112,10 +114,14 @@ class PropertyFactoryTest extends TestCase
             'getName' => 'App\\Foo',
         ]);
 
+        $reflectionMethod->shouldReceive([
+            'getDocComment' => '',
+        ]);
+
         $reflectionParameter->shouldReceive([
-            'getName'          => 'bar',
-            'getType'          => $reflectionType,
-            'getDocBlockTypes' => [],
+            'getName'              => 'bar',
+            'getType'              => $reflectionType,
+            'getDeclaringFunction' => $reflectionMethod,
         ]);
 
         $this->importFactory->shouldReceive('make')
@@ -181,6 +187,7 @@ class PropertyFactoryTest extends TestCase
         string $expectedTypeHint
     ): void {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
         $doc = Mockery::mock(TestDocumentation::class);
 
@@ -190,10 +197,14 @@ class PropertyFactoryTest extends TestCase
             'getName' => 'App\\Foo',
         ]);
 
+        $reflectionMethod->shouldReceive([
+            'getDocComment' => '',
+        ]);
+
         $reflectionParameter->shouldReceive([
-            'getName'          => 'bar',
-            'getType'          => $reflectionType,
-            'getDocBlockTypes' => [],
+            'getName'              => 'bar',
+            'getType'              => $reflectionType,
+            'getDeclaringFunction' => $reflectionMethod,
         ]);
 
         $this->documentationFactory->shouldReceive('makeForProperty')

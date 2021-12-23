@@ -113,8 +113,8 @@ class ReflectionType
 
         // Check if its nullable.
         $nullable = $stringTypes->contains('null');
-        // Reject null and mixed types, since they are not "real" types.
-        $stringTypes = $stringTypes->reject('null')->reject('mixed');
+        // Reject null type, since it is not a "real" types.
+        $stringTypes = $stringTypes->reject('null');
 
         if ($stringTypes->isEmpty()) {
             return null;
