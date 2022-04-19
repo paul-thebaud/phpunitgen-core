@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: 8.1.4-fpm
+    volumes:
+      - .:/var/www/html
+    environment:
+      - PHP_IDE_CONFIG=serverName=phpunitgen
+    networks:
+      docker-default:
+        ipv4_address: 172.99.0.2
+
+networks:
+  docker-default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.99.0.0/16
