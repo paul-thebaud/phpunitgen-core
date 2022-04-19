@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.1
+
+**Added**
+
+- docker-composer for PHP for testing purposes
+
 ## 2.0.0
 
 **Changed**
