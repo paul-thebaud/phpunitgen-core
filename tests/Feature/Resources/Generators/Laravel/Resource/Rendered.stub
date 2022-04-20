@@ -15,7 +15,7 @@ use Tests\TestCase;
  *
  * @covers \App\Http\Resources\ProductResource
  */
-class ProductResourceTest extends TestCase
+final class ProductResourceTest extends TestCase
 {
     /**
      * @var ProductResource

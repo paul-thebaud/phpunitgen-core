@@ -15,7 +15,7 @@ use Tests\TestCase;
  *
  * @covers \App\Broadcasting\EventChannel
  */
-class EventChannelTest extends TestCase
+final class EventChannelTest extends TestCase
 {
     /**
      * @var EventChannel

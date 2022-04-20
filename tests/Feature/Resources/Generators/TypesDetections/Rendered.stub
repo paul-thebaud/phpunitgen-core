@@ -25,7 +25,7 @@ use Throwable2;
  *
  * @covers \App\Current\TypesDetectionStub
  */
-class TypesDetectionStubTest extends TestCase
+final class TypesDetectionStubTest extends TestCase
 {
     /**
      * @var TypesDetectionStub

@@ -14,7 +14,7 @@ use Tests\TestCase;
  *
  * @covers \App\Rules\ProductRule
  */
-class ProductRuleTest extends TestCase
+final class ProductRuleTest extends TestCase
 {
     /**
      * @var ProductRule

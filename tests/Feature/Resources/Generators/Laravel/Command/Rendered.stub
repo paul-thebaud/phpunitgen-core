@@ -14,7 +14,7 @@ use Tests\TestCase;
  *
  * @covers \App\Console\Commands\PruneUsersCommand
  */
-class PruneUsersCommandTest extends TestCase
+final class PruneUsersCommandTest extends TestCase
 {
     /**
      * @var PruneUsersCommand

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\PhpUnitGen\Core\Unit\Renderers;
 
 use Mockery;
+use Mockery\Mock;
+use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
 use PhpUnitGen\Core\Models\TestImport;
@@ -27,6 +29,11 @@ use Tests\PhpUnitGen\Core\TestCase;
 class RendererTest extends TestCase
 {
     /**
+     * @var Config|Mock
+     */
+    protected $config;
+
+    /**
      * @var Renderer
      */
     protected $renderer;
@@ -38,7 +45,9 @@ class RendererTest extends TestCase
     {
         parent::setUp();
 
+        $this->config = Mockery::mock(Config::class);
         $this->renderer = new Renderer();
+        $this->renderer->setConfig($this->config);
     }
 
     public function testItRendersWithoutLine(): void
@@ -82,11 +91,43 @@ use Foo\\Baz;',
 
     public function testItRendersClassWithoutAnyObjects(): void
     {
+        $this->config->shouldReceive('testClassFinal')
+            ->once()
+            ->andReturnTrue();
+        $this->config->shouldReceive('testClassStrictTypes')
+            ->once()
+            ->andReturnFalse();
+
         $this->renderer->visitTestClass(new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest'));
 
         $this->assertCount(6, $this->renderer->getLines());
         $this->assertSame(
             '<?php
+
+final class FooTest extends TestCase
+{
+}
+',
+            $this->renderer->getRendered()->toString()
+        );
+    }
+
+    public function testItRendersClassWithoutFinalAndWithStrictTypes(): void
+    {
+        $this->config->shouldReceive('testClassFinal')
+            ->once()
+            ->andReturnFalse();
+        $this->config->shouldReceive('testClassStrictTypes')
+            ->once()
+            ->andReturnTrue();
+
+        $this->renderer->visitTestClass(new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest'));
+
+        $this->assertCount(8, $this->renderer->getLines());
+        $this->assertSame(
+            '<?php
+
+declare(strict_types=1);
 
 class FooTest extends TestCase
 {
@@ -98,6 +139,13 @@ class FooTest extends TestCase
 
     public function testItRendersClassWithAllObjects(): void
     {
+        $this->config->shouldReceive('testClassFinal')
+            ->once()
+            ->andReturnTrue();
+        $this->config->shouldReceive('testClassStrictTypes')
+            ->once()
+            ->andReturnFalse();
+
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'Tests\\Bar\\FooTest');
 
         $import1 = Mockery::mock(TestImport::class);
@@ -175,7 +223,7 @@ class FooTest extends TestCase
 namespace Tests\\Bar;
 
 
-class FooTest extends TestCase
+final class FooTest extends TestCase
 {
 }
 ',
