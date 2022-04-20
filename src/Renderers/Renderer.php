@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Renderers;
 
+use PhpUnitGen\Core\Aware\ConfigAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Rendered;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
@@ -26,8 +28,10 @@ use Tightenco\Collect\Support\Collection;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class Renderer implements RendererContract
+class Renderer implements ConfigAware, RendererContract
 {
+    use ConfigAwareTrait;
+
     /**
      * @var int The current indentation for new lines.
      */
@@ -80,6 +84,10 @@ class Renderer implements RendererContract
     {
         return $this->addLine('<?php')
             ->addLine()
+            ->when($this->config->testClassStrictTypes(), function () {
+                $this->addLine('declare(strict_types=1);')
+                    ->addLine();
+            })
             ->when($class->getNamespace(), function (string $namespace) {
                 $this->addLine("namespace {$namespace};")
                     ->addLine();
@@ -97,6 +105,9 @@ class Renderer implements RendererContract
             })
             ->optionalAccept($class->getDocumentation())
             ->addLine("class {$class->getShortName()} extends TestCase")
+            ->when($this->config->testClassFinal(), function () {
+                $this->prepend('final ');
+            })
             ->addLine('{')
             ->augmentIndent()
             ->whenNotEmpty($class->getTraits(), function (Collection $traits) {
@@ -310,6 +321,20 @@ class Renderer implements RendererContract
     protected function append(string $content): self
     {
         $this->lines->last()->append($content);
+
+        return $this;
+    }
+
+    /**
+     * Prepend content to last line.
+     *
+     * @param string $content
+     *
+     * @return static
+     */
+    protected function prepend(string $content): self
+    {
+        $this->lines->last()->prepend($content);
 
         return $this;
     }
