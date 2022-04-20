@@ -71,9 +71,9 @@ class Renderer implements ConfigAware, RendererContract
     {
         return $this->addLine('use '.$import->getName())
             ->when($import->getAlias(), function (string $alias) {
-                $this->tapLine(fn(RenderedLine $l) => $l->append(' as '.$alias));
+                $this->tapLine(fn (RenderedLine $l) => $l->append(' as '.$alias));
             })
-            ->tapLine(fn(RenderedLine $l) => $l->append(';'));
+            ->tapLine(fn (RenderedLine $l) => $l->append(';'));
     }
 
     /**
@@ -102,10 +102,10 @@ class Renderer implements ConfigAware, RendererContract
 
                 $this->addLine();
             })
-            ->when($class->getDocumentation(), fn(TestDocumentation $d) => $d->accept($this))
+            ->when($class->getDocumentation(), fn (TestDocumentation $d) => $d->accept($this))
             ->addLine("class {$class->getShortName()} extends TestCase")
             ->when($this->config->testClassFinal(), function () {
-                $this->tapLine(fn(RenderedLine $l) => $l->prepend('final '));
+                $this->tapLine(fn (RenderedLine $l) => $l->prepend('final '));
             })
             ->addLine('{')
             ->augmentIndent()
@@ -152,7 +152,7 @@ class Renderer implements ConfigAware, RendererContract
     public function visitTestProperty(TestProperty $property): RendererContract
     {
         return $this
-            ->when($property->getDocumentation(), fn(TestDocumentation $d) => $d->accept($this))
+            ->when($property->getDocumentation(), fn (TestDocumentation $d) => $d->accept($this))
             ->addLine("protected \${$property->getName()};")
             ->addLine();
     }
@@ -163,7 +163,7 @@ class Renderer implements ConfigAware, RendererContract
     public function visitTestMethod(TestMethod $method): RendererContract
     {
         return $this
-            ->when($method->getDocumentation(), fn(TestDocumentation $d) => $d->accept($this))
+            ->when($method->getDocumentation(), fn (TestDocumentation $d) => $d->accept($this))
             ->addLine("{$method->getVisibility()} function {$method->getName()}(")
             ->whenNotEmpty($method->getParameters(), function (Collection $parameters) {
                 $lastKey = $parameters->keys()->last();
@@ -172,11 +172,11 @@ class Renderer implements ConfigAware, RendererContract
                     $parameter->accept($this);
 
                     if ($key !== $lastKey) {
-                        $this->tapLine(fn(RenderedLine $l) => $l->append(', '));
+                        $this->tapLine(fn (RenderedLine $l) => $l->append(', '));
                     }
                 });
             })
-            ->tapLine(fn(RenderedLine $l) => $l->append('): void'))
+            ->tapLine(fn (RenderedLine $l) => $l->append('): void'))
             ->addLine('{')
             ->augmentIndent()
             ->whenNotEmpty($method->getStatements(), function (Collection $statements) {
@@ -186,7 +186,7 @@ class Renderer implements ConfigAware, RendererContract
             })
             ->reduceIndent()
             ->addLine('}')
-            ->when($method->getProvider(), fn(TestProvider $p) => $p->accept($this))
+            ->when($method->getProvider(), fn (TestProvider $p) => $p->accept($this))
             ->addLine();
     }
 
@@ -197,9 +197,9 @@ class Renderer implements ConfigAware, RendererContract
     {
         return $this
             ->when($parameter->getType(), function (string $type) {
-                $this->tapLine(fn(RenderedLine $l) => $l->append($type.' '));
+                $this->tapLine(fn (RenderedLine $l) => $l->append($type.' '));
             })
-            ->tapLine(fn(RenderedLine $l) => $l->append('$'.$parameter->getName()));
+            ->tapLine(fn (RenderedLine $l) => $l->append('$'.$parameter->getName()));
     }
 
     /**
@@ -208,7 +208,7 @@ class Renderer implements ConfigAware, RendererContract
     public function visitTestProvider(TestProvider $provider): RendererContract
     {
         return $this
-            ->when($provider->getDocumentation(), fn(TestDocumentation $d) => $d->accept($this))
+            ->when($provider->getDocumentation(), fn (TestDocumentation $d) => $d->accept($this))
             ->addLine("public function {$provider->getName()}(): array")
             ->addLine('{')
             ->augmentIndent()
@@ -218,7 +218,7 @@ class Renderer implements ConfigAware, RendererContract
 
                 foreach ($data as $datum) {
                     $this->addLine('[')
-                        ->tapLine(fn(RenderedLine $l) => $l->append(implode(', ', $datum).'],'));
+                        ->tapLine(fn (RenderedLine $l) => $l->append(implode(', ', $datum).'],'));
                 }
 
                 $this->reduceIndent();
@@ -249,7 +249,7 @@ class Renderer implements ConfigAware, RendererContract
                 && ! Str::startsWith('//', $lastLine)
                 && ! Str::endsWith('*/', $lastLine)
             ) {
-                $this->tapLine(fn(RenderedLine $l) => $l->append(';'));
+                $this->tapLine(fn (RenderedLine $l) => $l->append(';'));
             }
 
             $this->reduceIndent();
@@ -268,7 +268,7 @@ class Renderer implements ConfigAware, RendererContract
                 $this->addLine(' *');
 
                 if ($line !== '') {
-                    $this->tapLine(fn(RenderedLine $l) => $l->append(' '.$line));
+                    $this->tapLine(fn (RenderedLine $l) => $l->append(' '.$line));
                 }
             });
 
