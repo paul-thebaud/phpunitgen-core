@@ -35,15 +35,17 @@ class Config implements ConfigContract
      * The properties of the config with there type hint.
      */
     protected const PROPERTIES = [
-        'automaticGeneration' => self::TYPE_BOOL,
-        'implementations'     => self::TYPE_ARRAY,
-        'baseNamespace'       => self::TYPE_STRING,
-        'baseTestNamespace'   => self::TYPE_STRING,
-        'testCase'            => self::TYPE_STRING,
-        'excludedMethods'     => self::TYPE_ARRAY,
-        'mergedPhpDoc'        => self::TYPE_ARRAY,
-        'phpDoc'              => self::TYPE_ARRAY,
-        'options'             => self::TYPE_ARRAY,
+        'automaticGeneration'  => self::TYPE_BOOL,
+        'implementations'      => self::TYPE_ARRAY,
+        'baseNamespace'        => self::TYPE_STRING,
+        'baseTestNamespace'    => self::TYPE_STRING,
+        'testCase'             => self::TYPE_STRING,
+        'testClassFinal'       => self::TYPE_BOOL,
+        'testClassStrictTypes' => self::TYPE_BOOL,
+        'excludedMethods'      => self::TYPE_ARRAY,
+        'mergedPhpDoc'         => self::TYPE_ARRAY,
+        'phpDoc'               => self::TYPE_ARRAY,
+        'options'              => self::TYPE_ARRAY,
     ];
 
     /**
@@ -158,6 +160,22 @@ class Config implements ConfigContract
     public function testCase(): string
     {
         return $this->config['testCase'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testClassFinal(): bool
+    {
+        return $this->config['testClassFinal'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testClassStrictTypes(): bool
+    {
+        return $this->config['testClassStrictTypes'];
     }
 
     /**

@@ -51,6 +51,20 @@ interface Config
     public function testCase(): string;
 
     /**
+     * Tells if the test class should be final.
+     *
+     * @return bool
+     */
+    public function testClassFinal(): bool;
+
+    /**
+     * Tells if the test class should declare strict types.
+     *
+     * @return bool
+     */
+    public function testClassStrictTypes(): bool;
+
+    /**
      * Get the case insensitive RegExp (without opening and closing "/") that tested methods shouldn't match.
      *
      * @return array
