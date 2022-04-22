@@ -1,18 +1,15 @@
 # Change Log
 
-## 2.0.0
+## 3.0.0
 
-**Changed**
+**Added**
 
-- Add support for PHP `~8.0.12` and `~8.1.0`.
-- Drop support for PHP `7`.
-- When param or return `native` type is `mixed` or `object`, use the documentation type if available.
-- Test generator will now ensure public and testable methods exists in class in `canGenerate`.
-- Handle doc type resolving inside PhpUnitGen since BetterReflection V5 does not do this anymore.
+- Add `testClassFinal` option and update rendering to create final test class (see #19).
+- Add `testClassStrictTypes` option and update rendering to prepend strict types declaration test class (see #19).
 
-**Fixed**
+## 2.x.x
 
-- Laravel Controller test generator will correctly handle API controllers.
+See the [2.x.x CHANGELOG](https://github.com/paul-thebaud/phpunitgen-core/blob/2.x.x/CHANGELOG.md).
 
 ## 1.x.x
 

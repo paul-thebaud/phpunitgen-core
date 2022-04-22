@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Renderers;
 
-use PhpUnitGen\Core\Contracts\Renderers\Renderable;
+use PhpUnitGen\Core\Aware\ConfigAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Renderers\Rendered;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer as RendererContract;
 use PhpUnitGen\Core\Helpers\Str;
@@ -26,8 +27,10 @@ use Tightenco\Collect\Support\Collection;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class Renderer implements RendererContract
+class Renderer implements ConfigAware, RendererContract
 {
+    use ConfigAwareTrait;
+
     /**
      * @var int The current indentation for new lines.
      */
@@ -68,9 +71,9 @@ class Renderer implements RendererContract
     {
         return $this->addLine('use '.$import->getName())
             ->when($import->getAlias(), function (string $alias) {
-                $this->append(' as '.$alias);
+                $this->tapLine(fn (RenderedLine $l) => $l->append(' as '.$alias));
             })
-            ->append(';');
+            ->tapLine(fn (RenderedLine $l) => $l->append(';'));
     }
 
     /**
@@ -80,6 +83,10 @@ class Renderer implements RendererContract
     {
         return $this->addLine('<?php')
             ->addLine()
+            ->when($this->config->testClassStrictTypes(), function () {
+                $this->addLine('declare(strict_types=1);')
+                    ->addLine();
+            })
             ->when($class->getNamespace(), function (string $namespace) {
                 $this->addLine("namespace {$namespace};")
                     ->addLine();
@@ -95,8 +102,11 @@ class Renderer implements RendererContract
 
                 $this->addLine();
             })
-            ->optionalAccept($class->getDocumentation())
+            ->when($class->getDocumentation(), fn (TestDocumentation $d) => $d->accept($this))
             ->addLine("class {$class->getShortName()} extends TestCase")
+            ->when($this->config->testClassFinal(), function () {
+                $this->tapLine(fn (RenderedLine $l) => $l->prepend('final '));
+            })
             ->addLine('{')
             ->augmentIndent()
             ->whenNotEmpty($class->getTraits(), function (Collection $traits) {
@@ -141,7 +151,8 @@ class Renderer implements RendererContract
      */
     public function visitTestProperty(TestProperty $property): RendererContract
     {
-        return $this->optionalAccept($property->getDocumentation())
+        return $this
+            ->when($property->getDocumentation(), fn (TestDocumentation $d) => $d->accept($this))
             ->addLine("protected \${$property->getName()};")
             ->addLine();
     }
@@ -151,7 +162,8 @@ class Renderer implements RendererContract
      */
     public function visitTestMethod(TestMethod $method): RendererContract
     {
-        return $this->optionalAccept($method->getDocumentation())
+        return $this
+            ->when($method->getDocumentation(), fn (TestDocumentation $d) => $d->accept($this))
             ->addLine("{$method->getVisibility()} function {$method->getName()}(")
             ->whenNotEmpty($method->getParameters(), function (Collection $parameters) {
                 $lastKey = $parameters->keys()->last();
@@ -160,11 +172,11 @@ class Renderer implements RendererContract
                     $parameter->accept($this);
 
                     if ($key !== $lastKey) {
-                        $this->append(', ');
+                        $this->tapLine(fn (RenderedLine $l) => $l->append(', '));
                     }
                 });
             })
-            ->append('): void')
+            ->tapLine(fn (RenderedLine $l) => $l->append('): void'))
             ->addLine('{')
             ->augmentIndent()
             ->whenNotEmpty($method->getStatements(), function (Collection $statements) {
@@ -174,7 +186,7 @@ class Renderer implements RendererContract
             })
             ->reduceIndent()
             ->addLine('}')
-            ->optionalAccept($method->getProvider())
+            ->when($method->getProvider(), fn (TestProvider $p) => $p->accept($this))
             ->addLine();
     }
 
@@ -185,9 +197,9 @@ class Renderer implements RendererContract
     {
         return $this
             ->when($parameter->getType(), function (string $type) {
-                $this->append($type.' ');
+                $this->tapLine(fn (RenderedLine $l) => $l->append($type.' '));
             })
-            ->append('$'.$parameter->getName());
+            ->tapLine(fn (RenderedLine $l) => $l->append('$'.$parameter->getName()));
     }
 
     /**
@@ -195,7 +207,8 @@ class Renderer implements RendererContract
      */
     public function visitTestProvider(TestProvider $provider): RendererContract
     {
-        return $this->optionalAccept($provider->getDocumentation())
+        return $this
+            ->when($provider->getDocumentation(), fn (TestDocumentation $d) => $d->accept($this))
             ->addLine("public function {$provider->getName()}(): array")
             ->addLine('{')
             ->augmentIndent()
@@ -205,8 +218,7 @@ class Renderer implements RendererContract
 
                 foreach ($data as $datum) {
                     $this->addLine('[')
-                        ->append(implode(', ', $datum))
-                        ->append('],');
+                        ->tapLine(fn (RenderedLine $l) => $l->append(implode(', ', $datum).'],'));
                 }
 
                 $this->reduceIndent();
@@ -237,7 +249,7 @@ class Renderer implements RendererContract
                 && ! Str::startsWith('//', $lastLine)
                 && ! Str::endsWith('*/', $lastLine)
             ) {
-                $this->append(';');
+                $this->tapLine(fn (RenderedLine $l) => $l->append(';'));
             }
 
             $this->reduceIndent();
@@ -256,7 +268,7 @@ class Renderer implements RendererContract
                 $this->addLine(' *');
 
                 if ($line !== '') {
-                    $this->append(' '.$line);
+                    $this->tapLine(fn (RenderedLine $l) => $l->append(' '.$line));
                 }
             });
 
@@ -301,15 +313,15 @@ class Renderer implements RendererContract
     }
 
     /**
-     * Appends content to last line.
+     * Call the given callback on the last line.
      *
-     * @param string $content
+     * @param callable $callback
      *
      * @return static
      */
-    protected function append(string $content): self
+    protected function tapLine(callable $callback): self
     {
-        $this->lines->last()->append($content);
+        $callback($this->lines->last());
 
         return $this;
     }
@@ -329,20 +341,6 @@ class Renderer implements RendererContract
         }
 
         return $this;
-    }
-
-    /**
-     * Call the "accept" method if the renderable is defined.
-     *
-     * @param Renderable|null $renderable
-     *
-     * @return static
-     */
-    protected function optionalAccept(?Renderable $renderable): self
-    {
-        return $this->when($renderable, function (Renderable $renderable) {
-            $renderable->accept($this);
-        });
     }
 
     /**

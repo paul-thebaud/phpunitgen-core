@@ -16,7 +16,7 @@ use Tests\TestCase;
  *
  * @covers \App\Policies\ProductPolicy
  */
-class ProductPolicyTest extends TestCase
+final class ProductPolicyTest extends TestCase
 {
     /**
      * @var ProductPolicy

@@ -16,7 +16,7 @@ use Tests\TestCase;
  *
  * @covers \App\Entity\Person
  */
-class PersonTest extends TestCase
+final class PersonTest extends TestCase
 {
     /**
      * @var Person
