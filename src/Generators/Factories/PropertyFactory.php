@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace PhpUnitGen\Core\Generators\Factories;
 
+use PhpUnitGen\Core\Aware\ConfigAwareTrait;
 use PhpUnitGen\Core\Aware\DocumentationFactoryAwareTrait;
-use PhpUnitGen\Core\Aware\ImportFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\MockGeneratorAwareTrait;
+use PhpUnitGen\Core\Aware\TypeFactoryAwareTrait;
+use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
 use PhpUnitGen\Core\Contracts\Aware\DocumentationFactoryAware;
-use PhpUnitGen\Core\Contracts\Aware\ImportFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\TypeFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\PropertyFactory as PropertyFactoryContract;
 use PhpUnitGen\Core\Generators\Concerns\InstantiatesClass;
 use PhpUnitGen\Core\Helpers\Reflect;
@@ -28,13 +30,15 @@ use Tightenco\Collect\Support\Collection;
  */
 class PropertyFactory implements
     PropertyFactoryContract,
+    ConfigAware,
     DocumentationFactoryAware,
     MockGeneratorAware,
-    ImportFactoryAware
+    TypeFactoryAware
 {
+    use ConfigAwareTrait;
     use DocumentationFactoryAwareTrait;
-    use ImportFactoryAwareTrait;
     use MockGeneratorAwareTrait;
+    use TypeFactoryAwareTrait;
     use InstantiatesClass;
 
     /**
@@ -44,15 +48,13 @@ class PropertyFactory implements
     {
         $reflectionClass = $class->getReflectionClass();
 
-        $property = new TestProperty($this->getPropertyName($reflectionClass));
-
-        $import = $this->importFactory->make($class, $reflectionClass->getName());
-
-        $property->setDocumentation(
-            $this->documentationFactory->makeForProperty($property, $import)
+        return $this->makeCustom(
+            $class,
+            $this->getPropertyName($reflectionClass),
+            $reflectionClass->getName(),
+            false,
+            false
         );
-
-        return $property;
     }
 
     /**
@@ -84,37 +86,30 @@ class PropertyFactory implements
     ): TestProperty {
         $property = new TestProperty($name);
 
-        $typeHint = $this->makeDocTypeFromString($class, $type, $isBuiltIn);
-        if ($isMock && $typeHint instanceof TestImport) {
-            $typeHint = new Collection([$typeHint, $this->mockGenerator->getMockType($class)]);
-        }
+        $type = $this->typeFactory->makeFromString($class, $type, $isBuiltIn);
+        $types = $isMock && $type instanceof TestImport
+            ? new Collection([$type, $this->mockGenerator->getMockType($class)])
+            : new Collection([$type]);
 
-        $property->setDocumentation(
-            $this->documentationFactory->makeForProperty($property, $typeHint)
-        );
+        $this->typeOrDocumentProperty($property, $types);
 
         return $property;
     }
 
     /**
-     * Get the type hint that will be added in documentation with the string version of type.
+     * Add a type or a documentation to property depending on configuration.
      *
-     * @param TestClass $class
-     * @param string    $type
-     * @param bool      $isBuiltIn
-     *
-     * @return TestImport|string
+     * @param TestProperty $property
+     * @param Collection   $types
      */
-    protected function makeDocTypeFromString(TestClass $class, string $type, bool $isBuiltIn)
+    protected function typeOrDocumentProperty(TestProperty $property, Collection $types): void
     {
-        if (in_array($type, ['parent', 'self'])) {
-            return $this->importFactory->make($class, $class->getReflectionClass()->getName());
+        if ($this->config->testClassTypedProperties()) {
+            $property->setType($this->typeFactory->formatTypes($types));
+        } else {
+            $property->setDocumentation(
+                $this->documentationFactory->makeForProperty($property, $types)
+            );
         }
-
-        if ($type === 'mixed' || $isBuiltIn) {
-            return $type;
-        }
-
-        return $this->importFactory->make($class, $type);
     }
 }

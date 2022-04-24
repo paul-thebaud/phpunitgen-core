@@ -15,6 +15,7 @@ use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
 use PhpUnitGen\Core\Contracts\Aware\PropertyFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\StatementFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\TestGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\TypeFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
@@ -23,6 +24,7 @@ use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactor
 use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\PropertyFactory as PropertyFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\TypeFactory as TypeFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator as TestGeneratorContract;
@@ -35,6 +37,7 @@ use PhpUnitGen\Core\Generators\Factories\ImportFactory;
 use PhpUnitGen\Core\Generators\Factories\MethodFactory;
 use PhpUnitGen\Core\Generators\Factories\PropertyFactory;
 use PhpUnitGen\Core\Generators\Factories\StatementFactory;
+use PhpUnitGen\Core\Generators\Factories\TypeFactory;
 use PhpUnitGen\Core\Generators\Factories\ValueFactory;
 use PhpUnitGen\Core\Generators\Mocks\MockeryMockGenerator;
 use PhpUnitGen\Core\Helpers\Str;
@@ -68,6 +71,7 @@ class CoreServiceProvider extends ReflectionServiceProvider implements BootableS
         RendererContract::class,
         StatementFactoryContract::class,
         TestGeneratorContract::class,
+        TypeFactoryContract::class,
         ValueFactoryContract::class,
     ];
 
@@ -84,6 +88,7 @@ class CoreServiceProvider extends ReflectionServiceProvider implements BootableS
         PropertyFactoryAware::class      => PropertyFactoryContract::class,
         StatementFactoryAware::class     => StatementFactoryContract::class,
         TestGeneratorAware::class        => TestGeneratorContract::class,
+        TypeFactoryAware::class          => TypeFactoryContract::class,
         ValueFactoryAware::class         => ValueFactoryContract::class,
     ];
 
@@ -100,6 +105,7 @@ class CoreServiceProvider extends ReflectionServiceProvider implements BootableS
         MethodFactoryContract::class        => MethodFactory::class,
         PropertyFactoryContract::class      => PropertyFactory::class,
         StatementFactoryContract::class     => StatementFactory::class,
+        TypeFactoryContract::class          => TypeFactory::class,
         ValueFactoryContract::class         => ValueFactory::class,
     ];
 

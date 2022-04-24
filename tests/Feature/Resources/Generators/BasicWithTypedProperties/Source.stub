@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Entity;
+
+use App\Services\Connection;
+
+class Person
+{
+    protected static $connection;
+
+    protected $name;
+
+    protected $work;
+
+    public static function getConnection(): Connection
+    {
+    }
+
+    public static function setConnection(Connection $connection): void
+    {
+    }
+
+    public static function find(string $name): ?self
+    {
+    }
+
+    public function __construct(string $name, Work $work)
+    {
+    }
+
+    public function save(): self
+    {
+    }
+
+    public function delete(): self
+    {
+    }
+
+    public function getName(): string
+    {
+    }
+
+    public function setName(string $name): void
+    {
+    }
+
+    public function getWork(): Work
+    {
+    }
+
+    public function setWork(Work $work): void
+    {
+    }
+}

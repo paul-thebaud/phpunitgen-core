@@ -6,8 +6,9 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Factories;
 
 use Mockery;
 use Mockery\Mock;
+use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory;
-use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory;
+use PhpUnitGen\Core\Contracts\Generators\Factories\TypeFactory;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator;
 use PhpUnitGen\Core\Generators\Factories\PropertyFactory;
 use PhpUnitGen\Core\Models\TestClass;
@@ -30,14 +31,19 @@ use Tightenco\Collect\Support\Collection;
 class PropertyFactoryTest extends TestCase
 {
     /**
+     * @var Config|Mock
+     */
+    protected $config;
+
+    /**
      * @var DocumentationFactory|Mock
      */
     protected $documentationFactory;
 
     /**
-     * @var ImportFactory|Mock
+     * @var TypeFactory|Mock
      */
-    protected $importFactory;
+    protected $typeFactory;
 
     /**
      * @var MockGenerator|Mock
@@ -56,16 +62,18 @@ class PropertyFactoryTest extends TestCase
     {
         parent::setUp();
 
+        $this->config = Mockery::mock(Config::class);
         $this->documentationFactory = Mockery::mock(DocumentationFactory::class);
-        $this->importFactory = Mockery::mock(ImportFactory::class);
+        $this->typeFactory = Mockery::mock(TypeFactory::class);
         $this->mockGenerator = Mockery::mock(MockGenerator::class);
         $this->propertyFactory = new PropertyFactory();
+        $this->propertyFactory->setConfig($this->config);
         $this->propertyFactory->setDocumentationFactory($this->documentationFactory);
-        $this->propertyFactory->setImportFactory($this->importFactory);
+        $this->propertyFactory->setTypeFactory($this->typeFactory);
         $this->propertyFactory->setMockGenerator($this->mockGenerator);
     }
 
-    public function testMakeForClass(): void
+    public function testMakeForClassWithoutTypedProperties(): void
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $import = Mockery::mock(TestImport::class);
@@ -78,34 +86,64 @@ class PropertyFactoryTest extends TestCase
             'getName'      => 'App\\Foo',
         ]);
 
-        $this->importFactory->shouldReceive('make')
-            ->with($class, 'App\\Foo')
+        $this->config->shouldReceive('testClassTypedProperties')
+            ->andReturnFalse();
+
+        $this->typeFactory->shouldReceive('makeFromString')
+            ->with($class, 'App\\Foo', false)
             ->andReturn($import);
 
         $this->documentationFactory->shouldReceive('makeForProperty')
-            ->with(Mockery::type(TestProperty::class), $import)
+            ->with(
+                Mockery::type(TestProperty::class),
+                Mockery::on(fn (Collection $types) => $types->toArray() === [$import])
+            )
             ->andReturn($doc);
 
         $property = $this->propertyFactory->makeForClass($class);
 
         $this->assertSame('foo', $property->getName());
         $this->assertSame($doc, $property->getDocumentation());
+        $this->assertSame(null, $property->getType());
     }
 
-    /**
-     * @param ReflectionType $reflectionType
-     * @param TestImport     $expectedTypeHint
-     *
-     * @dataProvider makeForParameterWithObjectTypeDataProvider
-     */
-    public function testMakeForParameterWithObjectType(
-        ReflectionType $reflectionType,
-        TestImport $expectedTypeHint
-    ): void {
+    public function testMakeForClassWithTypedProperties(): void
+    {
+        $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $import = Mockery::mock(TestImport::class);
+
+        $class = new TestClass($reflectionClass, 'FooTest');
+
+        $reflectionClass->shouldReceive([
+            'getShortName' => 'Foo',
+            'getName'      => 'App\\Foo',
+        ]);
+
+        $this->config->shouldReceive('testClassTypedProperties')
+            ->andReturnTrue();
+
+        $this->typeFactory->shouldReceive('makeFromString')
+            ->with($class, 'App\\Foo', false)
+            ->andReturn($import);
+        $this->typeFactory->shouldReceive('formatTypes')
+            ->with(Mockery::on(fn (Collection $types) => $types->toArray() === [$import]))
+            ->andReturn('Foo');
+
+        $property = $this->propertyFactory->makeForClass($class);
+
+        $this->assertSame('foo', $property->getName());
+        $this->assertSame(null, $property->getDocumentation());
+        $this->assertSame('Foo', $property->getType());
+    }
+
+    public function testMakeForParameterWithObjectType(): void
+    {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
+        $reflectionType = PhpVersionDependents::makeReflectionTypeMock();
         $doc = Mockery::mock(TestDocumentation::class);
+        $import = new TestImport('App\\Bar');
         $mockImport = Mockery::mock(TestImport::class);
 
         $class = new TestClass($reflectionClass, 'FooTest');
@@ -124,9 +162,18 @@ class PropertyFactoryTest extends TestCase
             'getDeclaringFunction' => $reflectionMethod,
         ]);
 
-        $this->importFactory->shouldReceive('make')
-            ->with($class, $expectedTypeHint->getName())
-            ->andReturn($expectedTypeHint);
+        $reflectionType->shouldReceive([
+            '__toString' => 'App\\Bar',
+            'isBuiltIn'  => false,
+            'allowsNull' => false,
+        ]);
+
+        $this->config->shouldReceive('testClassTypedProperties')
+            ->andReturnFalse();
+
+        $this->typeFactory->shouldReceive('makeFromString')
+            ->with($class, 'App\\Bar', false)
+            ->andReturn($import);
 
         $this->mockGenerator->shouldReceive('getMockType')
             ->with($class)
@@ -135,8 +182,8 @@ class PropertyFactoryTest extends TestCase
         $this->documentationFactory->shouldReceive('makeForProperty')
             ->with(
                 Mockery::type(TestProperty::class),
-                Mockery::on(function (Collection $typeHints) use ($expectedTypeHint, $mockImport) {
-                    return $typeHints->toArray() === [$expectedTypeHint, $mockImport];
+                Mockery::on(function (Collection $typeHints) use ($import, $mockImport) {
+                    return $typeHints->toArray() === [$import, $mockImport];
                 })
             )
             ->andReturn($doc);
@@ -145,35 +192,6 @@ class PropertyFactoryTest extends TestCase
 
         $this->assertSame('bar', $property->getName());
         $this->assertSame($doc, $property->getDocumentation());
-    }
-
-    public function makeForParameterWithObjectTypeDataProvider(): array
-    {
-        $parentType = PhpVersionDependents::makeReflectionTypeMock();
-        $selfType = PhpVersionDependents::makeReflectionTypeMock();
-        $barType = PhpVersionDependents::makeReflectionTypeMock();
-
-        $parentType->shouldReceive([
-            '__toString' => 'parent',
-            'isBuiltIn'  => true,
-            'allowsNull' => false,
-        ]);
-        $selfType->shouldReceive([
-            '__toString' => 'self',
-            'isBuiltIn'  => true,
-            'allowsNull' => false,
-        ]);
-        $barType->shouldReceive([
-            '__toString' => 'App\\Bar',
-            'isBuiltIn'  => false,
-            'allowsNull' => false,
-        ]);
-
-        return [
-            [$parentType, new TestImport('App\\Foo')],
-            [$selfType, new TestImport('App\\Foo')],
-            [$barType, new TestImport('App\\Bar')],
-        ];
     }
 
     /**
@@ -207,10 +225,17 @@ class PropertyFactoryTest extends TestCase
             'getDeclaringFunction' => $reflectionMethod,
         ]);
 
+        $this->config->shouldReceive('testClassTypedProperties')
+            ->andReturnFalse();
+
+        $this->typeFactory->shouldReceive('makeFromString')
+            ->with($class, $expectedTypeHint, true)
+            ->andReturn($expectedTypeHint);
+
         $this->documentationFactory->shouldReceive('makeForProperty')
             ->with(
                 Mockery::type(TestProperty::class),
-                $expectedTypeHint
+                Mockery::on(fn (Collection $types) => $types->toArray() === [$expectedTypeHint])
             )
             ->andReturn($doc);
 

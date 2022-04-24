@@ -20,17 +20,17 @@ final class EventChannelTest extends TestCase
     /**
      * @var EventChannel
      */
-    protected $eventChannel;
+    private $eventChannel;
 
     /**
      * @var EventService|Mock
      */
-    protected $eventService;
+    private $eventService;
 
     /**
      * @var User
      */
-    protected $user;
+    private $user;
 
     /**
      * {@inheritdoc}

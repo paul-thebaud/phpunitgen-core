@@ -19,12 +19,12 @@ final class UserControllerTest extends TestCase
     /**
      * @var UserController
      */
-    protected $userController;
+    private $userController;
 
     /**
      * @var UserService|Mock
      */
-    protected $userService;
+    private $userService;
 
     /**
      * {@inheritdoc}

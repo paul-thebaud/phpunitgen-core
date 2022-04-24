@@ -19,12 +19,12 @@ final class PruneUsersCommandTest extends TestCase
     /**
      * @var PruneUsersCommand
      */
-    protected $pruneUsersCommand;
+    private $pruneUsersCommand;
 
     /**
      * @var UserService|Mock
      */
-    protected $userService;
+    private $userService;
 
     /**
      * {@inheritdoc}

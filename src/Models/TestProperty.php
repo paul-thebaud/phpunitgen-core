@@ -8,6 +8,7 @@ use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\Models\Concerns\HasTestClassParent;
 use PhpUnitGen\Core\Models\Concerns\HasTestDocumentation;
+use PhpUnitGen\Core\Models\Concerns\HasType;
 
 /**
  * Class TestProperty.
@@ -20,6 +21,7 @@ class TestProperty implements Renderable
 {
     use HasTestClassParent;
     use HasTestDocumentation;
+    use HasType;
 
     /**
      * @var string The name of the property.
@@ -29,7 +31,7 @@ class TestProperty implements Renderable
     /**
      * TestProperty constructor.
      *
-     * @param string $name
+     * @param string      $name
      */
     public function __construct(string $name)
     {

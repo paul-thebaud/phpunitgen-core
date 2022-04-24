@@ -21,27 +21,27 @@ final class PersonTest extends TestCase
     /**
      * @var Person
      */
-    protected $person;
+    private $person;
 
     /**
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * @var Work|Mock
      */
-    protected $work;
+    private $work;
 
     /**
      * @var Post|Mock
      */
-    protected $foo;
+    private $foo;
 
     /**
      * @var Post|Mock
      */
-    protected $bar;
+    private $bar;
 
     /**
      * {@inheritdoc}

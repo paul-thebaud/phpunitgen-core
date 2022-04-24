@@ -19,12 +19,12 @@ final class ProductRuleTest extends TestCase
     /**
      * @var ProductRule
      */
-    protected $productRule;
+    private $productRule;
 
     /**
      * @var ProductService|Mock
      */
-    protected $productService;
+    private $productService;
 
     /**
      * {@inheritdoc}

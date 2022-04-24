@@ -8,9 +8,9 @@ use Mockery;
 use Mockery\Mock;
 use PhpParser\Node\Stmt\Namespace_;
 use PhpUnitGen\Core\Contracts\Config\Config;
+use PhpUnitGen\Core\Contracts\Generators\Factories\TypeFactory;
 use PhpUnitGen\Core\Generators\Factories\DocumentationFactory;
 use PhpUnitGen\Core\Models\TestClass;
-use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestProperty;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -30,6 +30,11 @@ class DocumentationFactoryTest extends TestCase
     protected $config;
 
     /**
+     * @var TypeFactory|Mock
+     */
+    protected $typeFactory;
+
+    /**
      * @var DocumentationFactory
      */
     protected $documentationFactory;
@@ -42,8 +47,10 @@ class DocumentationFactoryTest extends TestCase
         parent::setUp();
 
         $this->config = Mockery::mock(Config::class);
+        $this->typeFactory = Mockery::mock(TypeFactory::class);
         $this->documentationFactory = new DocumentationFactory();
         $this->documentationFactory->setConfig($this->config);
+        $this->documentationFactory->setTypeFactory($this->typeFactory);
     }
 
     public function testMakeForClassWithoutCustomTags(): void
@@ -126,36 +133,20 @@ class DocumentationFactoryTest extends TestCase
         ], $doc->getLines()->toArray());
     }
 
-    public function testMakeForPropertyWithOneType(): void
+    public function testMakeForProperty(): void
     {
         $property = Mockery::mock(TestProperty::class);
 
-        $doc = $this->documentationFactory->makeForProperty($property, 'string');
+        $types = new Collection(['string', 'bool']);
+        $this->typeFactory->shouldReceive('formatTypes')
+            ->once()
+            ->with($types)
+            ->andReturn('string|bool');
+
+        $doc = $this->documentationFactory->makeForProperty($property, $types);
 
         $this->assertSame([
-            '@var string',
-        ], $doc->getLines()->toArray());
-    }
-
-    public function testMakeForPropertyWithMultipleTypes(): void
-    {
-        $property = Mockery::mock(TestProperty::class);
-        $type = Mockery::mock(TestImport::class);
-
-        $type->shouldReceive('getFinalName')
-            ->withNoArgs()
-            ->andReturn('Foo');
-
-        $doc = $this->documentationFactory->makeForProperty($property, ['string', $type]);
-
-        $this->assertSame([
-            '@var string|Foo',
-        ], $doc->getLines()->toArray());
-
-        $doc = $this->documentationFactory->makeForProperty($property, new Collection(['string', $type]));
-
-        $this->assertSame([
-            '@var string|Foo',
+            '@var string|bool',
         ], $doc->getLines()->toArray());
     }
 

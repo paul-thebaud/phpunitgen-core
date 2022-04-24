@@ -6,7 +6,6 @@ namespace PhpUnitGen\Core\Contracts\Generators\Factories;
 
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
-use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestProperty;
 use Tightenco\Collect\Support\Collection;
@@ -34,12 +33,12 @@ interface DocumentationFactory
     /**
      * Create the documentation for a test class property with the given type(s).
      *
-     * @param TestProperty                                       $property
-     * @param string|string[]|TestImport|TestImport[]|Collection $types
+     * @param TestProperty        $property
+     * @param Collection $types
      *
      * @return TestDocumentation
      */
-    public function makeForProperty(TestProperty $property, $types): TestDocumentation;
+    public function makeForProperty(TestProperty $property, Collection $types): TestDocumentation;
 
     /**
      * Create the documentation for an inherited method.

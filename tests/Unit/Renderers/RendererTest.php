@@ -248,7 +248,7 @@ final class FooTest extends TestCase
 
         $this->assertCount(2, $this->renderer->getLines());
         $this->assertSame(
-            'protected $fooMock;
+            'private $fooMock;
 ',
             $this->renderer->getRendered()->toString()
         );
@@ -268,7 +268,7 @@ final class FooTest extends TestCase
 
         $this->assertCount(2, $this->renderer->getLines());
         $this->assertSame(
-            'protected $fooMock;
+            'private $fooMock;
 ',
             $this->renderer->getRendered()->toString()
         );
@@ -363,7 +363,10 @@ final class FooTest extends TestCase
     {
         $this->renderer->getLines()->add(new RenderedLine(0, ''));
 
-        $this->renderer->visitTestParameter(new TestParameter('expected', 'int'));
+        $parameter = new TestParameter('expected');
+        $parameter->setType('int');
+
+        $this->renderer->visitTestParameter($parameter);
 
         $this->assertSame(
             'int $expected',

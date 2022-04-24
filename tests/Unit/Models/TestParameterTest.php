@@ -13,6 +13,7 @@ use Tests\PhpUnitGen\Core\TestCase;
  * Class TestParameterTest.
  *
  * @covers \PhpUnitGen\Core\Models\TestParameter
+ * @covers \PhpUnitGen\Core\Models\Concerns\HasType
  */
 class TestParameterTest extends TestCase
 {
@@ -28,13 +29,19 @@ class TestParameterTest extends TestCase
     {
         parent::setUp();
 
-        $this->parameter = new TestParameter('expected', 'string');
+        $this->parameter = new TestParameter('expected');
     }
 
     public function testItConstructs(): void
     {
         $this->assertSame('expected', $this->parameter->getName());
-        $this->assertSame('string', $this->parameter->getType());
+    }
+
+    public function testItHasType(): void
+    {
+        $this->assertSame(null, $this->parameter->getType());
+        $this->parameter->setType('int');
+        $this->assertSame('int', $this->parameter->getType());
     }
 
     public function testItAcceptsRenderer(): void

@@ -20,12 +20,12 @@ final class SendWelcomeMessageJobTest extends TestCase
     /**
      * @var SendWelcomeMessageJob
      */
-    protected $sendWelcomeMessageJob;
+    private $sendWelcomeMessageJob;
 
     /**
      * @var User|Mock
      */
-    protected $user;
+    private $user;
 
     /**
      * {@inheritdoc}

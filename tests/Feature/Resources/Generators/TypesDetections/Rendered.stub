@@ -30,107 +30,107 @@ final class TypesDetectionStubTest extends TestCase
     /**
      * @var TypesDetectionStub
      */
-    protected $typesDetectionStub;
+    private $typesDetectionStub;
 
     /**
      * @var mixed
      */
-    protected $noType;
+    private $noType;
 
     /**
      * @var mixed
      */
-    protected $mixed;
+    private $mixed;
 
     /**
      * @var int
      */
-    protected $mixedUsesDoc;
+    private $mixedUsesDoc;
 
     /**
      * @var int
      */
-    protected $scalar;
+    private $scalar;
 
     /**
      * @var int
      */
-    protected $scalarNullable;
+    private $scalarNullable;
 
     /**
      * @var int
      */
-    protected $scalarNullableOr;
+    private $scalarNullableOr;
 
     /**
      * @var int
      */
-    protected $scalarFromDoc;
+    private $scalarFromDoc;
 
     /**
      * @var int
      */
-    protected $scalarNullableOrFromDoc;
+    private $scalarNullableOrFromDoc;
 
     /**
      * @var Post1|Mock
      */
-    protected $currentClass;
+    private $currentClass;
 
     /**
      * @var Throwable1|Mock
      */
-    protected $rootClass;
+    private $rootClass;
 
     /**
      * @var OtherPost1|Mock
      */
-    protected $subClass;
+    private $subClass;
 
     /**
      * @var Foo1|Mock
      */
-    protected $importedClass;
+    private $importedClass;
 
     /**
      * @var Bar1|Mock
      */
-    protected $aliasedClass;
+    private $aliasedClass;
 
     /**
      * @var Far1|Mock
      */
-    protected $groupAliasedClass;
+    private $groupAliasedClass;
 
     /**
      * @var Post2|Mock
      */
-    protected $currentClassFromDoc;
+    private $currentClassFromDoc;
 
     /**
      * @var Throwable2|Mock
      */
-    protected $rootClassFromDoc;
+    private $rootClassFromDoc;
 
     /**
      * @var OtherPost2|Mock
      */
-    protected $subClassFromDoc;
+    private $subClassFromDoc;
 
     /**
      * @var Foo2|Mock
      */
-    protected $importedClassFromDoc;
+    private $importedClassFromDoc;
 
     /**
      * @var Bar2|Mock
      */
-    protected $aliasedClassFromDoc;
+    private $aliasedClassFromDoc;
 
     /**
      * @var Far2|Mock
      */
-    protected $groupAliasedClassFromDoc;
+    private $groupAliasedClassFromDoc;
 
     /**
      * {@inheritdoc}

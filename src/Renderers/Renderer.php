@@ -153,7 +153,11 @@ class Renderer implements ConfigAware, RendererContract
     {
         return $this
             ->when($property->getDocumentation(), fn (TestDocumentation $d) => $d->accept($this))
-            ->addLine("protected \${$property->getName()};")
+            ->addLine('private ')
+            ->when($property->getType(), function (string $type) {
+                $this->tapLine(fn (RenderedLine $l) => $l->append($type.' '));
+            })
+            ->tapLine(fn (RenderedLine $l) => $l->append('$'.$property->getName().';'))
             ->addLine();
     }
 
