@@ -19,25 +19,26 @@ class ConfigTest extends TestCase
     public function testWhenDefaultConfiguration(): void
     {
         $this->assertSame([
-            'automaticGeneration'  => true,
-            'implementations'      => DelegateTestGenerator::implementations(),
-            'baseNamespace'        => 'App',
-            'baseTestNamespace'    => 'Tests',
-            'testCase'             => 'Tests\\TestCase',
-            'testClassFinal'       => true,
-            'testClassStrictTypes' => false,
-            'excludedMethods'      => [
+            'automaticGeneration'      => true,
+            'implementations'          => DelegateTestGenerator::implementations(),
+            'baseNamespace'            => 'App',
+            'baseTestNamespace'        => 'Tests',
+            'testCase'                 => 'Tests\\TestCase',
+            'testClassFinal'           => true,
+            'testClassStrictTypes'     => false,
+            'testClassTypedProperties' => false,
+            'excludedMethods'          => [
                 '__construct',
                 '__destruct',
             ],
-            'mergedPhpDoc'         => [
+            'mergedPhpDoc'             => [
                 'author',
                 'copyright',
                 'license',
                 'version',
             ],
-            'phpDoc'               => [],
-            'options'              => [
+            'phpDoc'                   => [],
+            'options'                  => [
                 'context' => 'laravel',
             ],
         ], Config::make()->toArray());
@@ -46,29 +47,31 @@ class ConfigTest extends TestCase
     public function testWhenCompleteConfiguration(): void
     {
         $this->assertSame([
-            'automaticGeneration'  => false,
-            'implementations'      => [],
-            'baseNamespace'        => 'App\\',
-            'baseTestNamespace'    => 'App\\Tests\\',
-            'testCase'             => 'App\\Tests\\TestCase',
-            'testClassFinal'       => false,
-            'testClassStrictTypes' => true,
-            'excludedMethods'      => [],
-            'mergedPhpDoc'         => [],
-            'phpDoc'               => ['@author John Doe'],
-            'options'              => ['custom' => 'option'],
+            'automaticGeneration'      => false,
+            'implementations'          => [],
+            'baseNamespace'            => 'App\\',
+            'baseTestNamespace'        => 'App\\Tests\\',
+            'testCase'                 => 'App\\Tests\\TestCase',
+            'testClassFinal'           => false,
+            'testClassStrictTypes'     => true,
+            'testClassTypedProperties' => true,
+            'excludedMethods'          => [],
+            'mergedPhpDoc'             => [],
+            'phpDoc'                   => ['@author John Doe'],
+            'options'                  => ['custom' => 'option'],
         ], Config::make([
-            'automaticGeneration'  => false,
-            'implementations'      => [],
-            'baseNamespace'        => 'App\\',
-            'baseTestNamespace'    => 'App\\Tests\\',
-            'testCase'             => 'App\\Tests\\TestCase',
-            'testClassFinal'       => false,
-            'testClassStrictTypes' => true,
-            'excludedMethods'      => [],
-            'mergedPhpDoc'         => [],
-            'phpDoc'               => ['@author John Doe'],
-            'options'              => ['custom' => 'option'],
+            'automaticGeneration'      => false,
+            'implementations'          => [],
+            'baseNamespace'            => 'App\\',
+            'baseTestNamespace'        => 'App\\Tests\\',
+            'testCase'                 => 'App\\Tests\\TestCase',
+            'testClassFinal'           => false,
+            'testClassStrictTypes'     => true,
+            'testClassTypedProperties' => true,
+            'excludedMethods'          => [],
+            'mergedPhpDoc'             => [],
+            'phpDoc'                   => ['@author John Doe'],
+            'options'                  => ['custom' => 'option'],
         ])->toArray());
     }
 
