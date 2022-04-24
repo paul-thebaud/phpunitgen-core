@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\PhpUnitGen\Core\Unit\Parsers;
+namespace Tests\PhpUnitGen\Core\Unit\Config;
 
 use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Exceptions\InvalidArgumentException;
