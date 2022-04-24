@@ -31,7 +31,7 @@ class TestProperty implements Renderable
     /**
      * TestProperty constructor.
      *
-     * @param string      $name
+     * @param string $name
      */
     public function __construct(string $name)
     {

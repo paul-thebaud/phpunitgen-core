@@ -33,8 +33,8 @@ interface DocumentationFactory
     /**
      * Create the documentation for a test class property with the given type(s).
      *
-     * @param TestProperty        $property
-     * @param Collection $types
+     * @param TestProperty $property
+     * @param Collection   $types
      *
      * @return TestDocumentation
      */
