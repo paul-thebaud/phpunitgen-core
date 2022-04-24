@@ -20,12 +20,12 @@ final class NewUserListenerTest extends TestCase
     /**
      * @var NewUserListener
      */
-    protected $newUserListener;
+    private $newUserListener;
 
     /**
      * @var UserService|Mock
      */
-    protected $userService;
+    private $userService;
 
     /**
      * {@inheritdoc}

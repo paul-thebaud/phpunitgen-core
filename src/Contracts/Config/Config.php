@@ -65,6 +65,13 @@ interface Config
     public function testClassStrictTypes(): bool;
 
     /**
+     * Tells if the test class properties should be typed or documented.
+     *
+     * @return bool
+     */
+    public function testClassTypedProperties(): bool;
+
+    /**
      * Get the case insensitive RegExp (without opening and closing "/") that tested methods shouldn't match.
      *
      * @return array

@@ -17,6 +17,7 @@ use PhpUnitGen\Core\Aware\MockGeneratorAwareTrait;
 use PhpUnitGen\Core\Aware\PropertyFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\StatementFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\TestGeneratorAwareTrait;
+use PhpUnitGen\Core\Aware\TypeFactoryAwareTrait;
 use PhpUnitGen\Core\Aware\ValueFactoryAwareTrait;
 use PhpUnitGen\Core\Config\Config;
 use PhpUnitGen\Core\Container\CoreServiceProvider;
@@ -29,6 +30,7 @@ use PhpUnitGen\Core\Contracts\Aware\MockGeneratorAware;
 use PhpUnitGen\Core\Contracts\Aware\PropertyFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\StatementFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\TestGeneratorAware;
+use PhpUnitGen\Core\Contracts\Aware\TypeFactoryAware;
 use PhpUnitGen\Core\Contracts\Aware\ValueFactoryAware;
 use PhpUnitGen\Core\Contracts\Config\Config as ConfigContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ClassFactory as ClassFactoryContract;
@@ -37,6 +39,7 @@ use PhpUnitGen\Core\Contracts\Generators\Factories\ImportFactory as ImportFactor
 use PhpUnitGen\Core\Contracts\Generators\Factories\MethodFactory as MethodFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\PropertyFactory as PropertyFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\StatementFactory as StatementFactoryContract;
+use PhpUnitGen\Core\Contracts\Generators\Factories\TypeFactory as TypeFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\Factories\ValueFactory as ValueFactoryContract;
 use PhpUnitGen\Core\Contracts\Generators\MockGenerator as MockGeneratorContract;
 use PhpUnitGen\Core\Contracts\Generators\TestGenerator;
@@ -64,6 +67,7 @@ use Tests\PhpUnitGen\Core\TestCase;
  * @covers \PhpUnitGen\Core\Aware\PropertyFactoryAwareTrait
  * @covers \PhpUnitGen\Core\Aware\StatementFactoryAwareTrait
  * @covers \PhpUnitGen\Core\Aware\TestGeneratorAwareTrait
+ * @covers \PhpUnitGen\Core\Aware\TypeFactoryAwareTrait
  * @covers \PhpUnitGen\Core\Aware\ValueFactoryAwareTrait
  * @covers \PhpUnitGen\Core\Container\ReflectionServiceProvider
  * @covers \PhpUnitGen\Core\Container\CoreServiceProvider
@@ -184,6 +188,7 @@ class CoreServiceProviderTest extends TestCase
         $this->assertInstanceOf(PropertyFactoryContract::class, $stubAware->getPropertyFactory());
         $this->assertInstanceOf(StatementFactoryContract::class, $stubAware->getStatementFactory());
         $this->assertInstanceOf(TestGeneratorContract::class, $stubAware->getTestGenerator());
+        $this->assertInstanceOf(TypeFactoryContract::class, $stubAware->getTypeFactory());
         $this->assertInstanceOf(ValueFactoryContract::class, $stubAware->getValueFactory());
     }
 }
@@ -246,6 +251,7 @@ class StubAware implements
     PropertyFactoryAware,
     StatementFactoryAware,
     TestGeneratorAware,
+    TypeFactoryAware,
     ValueFactoryAware
 {
     use ClassFactoryAwareTrait;
@@ -257,5 +263,6 @@ class StubAware implements
     use PropertyFactoryAwareTrait;
     use StatementFactoryAwareTrait;
     use TestGeneratorAwareTrait;
+    use TypeFactoryAwareTrait;
     use ValueFactoryAwareTrait;
 }

@@ -21,17 +21,17 @@ final class ProductPolicyTest extends TestCase
     /**
      * @var ProductPolicy
      */
-    protected $productPolicy;
+    private $productPolicy;
 
     /**
      * @var RoleService|Mock
      */
-    protected $roleService;
+    private $roleService;
 
     /**
      * @var User
      */
-    protected $user;
+    private $user;
 
     /**
      * {@inheritdoc}

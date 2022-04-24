@@ -6,12 +6,13 @@ namespace PhpUnitGen\Core\Generators\Factories;
 
 use phpDocumentor\Reflection\DocBlock\Tag;
 use PhpUnitGen\Core\Aware\ConfigAwareTrait;
+use PhpUnitGen\Core\Aware\TypeFactoryAwareTrait;
 use PhpUnitGen\Core\Contracts\Aware\ConfigAware;
+use PhpUnitGen\Core\Contracts\Aware\TypeFactoryAware;
 use PhpUnitGen\Core\Contracts\Generators\Factories\DocumentationFactory as DocumentationFactoryContract;
 use PhpUnitGen\Core\Helpers\Reflect;
 use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestDocumentation;
-use PhpUnitGen\Core\Models\TestImport;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestProperty;
 use Tightenco\Collect\Support\Collection;
@@ -23,9 +24,10 @@ use Tightenco\Collect\Support\Collection;
  * @author  Killian Hascoët <killianh@live.fr>
  * @license MIT
  */
-class DocumentationFactory implements DocumentationFactoryContract, ConfigAware
+class DocumentationFactory implements DocumentationFactoryContract, ConfigAware, TypeFactoryAware
 {
     use ConfigAwareTrait;
+    use TypeFactoryAwareTrait;
 
     /**
      * {@inheritdoc}
@@ -53,21 +55,9 @@ class DocumentationFactory implements DocumentationFactoryContract, ConfigAware
     /**
      * {@inheritdoc}
      */
-    public function makeForProperty(TestProperty $property, $types): TestDocumentation
+    public function makeForProperty(TestProperty $property, Collection $types): TestDocumentation
     {
-        // Here we will make a collection if $types is not one already, and map to
-        // retrieve type as string format.
-        $typesString = Collection::wrap($types)
-            ->map(function ($import) {
-                if ($import instanceof TestImport) {
-                    return $import->getFinalName();
-                }
-
-                return $import;
-            })
-            ->implode('|');
-
-        return new TestDocumentation('@var '.$typesString);
+        return new TestDocumentation('@var '.$this->typeFactory->formatTypes($types));
     }
 
     /**

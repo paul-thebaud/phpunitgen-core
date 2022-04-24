@@ -7,6 +7,7 @@ namespace PhpUnitGen\Core\Models;
 use PhpUnitGen\Core\Contracts\Renderers\Renderable;
 use PhpUnitGen\Core\Contracts\Renderers\Renderer;
 use PhpUnitGen\Core\Models\Concerns\HasTestMethodParent;
+use PhpUnitGen\Core\Models\Concerns\HasType;
 
 /**
  * Class TestParameter.
@@ -18,16 +19,12 @@ use PhpUnitGen\Core\Models\Concerns\HasTestMethodParent;
 class TestParameter implements Renderable
 {
     use HasTestMethodParent;
+    use HasType;
 
     /**
      * @var string The name of the parameter.
      */
     protected $name;
-
-    /**
-     * @var string|null The type of the parameter.
-     */
-    protected $type;
 
     /**
      * TestParameter constructor.
@@ -55,13 +52,5 @@ class TestParameter implements Renderable
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getType(): ?string
-    {
-        return $this->type;
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\PhpUnitGen\Core\Unit\Parsers;
+namespace Tests\PhpUnitGen\Core\Unit\Generators\Factories;
 
 use Mockery;
 use PhpUnitGen\Core\Generators\Factories\ImportFactory;

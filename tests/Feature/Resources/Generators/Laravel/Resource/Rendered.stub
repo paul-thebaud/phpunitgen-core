@@ -20,12 +20,12 @@ final class ProductResourceTest extends TestCase
     /**
      * @var ProductResource
      */
-    protected $productResource;
+    private $productResource;
 
     /**
      * @var ProductService|Mock
      */
-    protected $productService;
+    private $productService;
 
     /**
      * {@inheritdoc}
