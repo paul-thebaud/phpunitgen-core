@@ -17,20 +17,11 @@ use Tests\TestCase;
  */
 final class EventChannelTest extends TestCase
 {
-    /**
-     * @var EventChannel
-     */
-    private $eventChannel;
+    private EventChannel $eventChannel;
 
-    /**
-     * @var EventService|Mock
-     */
-    private $eventService;
+    private EventService|Mock $eventService;
 
-    /**
-     * @var User
-     */
-    private $user;
+    private User $user;
 
     /**
      * {@inheritdoc}

@@ -75,7 +75,7 @@ return [
      | Tells if the test class properties should be typed or documented.
      |--------------------------------------------------------------------------
      */
-    'testClassTypedProperties' => false,
+    'testClassTypedProperties' => true,
 
     /*
      |--------------------------------------------------------------------------

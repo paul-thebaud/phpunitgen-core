@@ -17,15 +17,9 @@ use Tests\TestCase;
  */
 final class NewUserListenerTest extends TestCase
 {
-    /**
-     * @var NewUserListener
-     */
-    private $newUserListener;
+    private NewUserListener $newUserListener;
 
-    /**
-     * @var UserService|Mock
-     */
-    private $userService;
+    private UserService|Mock $userService;
 
     /**
      * {@inheritdoc}

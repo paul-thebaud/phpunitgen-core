@@ -17,15 +17,9 @@ use Tests\TestCase;
  */
 final class ProductResourceTest extends TestCase
 {
-    /**
-     * @var ProductResource
-     */
-    private $productResource;
+    private ProductResource $productResource;
 
-    /**
-     * @var ProductService|Mock
-     */
-    private $productService;
+    private ProductService|Mock $productService;
 
     /**
      * {@inheritdoc}

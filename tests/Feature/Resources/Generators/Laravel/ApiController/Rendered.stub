@@ -16,15 +16,9 @@ use Tests\TestCase;
  */
 final class UserControllerTest extends TestCase
 {
-    /**
-     * @var UserController
-     */
-    private $userController;
+    private UserController $userController;
 
-    /**
-     * @var UserService|Mock
-     */
-    private $userService;
+    private UserService|Mock $userService;
 
     /**
      * {@inheritdoc}

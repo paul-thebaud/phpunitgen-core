@@ -14,9 +14,9 @@ class BasicWithTypedPropertiesTestGeneratorTest extends AbstractGeneratorTester
 {
     public function testItGeneratesTests(): void
     {
-        $this->assertGeneratedIs('BasicWithTypedProperties/Rendered', 'BasicWithTypedProperties/Source', [
+        $this->assertGeneratedIs('BasicWithoutTypedProperties/Rendered', 'BasicWithoutTypedProperties/Source', [
             'implementations'          => BasicTestGenerator::implementations(),
-            'testClassTypedProperties' => true,
+            'testClassTypedProperties' => false,
         ]);
     }
 }

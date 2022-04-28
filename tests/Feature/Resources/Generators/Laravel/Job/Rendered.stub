@@ -17,15 +17,9 @@ use Tests\TestCase;
  */
 final class SendWelcomeMessageJobTest extends TestCase
 {
-    /**
-     * @var SendWelcomeMessageJob
-     */
-    private $sendWelcomeMessageJob;
+    private SendWelcomeMessageJob $sendWelcomeMessageJob;
 
-    /**
-     * @var User|Mock
-     */
-    private $user;
+    private User|Mock $user;
 
     /**
      * {@inheritdoc}

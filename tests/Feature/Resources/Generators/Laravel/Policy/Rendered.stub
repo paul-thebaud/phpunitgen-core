@@ -18,20 +18,11 @@ use Tests\TestCase;
  */
 final class ProductPolicyTest extends TestCase
 {
-    /**
-     * @var ProductPolicy
-     */
-    private $productPolicy;
+    private ProductPolicy $productPolicy;
 
-    /**
-     * @var RoleService|Mock
-     */
-    private $roleService;
+    private RoleService|Mock $roleService;
 
-    /**
-     * @var User
-     */
-    private $user;
+    private User $user;
 
     /**
      * {@inheritdoc}

@@ -17,20 +17,11 @@ use Tests\TestCase;
  */
 final class PersonTest extends TestCase
 {
-    /**
-     * @var Person
-     */
-    private $person;
+    private Person $person;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var Work|Mock
-     */
-    private $work;
+    private Work|Mock $work;
 
     /**
      * {@inheritdoc}

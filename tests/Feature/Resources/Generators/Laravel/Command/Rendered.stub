@@ -16,15 +16,9 @@ use Tests\TestCase;
  */
 final class PruneUsersCommandTest extends TestCase
 {
-    /**
-     * @var PruneUsersCommand
-     */
-    private $pruneUsersCommand;
+    private PruneUsersCommand $pruneUsersCommand;
 
-    /**
-     * @var UserService|Mock
-     */
-    private $userService;
+    private UserService|Mock $userService;
 
     /**
      * {@inheritdoc}
