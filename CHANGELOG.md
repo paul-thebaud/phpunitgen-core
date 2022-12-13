@@ -2,6 +2,8 @@
 
 ## 3.1.0
 
+**Added**
+
 - Add compatibility with `php@8.2` and `roave/better-reflection@^6.0`.
 
 ## 3.0.0
