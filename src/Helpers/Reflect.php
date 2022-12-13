@@ -8,7 +8,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Types\Context;
-use PhpParser\Node;
+use phpDocumentor\Reflection\Types\ContextFactory;
 use PhpUnitGen\Core\Reflection\ReflectionType;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -166,7 +166,7 @@ class Reflect
      */
     public static function docBlock(ReflectionMethod|ReflectionClass $reflectionObject): ?DocBlock
     {
-        $docComment = $reflectionObject->getDocComment();
+        $docComment = $reflectionObject->getDocComment() ?? '';
 
         return $docComment !== ''
             ? self::getDocBlockFactory()->create($docComment, self::docBlockContext($reflectionObject))
@@ -208,55 +208,15 @@ class Reflect
      */
     private static function docBlockContext(ReflectionMethod|ReflectionClass $reflectionObject): Context
     {
-        $namespaceAst = $reflectionObject instanceof ReflectionMethod
-            ? $reflectionObject->getDeclaringClass()->getDeclaringNamespaceAst()
-            : $reflectionObject->getDeclaringNamespaceAst();
+        $reflectionClass = $reflectionObject instanceof ReflectionMethod
+            ? $reflectionObject->getDeclaringClass()
+            : $reflectionObject;
 
-        return new Context(
-            $namespaceAst->name ? $namespaceAst->name->toString() : '',
-            self::getAliasesFullyQualifiedNamesMap($namespaceAst)->all(),
+        $contextFactory = new ContextFactory();
+
+        return $contextFactory->createForNamespace(
+            $reflectionClass->getNamespaceName() ?? '',
+            $reflectionClass->getLocatedSource()->getSource(),
         );
-    }
-
-    /**
-     * Get aliases mapped with fully qualified names.
-     *
-     * @param Node\Stmt\Namespace_ $namespace
-     *
-     * @return Collection
-     */
-    private static function getAliasesFullyQualifiedNamesMap(Node\Stmt\Namespace_ $namespace): Collection
-    {
-        return self::getClassAlikeUses($namespace)
-            ->map(static function (Node\Stmt\Use_|Node\Stmt\GroupUse $use): Collection {
-                return (new Collection($use->uses))
-                    ->mapWithKeys(static function (Node\Stmt\UseUse $useUse) use ($use): array {
-                        /** @psalm-var class-string $useUseClassName */
-                        $useUseClassName = $use instanceof Node\Stmt\GroupUse
-                            ? $use->prefix->toString().'\\'.$useUse->name->toString()
-                            : $useUse->name->toString();
-
-                        return [$useUse->getAlias()->toString() => $useUseClassName];
-                    });
-            })
-            ->mapWithKeys(static function (Collection $uses) {
-                return $uses->all();
-            });
-    }
-
-    /**
-     * Get class uses statements.
-     *
-     * @param Node\Stmt\Namespace_ $namespace
-     *
-     * @return Collection
-     */
-    private static function getClassAlikeUses(Node\Stmt\Namespace_ $namespace): Collection
-    {
-        return (new Collection($namespace->stmts))
-            ->filter(static function (Node $node) {
-                return ($node instanceof Node\Stmt\Use_ || $node instanceof Node\Stmt\GroupUse)
-                    && in_array($node->type, [Node\Stmt\Use_::TYPE_UNKNOWN, Node\Stmt\Use_::TYPE_NORMAL], true);
-            });
     }
 }

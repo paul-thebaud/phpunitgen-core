@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.1.0
+
+- Add compatibility with `php@8.2` and `roave/better-reflection@^6.0`.
+
 ## 3.0.0
 
 **Added**

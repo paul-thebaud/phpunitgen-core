@@ -6,7 +6,6 @@ namespace Tests\PhpUnitGen\Core\Unit\Generators\Factories;
 
 use Mockery;
 use Mockery\Mock;
-use PhpParser\Node\Stmt\Namespace_;
 use PhpUnitGen\Core\Contracts\Config\Config;
 use PhpUnitGen\Core\Contracts\Generators\Factories\TypeFactory;
 use PhpUnitGen\Core\Generators\Factories\DocumentationFactory;
@@ -14,6 +13,7 @@ use PhpUnitGen\Core\Models\TestClass;
 use PhpUnitGen\Core\Models\TestMethod;
 use PhpUnitGen\Core\Models\TestProperty;
 use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\SourceLocator\Located\LocatedSource;
 use Tests\PhpUnitGen\Core\TestCase;
 use Tightenco\Collect\Support\Collection;
 
@@ -71,9 +71,6 @@ class DocumentationFactoryTest extends TestCase
         $reflectionClass->shouldReceive('getDocComment')
             ->withNoArgs()
             ->andReturn('');
-        $reflectionClass->shouldReceive('getDeclaringNamespaceAst')
-            ->withNoArgs()
-            ->andReturn(new Namespace_());
 
         $class->shouldReceive('getShortName')
             ->withNoArgs()
@@ -95,6 +92,7 @@ class DocumentationFactoryTest extends TestCase
     {
         $class = Mockery::mock(TestClass::class);
         $reflectionClass = Mockery::mock(ReflectionClass::class);
+        $reflectionSource = Mockery::mock(LocatedSource::class);
 
         $this->config->shouldReceive('phpDoc')
             ->withNoArgs()
@@ -103,12 +101,17 @@ class DocumentationFactoryTest extends TestCase
             ->withNoArgs()
             ->andReturn(['author', 'since', 'copyright']);
 
+        $reflectionSource->shouldReceive(['getSource' => '']);
+
         $reflectionClass->shouldReceive('getName')
             ->withNoArgs()
             ->andReturn('App\\Foo');
-        $reflectionClass->shouldReceive('getDeclaringNamespaceAst')
+        $reflectionClass->shouldReceive('getNamespaceName')
             ->withNoArgs()
-            ->andReturn(new Namespace_());
+            ->andReturn('');
+        $reflectionClass->shouldReceive('getLocatedSource')
+            ->withNoArgs()
+            ->andReturn($reflectionSource);
         $reflectionClass->shouldReceive('getDocComment')
             ->withNoArgs()
             ->andReturn("/**\n * @author John\n * @since 1.0.0\n * @internal\n*/");

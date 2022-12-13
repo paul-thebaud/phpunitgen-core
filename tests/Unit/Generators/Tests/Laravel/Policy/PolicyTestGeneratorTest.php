@@ -157,6 +157,6 @@ class PolicyTestGeneratorTest extends TestCase
         $class->shouldReceive('addProperty')
             ->with($userProperty);
 
-        $this->callProtectedMethod($testGenerator, 'addProperties', $class);
+        $this->assertNull($this->callProtectedMethod($testGenerator, 'addProperties', $class));
     }
 }

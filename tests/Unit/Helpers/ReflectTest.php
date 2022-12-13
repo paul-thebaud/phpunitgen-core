@@ -8,12 +8,12 @@ use Mockery;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Types\Context;
-use PhpParser\Node\Stmt\Namespace_;
 use PhpUnitGen\Core\Helpers\Reflect;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
+use Roave\BetterReflection\SourceLocator\Located\LocatedSource;
 use Tests\PhpUnitGen\Core\Helpers\PhpVersionDependents;
 use Tests\PhpUnitGen\Core\TestCase;
 
@@ -128,9 +128,13 @@ class ReflectTest extends TestCase
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
+        $reflectionSource = Mockery::mock(LocatedSource::class);
+
+        $reflectionSource->shouldReceive(['getSource' => '']);
 
         $reflectionClass->shouldReceive([
-            'getDeclaringNamespaceAst' => new Namespace_(),
+            'getNamespaceName' => '',
+            'getLocatedSource' => $reflectionSource,
         ]);
         $reflectionMethod->shouldReceive([
             'getDocComment'     => "/*\n * @param string|null \$foo\n */",
@@ -154,9 +158,13 @@ class ReflectTest extends TestCase
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
         $reflectionParameter = Mockery::mock(ReflectionParameter::class);
+        $reflectionSource = Mockery::mock(LocatedSource::class);
+
+        $reflectionSource->shouldReceive(['getSource' => '']);
 
         $reflectionClass->shouldReceive([
-            'getDeclaringNamespaceAst' => new Namespace_(),
+            'getNamespaceName' => '',
+            'getLocatedSource' => $reflectionSource,
         ]);
         $reflectionMethod->shouldReceive([
             'getDocComment'     => '',
@@ -197,9 +205,13 @@ class ReflectTest extends TestCase
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionSource = Mockery::mock(LocatedSource::class);
+
+        $reflectionSource->shouldReceive(['getSource' => '']);
 
         $reflectionClass->shouldReceive([
-            'getDeclaringNamespaceAst' => new Namespace_(),
+            'getNamespaceName' => '',
+            'getLocatedSource' => $reflectionSource,
         ]);
         $reflectionMethod->shouldReceive([
             'getReturnType'     => null,
@@ -242,9 +254,13 @@ class ReflectTest extends TestCase
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionSource = Mockery::mock(LocatedSource::class);
+
+        $reflectionSource->shouldReceive(['getSource' => '']);
 
         $reflectionClass->shouldReceive([
-            'getDeclaringNamespaceAst' => new Namespace_(),
+            'getNamespaceName' => '',
+            'getLocatedSource' => $reflectionSource,
         ]);
         $reflectionMethod->shouldReceive('getDocComment')
             ->withNoArgs()
@@ -260,9 +276,13 @@ class ReflectTest extends TestCase
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionSource = Mockery::mock(LocatedSource::class);
+
+        $reflectionSource->shouldReceive(['getSource' => '']);
 
         $reflectionClass->shouldReceive([
-            'getDeclaringNamespaceAst' => new Namespace_(),
+            'getNamespaceName' => '',
+            'getLocatedSource' => $reflectionSource,
         ]);
         $reflectionMethod->shouldReceive('getDocComment')
             ->withNoArgs()
@@ -303,9 +323,13 @@ class ReflectTest extends TestCase
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionMethod = Mockery::mock(ReflectionMethod::class);
+        $reflectionSource = Mockery::mock(LocatedSource::class);
+
+        $reflectionSource->shouldReceive(['getSource' => '']);
 
         $reflectionClass->shouldReceive([
-            'getDeclaringNamespaceAst' => new Namespace_(),
+            'getNamespaceName' => '',
+            'getLocatedSource' => $reflectionSource,
         ]);
         $reflectionMethod->shouldReceive('getDocComment')
             ->withNoArgs()
