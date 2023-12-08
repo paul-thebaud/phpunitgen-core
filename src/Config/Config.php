@@ -46,6 +46,7 @@ class Config implements ConfigContract
         'excludedMethods'          => self::TYPE_ARRAY,
         'mergedPhpDoc'             => self::TYPE_ARRAY,
         'phpDoc'                   => self::TYPE_ARRAY,
+        'phpHeaderDoc'             => self::TYPE_STRING,
         'options'                  => self::TYPE_ARRAY,
     ];
 
@@ -68,8 +69,8 @@ class Config implements ConfigContract
         return new static(
             array_merge(
                 static::getDefaultConfig(),
-                $config
-            )
+                $config,
+            ),
         );
     }
 
@@ -91,9 +92,9 @@ class Config implements ConfigContract
                 continue;
             }
 
-            if (! call_user_func('is_'.$type, $value)) {
+            if (! call_user_func('is_' . $type, $value)) {
                 throw new InvalidArgumentException(
-                    "configuration property {$property} must be of type {$type}"
+                    "configuration property {$property} must be of type {$type}",
                 );
             }
 
@@ -110,7 +111,7 @@ class Config implements ConfigContract
      */
     protected static function getDefaultConfig(): array
     {
-        return require __DIR__.'/../../config/phpunitgen.php';
+        return require __DIR__ . '/../../config/phpunitgen.php';
     }
 
     /**
@@ -209,6 +210,14 @@ class Config implements ConfigContract
     public function phpDoc(): array
     {
         return $this->config['phpDoc'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function phpHeaderDoc(): string
+    {
+        return $this->config['phpHeaderDoc'];
     }
 
     /**

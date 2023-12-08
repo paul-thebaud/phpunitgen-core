@@ -38,6 +38,7 @@ class ConfigTest extends TestCase
                 'version',
             ],
             'phpDoc'                   => [],
+            'phpHeaderDoc'             => '',
             'options'                  => [
                 'context' => 'laravel',
             ],
@@ -58,6 +59,7 @@ class ConfigTest extends TestCase
             'excludedMethods'          => [],
             'mergedPhpDoc'             => [],
             'phpDoc'                   => ['@author John Doe'],
+            'phpHeaderDoc'             => "/*\n * @license MIT\n */",
             'options'                  => ['custom' => 'option'],
         ], Config::make([
             'automaticGeneration'      => false,
@@ -71,6 +73,7 @@ class ConfigTest extends TestCase
             'excludedMethods'          => [],
             'mergedPhpDoc'             => [],
             'phpDoc'                   => ['@author John Doe'],
+            'phpHeaderDoc'             => "/*\n * @license MIT\n */",
             'options'                  => ['custom' => 'option'],
         ])->toArray());
     }
@@ -126,6 +129,7 @@ class ConfigTest extends TestCase
             'excludedMethods'      => [],
             'mergedPhpDoc'         => [],
             'phpDoc'               => ['@author John Doe'],
+            'phpHeaderDoc'         => "/*\n * @license MIT\n */",
             'options'              => ['custom' => 'option'],
         ]);
 
@@ -139,6 +143,7 @@ class ConfigTest extends TestCase
         self::assertSame([], $config->excludedMethods());
         self::assertSame([], $config->mergedPhpDoc());
         self::assertSame(['@author John Doe'], $config->phpDoc());
+        self::assertSame("/*\n * @license MIT\n */", $config->phpHeaderDoc());
         self::assertSame(['custom' => 'option'], $config->options());
         self::assertSame('option', $config->getOption('custom'));
         self::assertSame(null, $config->getOption('unknown'));

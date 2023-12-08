@@ -91,6 +91,9 @@ use Foo\\Baz;',
 
     public function testItRendersClassWithoutAnyObjects(): void
     {
+        $this->config->shouldReceive('phpHeaderDoc')
+            ->once()
+            ->andReturn('');
         $this->config->shouldReceive('testClassFinal')
             ->once()
             ->andReturnTrue();
@@ -114,6 +117,9 @@ final class FooTest extends TestCase
 
     public function testItRendersClassWithoutFinalAndWithStrictTypes(): void
     {
+        $this->config->shouldReceive('phpHeaderDoc')
+            ->once()
+            ->andReturn("/*\n * @license MIT\n */");
         $this->config->shouldReceive('testClassFinal')
             ->once()
             ->andReturnFalse();
@@ -123,9 +129,13 @@ final class FooTest extends TestCase
 
         $this->renderer->visitTestClass(new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest'));
 
-        self::assertCount(8, $this->renderer->getLines());
+        self::assertCount(10, $this->renderer->getLines());
         self::assertSame(
             '<?php
+
+/*
+ * @license MIT
+ */
 
 declare(strict_types=1);
 
@@ -139,6 +149,9 @@ class FooTest extends TestCase
 
     public function testItRendersClassWithAllObjects(): void
     {
+        $this->config->shouldReceive('phpHeaderDoc')
+            ->once()
+            ->andReturn('');
         $this->config->shouldReceive('testClassFinal')
             ->once()
             ->andReturnTrue();

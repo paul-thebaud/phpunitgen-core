@@ -93,6 +93,13 @@ interface Config
     public function phpDoc(): array;
 
     /**
+     * Get the PHP header documentation lines that should always be added to the generated file documentation.
+     *
+     * @return string
+     */
+    public function phpHeaderDoc(): string;
+
+    /**
      * Get the additional options which might be used by specific test generators.
      *
      * @return array

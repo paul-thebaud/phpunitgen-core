@@ -83,6 +83,10 @@ class Renderer implements ConfigAware, RendererContract
     {
         return $this->addLine('<?php')
             ->addLine()
+            ->when($this->config->phpHeaderDoc(), function (string $doc) {
+                $this->addLine($doc)
+                    ->addLine();
+            })
             ->when($this->config->testClassStrictTypes(), function () {
                 $this->addLine('declare(strict_types=1);')
                     ->addLine();
