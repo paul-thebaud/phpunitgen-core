@@ -152,10 +152,6 @@ class BasicMethodFactory extends MethodFactory
             ->append('\')');
         $method->addStatement($propertyStatement);
 
-        if (! $reflectionProperty->isPublic()) {
-            $method->addStatement(new TestStatement('$property->setAccessible(true)'));
-        }
-
         return $method;
     }
 }

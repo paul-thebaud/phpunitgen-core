@@ -56,7 +56,6 @@ final class SendWelcomeMessageJobTest extends TestCase
         $expected = Mockery::mock(User::class);
         $property = (new ReflectionClass(SendWelcomeMessageJob::class))
             ->getProperty('user');
-        $property->setAccessible(true);
         $property->setValue($this->sendWelcomeMessageJob, $expected);
         self::assertSame($expected, $this->sendWelcomeMessageJob->getUser());
     }
@@ -66,7 +65,6 @@ final class SendWelcomeMessageJobTest extends TestCase
         $expected = Mockery::mock(User::class);
         $property = (new ReflectionClass(SendWelcomeMessageJob::class))
             ->getProperty('user');
-        $property->setAccessible(true);
         $this->sendWelcomeMessageJob->setUser($expected);
         self::assertSame($expected, $property->getValue($this->sendWelcomeMessageJob));
     }

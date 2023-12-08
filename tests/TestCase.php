@@ -30,7 +30,6 @@ class TestCase extends PHPUnitTestCase
     protected function callProtectedMethod($target, string $method, ...$args)
     {
         $reflectionMethod = (new ReflectionClass($target))->getMethod($method);
-        $reflectionMethod->setAccessible(true);
 
         return $reflectionMethod->invoke(is_object($target) ? $target : null, ...$args);
     }

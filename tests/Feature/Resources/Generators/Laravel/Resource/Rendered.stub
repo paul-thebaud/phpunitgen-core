@@ -56,7 +56,6 @@ final class ProductResourceTest extends TestCase
         $expected = Mockery::mock(ProductService::class);
         $property = (new ReflectionClass(ProductResource::class))
             ->getProperty('productService');
-        $property->setAccessible(true);
         $property->setValue($this->productResource, $expected);
         self::assertSame($expected, $this->productResource->getProductService());
     }
@@ -66,7 +65,6 @@ final class ProductResourceTest extends TestCase
         $expected = Mockery::mock(ProductService::class);
         $property = (new ReflectionClass(ProductResource::class))
             ->getProperty('productService');
-        $property->setAccessible(true);
         $this->productResource->setProductService($expected);
         self::assertSame($expected, $property->getValue($this->productResource));
     }

@@ -56,7 +56,6 @@ final class NewUserListenerTest extends TestCase
         $expected = Mockery::mock(UserService::class);
         $property = (new ReflectionClass(NewUserListener::class))
             ->getProperty('userService');
-        $property->setAccessible(true);
         $property->setValue($this->newUserListener, $expected);
         self::assertSame($expected, $this->newUserListener->getUserService());
     }
@@ -66,7 +65,6 @@ final class NewUserListenerTest extends TestCase
         $expected = Mockery::mock(UserService::class);
         $property = (new ReflectionClass(NewUserListener::class))
             ->getProperty('userService');
-        $property->setAccessible(true);
         $this->newUserListener->setUserService($expected);
         self::assertSame($expected, $property->getValue($this->newUserListener));
     }

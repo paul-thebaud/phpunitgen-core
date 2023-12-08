@@ -90,7 +90,6 @@ final class UserControllerTest extends TestCase
         $expected = Mockery::mock(UserService::class);
         $property = (new ReflectionClass(UserController::class))
             ->getProperty('userService');
-        $property->setAccessible(true);
         $property->setValue($this->userController, $expected);
         self::assertSame($expected, $this->userController->getUserService());
     }
@@ -100,7 +99,6 @@ final class UserControllerTest extends TestCase
         $expected = Mockery::mock(UserService::class);
         $property = (new ReflectionClass(UserController::class))
             ->getProperty('userService');
-        $property->setAccessible(true);
         $this->userController->setUserService($expected);
         self::assertSame($expected, $property->getValue($this->userController));
     }

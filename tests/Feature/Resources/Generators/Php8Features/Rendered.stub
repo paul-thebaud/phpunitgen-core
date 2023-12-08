@@ -61,7 +61,6 @@ final class PersonTest extends TestCase
         $expected = Mockery::mock(Connection::class);
         $property = (new ReflectionClass(Person::class))
             ->getProperty('connection');
-        $property->setAccessible(true);
         $property->setValue(null, $expected);
         self::assertSame($expected, Person::getConnection());
     }
@@ -71,7 +70,6 @@ final class PersonTest extends TestCase
         $expected = Mockery::mock(Connection::class);
         $property = (new ReflectionClass(Person::class))
             ->getProperty('connection');
-        $property->setAccessible(true);
         Person::setConnection($expected);
         self::assertSame($expected, $property->getValue(null));
     }
@@ -99,7 +97,6 @@ final class PersonTest extends TestCase
         $expected = '42';
         $property = (new ReflectionClass(Person::class))
             ->getProperty('name');
-        $property->setAccessible(true);
         $property->setValue($this->person, $expected);
         self::assertSame($expected, $this->person->getName());
     }
@@ -109,7 +106,6 @@ final class PersonTest extends TestCase
         $expected = '42';
         $property = (new ReflectionClass(Person::class))
             ->getProperty('name');
-        $property->setAccessible(true);
         $this->person->setName($expected);
         self::assertSame($expected, $property->getValue($this->person));
     }
@@ -119,7 +115,6 @@ final class PersonTest extends TestCase
         $expected = Mockery::mock(Work::class);
         $property = (new ReflectionClass(Person::class))
             ->getProperty('work');
-        $property->setAccessible(true);
         $property->setValue($this->person, $expected);
         self::assertSame($expected, $this->person->getWork());
     }
@@ -129,7 +124,6 @@ final class PersonTest extends TestCase
         $expected = Mockery::mock(Work::class);
         $property = (new ReflectionClass(Person::class))
             ->getProperty('work');
-        $property->setAccessible(true);
         $this->person->setWork($expected);
         self::assertSame($expected, $property->getValue($this->person));
     }

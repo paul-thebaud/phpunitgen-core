@@ -134,7 +134,6 @@ final class TypesDetectionStubTest extends TestCase
         $expected = Mockery::mock(Post1::class);
         $property = (new ReflectionClass(TypesDetectionStub::class))
             ->getProperty('currentClass');
-        $property->setAccessible(true);
         $property->setValue($this->typesDetectionStub, $expected);
         self::assertSame($expected, $this->typesDetectionStub->getCurrentClass());
     }

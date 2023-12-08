@@ -98,7 +98,6 @@ final class ProductPolicyTest extends TestCase
         $expected = Mockery::mock(RoleService::class);
         $property = (new ReflectionClass(ProductPolicy::class))
             ->getProperty('roleService');
-        $property->setAccessible(true);
         $property->setValue($this->productPolicy, $expected);
         self::assertSame($expected, $this->productPolicy->getRoleService());
     }
@@ -108,7 +107,6 @@ final class ProductPolicyTest extends TestCase
         $expected = Mockery::mock(RoleService::class);
         $property = (new ReflectionClass(ProductPolicy::class))
             ->getProperty('roleService');
-        $property->setAccessible(true);
         $this->productPolicy->setRoleService($expected);
         self::assertSame($expected, $property->getValue($this->productPolicy));
     }

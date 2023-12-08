@@ -65,7 +65,6 @@ final class ProductRuleTest extends TestCase
         $expected = Mockery::mock(ProductService::class);
         $property = (new ReflectionClass(ProductRule::class))
             ->getProperty('productService');
-        $property->setAccessible(true);
         $property->setValue($this->productRule, $expected);
         self::assertSame($expected, $this->productRule->getProductService());
     }
@@ -75,7 +74,6 @@ final class ProductRuleTest extends TestCase
         $expected = Mockery::mock(ProductService::class);
         $property = (new ReflectionClass(ProductRule::class))
             ->getProperty('productService');
-        $property->setAccessible(true);
         $this->productRule->setProductService($expected);
         self::assertSame($expected, $property->getValue($this->productRule));
     }

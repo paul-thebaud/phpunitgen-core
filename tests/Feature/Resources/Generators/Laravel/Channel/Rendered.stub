@@ -64,7 +64,6 @@ final class EventChannelTest extends TestCase
         $expected = Mockery::mock(EventService::class);
         $property = (new ReflectionClass(EventChannel::class))
             ->getProperty('eventService');
-        $property->setAccessible(true);
         $property->setValue($this->eventChannel, $expected);
         self::assertSame($expected, $this->eventChannel->getEventService());
     }
@@ -74,7 +73,6 @@ final class EventChannelTest extends TestCase
         $expected = Mockery::mock(EventService::class);
         $property = (new ReflectionClass(EventChannel::class))
             ->getProperty('eventService');
-        $property->setAccessible(true);
         $this->eventChannel->setEventService($expected);
         self::assertSame($expected, $property->getValue($this->eventChannel));
     }
