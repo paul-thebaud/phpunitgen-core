@@ -18,6 +18,6 @@ class StringSourceTest extends TestCase
     {
         $source = new StringSource('<?php class Foo {}');
 
-        $this->assertSame('<?php class Foo {}', $source->toString());
+        self::assertSame('<?php class Foo {}', $source->toString());
     }
 }

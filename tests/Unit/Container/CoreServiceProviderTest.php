@@ -162,10 +162,10 @@ class CoreServiceProviderTest extends TestCase
 
         $this->coreServiceProvider->register();
 
-        $this->assertInstanceOf(CodeParser::class, $this->container->get(CodeParserContract::class));
-        $this->assertInstanceOf(MockeryMockGenerator::class, $this->container->get(MockGeneratorContract::class));
-        $this->assertInstanceOf(Renderer::class, $this->container->get(RendererContract::class));
-        $this->assertInstanceOf(DelegateTestGenerator::class, $this->container->get(TestGeneratorContract::class));
+        self::assertInstanceOf(CodeParser::class, $this->container->get(CodeParserContract::class));
+        self::assertInstanceOf(MockeryMockGenerator::class, $this->container->get(MockGeneratorContract::class));
+        self::assertInstanceOf(Renderer::class, $this->container->get(RendererContract::class));
+        self::assertInstanceOf(DelegateTestGenerator::class, $this->container->get(TestGeneratorContract::class));
     }
 
     public function testAllInflectorsAreDefined(): void
@@ -179,17 +179,17 @@ class CoreServiceProviderTest extends TestCase
         /** @var StubAware $stubAware */
         $stubAware = $this->container->get(StubAware::class);
 
-        $this->assertInstanceOf(ClassFactoryContract::class, $stubAware->getClassFactory());
-        $this->assertInstanceOf(ConfigContract::class, $stubAware->getConfig());
-        $this->assertInstanceOf(DocumentationFactoryContract::class, $stubAware->getDocumentationFactory());
-        $this->assertInstanceOf(ImportFactoryContract::class, $stubAware->getImportFactory());
-        $this->assertInstanceOf(MethodFactoryContract::class, $stubAware->getMethodFactory());
-        $this->assertInstanceOf(MockGeneratorContract::class, $stubAware->getMockGenerator());
-        $this->assertInstanceOf(PropertyFactoryContract::class, $stubAware->getPropertyFactory());
-        $this->assertInstanceOf(StatementFactoryContract::class, $stubAware->getStatementFactory());
-        $this->assertInstanceOf(TestGeneratorContract::class, $stubAware->getTestGenerator());
-        $this->assertInstanceOf(TypeFactoryContract::class, $stubAware->getTypeFactory());
-        $this->assertInstanceOf(ValueFactoryContract::class, $stubAware->getValueFactory());
+        self::assertInstanceOf(ClassFactoryContract::class, $stubAware->getClassFactory());
+        self::assertInstanceOf(ConfigContract::class, $stubAware->getConfig());
+        self::assertInstanceOf(DocumentationFactoryContract::class, $stubAware->getDocumentationFactory());
+        self::assertInstanceOf(ImportFactoryContract::class, $stubAware->getImportFactory());
+        self::assertInstanceOf(MethodFactoryContract::class, $stubAware->getMethodFactory());
+        self::assertInstanceOf(MockGeneratorContract::class, $stubAware->getMockGenerator());
+        self::assertInstanceOf(PropertyFactoryContract::class, $stubAware->getPropertyFactory());
+        self::assertInstanceOf(StatementFactoryContract::class, $stubAware->getStatementFactory());
+        self::assertInstanceOf(TestGeneratorContract::class, $stubAware->getTestGenerator());
+        self::assertInstanceOf(TypeFactoryContract::class, $stubAware->getTypeFactory());
+        self::assertInstanceOf(ValueFactoryContract::class, $stubAware->getValueFactory());
     }
 }
 

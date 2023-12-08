@@ -51,7 +51,7 @@ class MockeryMockGeneratorTest extends TestCase
             ->with($class, 'Mockery\\Mock')
             ->andReturn($import);
 
-        $this->assertSame($import, $this->mockeryMockGenerator->getMockType($class));
+        self::assertSame($import, $this->mockeryMockGenerator->getMockType($class));
     }
 
     public function testGenerateMock(): void
@@ -76,6 +76,6 @@ class MockeryMockGeneratorTest extends TestCase
             ->once()
             ->andReturn('Foo');
 
-        $this->assertSame('Mockery::mock(Foo::class)', $this->mockeryMockGenerator->generateMock($class, 'Foo'));
+        self::assertSame('Mockery::mock(Foo::class)', $this->mockeryMockGenerator->generateMock($class, 'Foo'));
     }
 }

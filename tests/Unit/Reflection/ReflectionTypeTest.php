@@ -24,9 +24,9 @@ class ReflectionTypeTest extends TestCase
 
         $reflectionType = ReflectionType::make($betterReflectionType, []);
 
-        $this->assertFalse($reflectionType->isBuiltin());
-        $this->assertFalse($reflectionType->isNullable());
-        $this->assertSame('App\\User', $reflectionType->getType());
+        self::assertFalse($reflectionType->isBuiltin());
+        self::assertFalse($reflectionType->isNullable());
+        self::assertSame('App\\User', $reflectionType->getType());
     }
 
     public function testMakeForBetterReflectionTypeAndDocumentor(): void
@@ -42,9 +42,9 @@ class ReflectionTypeTest extends TestCase
             'null',
         ]);
 
-        $this->assertFalse($reflectionType->isBuiltin());
-        $this->assertTrue($reflectionType->isNullable());
-        $this->assertSame('App\\User', $reflectionType->getType());
+        self::assertFalse($reflectionType->isBuiltin());
+        self::assertTrue($reflectionType->isNullable());
+        self::assertSame('App\\User', $reflectionType->getType());
     }
 
     public function testMakeForPhpDocumentorTypesWithUnrealTypes(): void
@@ -54,7 +54,7 @@ class ReflectionTypeTest extends TestCase
             'null',
         ]);
 
-        $this->assertNull($reflectionType);
+        self::assertNull($reflectionType);
     }
 
     public function testMakeForPhpDocumentorTypesWitRealNullableType(): void
@@ -69,9 +69,9 @@ class ReflectionTypeTest extends TestCase
             'null',
         ]);
 
-        $this->assertFalse($reflectionType->isBuiltin());
-        $this->assertTrue($reflectionType->isNullable());
-        $this->assertSame('App\\User', $reflectionType->getType());
+        self::assertFalse($reflectionType->isBuiltin());
+        self::assertTrue($reflectionType->isNullable());
+        self::assertSame('App\\User', $reflectionType->getType());
     }
 
     public function testMakeForPhpDocumentorTypesWitRealNotNullableArray(): void
@@ -80,9 +80,9 @@ class ReflectionTypeTest extends TestCase
             '\\App\\User[]',
         ]);
 
-        $this->assertTrue($reflectionType->isBuiltin());
-        $this->assertFalse($reflectionType->isNullable());
-        $this->assertSame('array', $reflectionType->getType());
+        self::assertTrue($reflectionType->isBuiltin());
+        self::assertFalse($reflectionType->isNullable());
+        self::assertSame('array', $reflectionType->getType());
     }
 
     /**
@@ -93,7 +93,7 @@ class ReflectionTypeTest extends TestCase
      */
     public function testIsBuiltIn(bool $expected, string $type): void
     {
-        $this->assertSame($expected, (new ReflectionType($type, false))->isBuiltIn());
+        self::assertSame($expected, (new ReflectionType($type, false))->isBuiltIn());
     }
 
     public function isBuiltInDataProvider(): array

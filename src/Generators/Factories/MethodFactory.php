@@ -109,7 +109,7 @@ class MethodFactory implements
         );
 
         $method->addStatement($this->statementFactory->makeTodo('This test is incomplete.'));
-        $method->addStatement(new TestStatement('$this->markTestIncomplete()'));
+        $method->addStatement(new TestStatement('self::markTestIncomplete()'));
 
         return $method;
     }

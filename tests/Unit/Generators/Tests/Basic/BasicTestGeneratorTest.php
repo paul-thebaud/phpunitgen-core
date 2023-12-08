@@ -96,7 +96,7 @@ class BasicTestGeneratorTest extends TestCase
     {
         $implementations = BasicTestGenerator::implementations();
 
-        $this->assertSame([
+        self::assertSame([
             TestGeneratorContract::class        => BasicTestGenerator::class,
             ClassFactoryContract::class         => ClassFactory::class,
             DocumentationFactoryContract::class => DocumentationFactory::class,
@@ -108,7 +108,7 @@ class BasicTestGeneratorTest extends TestCase
         ], $implementations);
 
         foreach ($implementations as $contract => $implementation) {
-            $this->assertArrayHasKey($contract, class_implements($implementation));
+            self::assertArrayHasKey($contract, class_implements($implementation));
         }
     }
 
@@ -144,7 +144,7 @@ class BasicTestGeneratorTest extends TestCase
                 ->andReturn($methods);
         }
 
-        $this->assertSame($expected, $this->testGenerator->canGenerateFor($reflectionClass));
+        self::assertSame($expected, $this->testGenerator->canGenerateFor($reflectionClass));
     }
 
     public function canGenerateDataProvider(): array
@@ -321,14 +321,14 @@ class BasicTestGeneratorTest extends TestCase
 
         $returnedClass = $this->testGenerator->generate($reflectionClass);
 
-        $this->assertSame($class, $returnedClass);
-        $this->assertCount(2, $returnedClass->getProperties());
-        $this->assertSame($classProperty, $returnedClass->getProperties()->get(0));
-        $this->assertSame($barProperty, $returnedClass->getProperties()->get(1));
-        $this->assertCount(3, $returnedClass->getMethods());
-        $this->assertSame($setUpMethod, $returnedClass->getMethods()->get(0));
-        $this->assertSame($tearDownMethod, $returnedClass->getMethods()->get(1));
-        $this->assertSame($publicMethod, $returnedClass->getMethods()->get(2));
+        self::assertSame($class, $returnedClass);
+        self::assertCount(2, $returnedClass->getProperties());
+        self::assertSame($classProperty, $returnedClass->getProperties()->get(0));
+        self::assertSame($barProperty, $returnedClass->getProperties()->get(1));
+        self::assertCount(3, $returnedClass->getMethods());
+        self::assertSame($setUpMethod, $returnedClass->getMethods()->get(0));
+        self::assertSame($tearDownMethod, $returnedClass->getMethods()->get(1));
+        self::assertSame($publicMethod, $returnedClass->getMethods()->get(2));
     }
 
     public function testGenerateWithoutConstructor(): void
@@ -405,13 +405,13 @@ class BasicTestGeneratorTest extends TestCase
 
         $returnedClass = $this->testGenerator->generate($reflectionClass);
 
-        $this->assertSame($class, $returnedClass);
-        $this->assertCount(1, $returnedClass->getProperties());
-        $this->assertSame($classProperty, $returnedClass->getProperties()->get(0));
-        $this->assertCount(3, $returnedClass->getMethods());
-        $this->assertSame($setUpMethod, $returnedClass->getMethods()->get(0));
-        $this->assertSame($tearDownMethod, $returnedClass->getMethods()->get(1));
-        $this->assertSame($publicMethod, $returnedClass->getMethods()->get(2));
+        self::assertSame($class, $returnedClass);
+        self::assertCount(1, $returnedClass->getProperties());
+        self::assertSame($classProperty, $returnedClass->getProperties()->get(0));
+        self::assertCount(3, $returnedClass->getMethods());
+        self::assertSame($setUpMethod, $returnedClass->getMethods()->get(0));
+        self::assertSame($tearDownMethod, $returnedClass->getMethods()->get(1));
+        self::assertSame($publicMethod, $returnedClass->getMethods()->get(2));
     }
 
     public function testGenerateWithoutAutomaticGeneration(): void
@@ -473,14 +473,14 @@ class BasicTestGeneratorTest extends TestCase
 
         $returnedClass = $this->testGenerator->generate($reflectionClass);
 
-        $this->assertSame($class, $returnedClass);
-        $this->assertCount(0, $returnedClass->getProperties());
-        $this->assertCount(1, $returnedClass->getMethods());
-        $this->assertSame($publicMethod, $returnedClass->getMethods()->get(0));
+        self::assertSame($class, $returnedClass);
+        self::assertCount(0, $returnedClass->getProperties());
+        self::assertCount(1, $returnedClass->getMethods());
+        self::assertSame($publicMethod, $returnedClass->getMethods()->get(0));
     }
 
     public function testGetClassFactory(): void
     {
-        $this->assertSame($this->classFactory, $this->testGenerator->getClassFactory());
+        self::assertSame($this->classFactory, $this->testGenerator->getClassFactory());
     }
 }

@@ -137,10 +137,10 @@ class BasicMethodFactoryTest extends TestCase
 
         $method = $class->getMethods()[0];
 
-        $this->assertSame('testGetBar', $method->getName());
-        $this->assertSame('public', $method->getVisibility());
-        $this->assertNull($method->getDocumentation());
-        $this->assertSame($expectedStatements, $method->getStatements()->map(function (TestStatement $statement) {
+        self::assertSame('testGetBar', $method->getName());
+        self::assertSame('public', $method->getVisibility());
+        self::assertNull($method->getDocumentation());
+        self::assertSame($expectedStatements, $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
     }
@@ -153,7 +153,7 @@ class BasicMethodFactoryTest extends TestCase
                     ['$expected = null'],
                     ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
                     ['$property->setValue($this->foo, $expected)'],
-                    ['$this->assertSame($expected, $this->foo->getBar())'],
+                    ['self::assertSame($expected, $this->foo->getBar())'],
                 ],
                 true,
                 false,
@@ -163,7 +163,7 @@ class BasicMethodFactoryTest extends TestCase
                     ['$expected = null'],
                     ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
                     ['$property->setValue(null, $expected)'],
-                    ['$this->assertSame($expected, Foo::getBar())'],
+                    ['self::assertSame($expected, Foo::getBar())'],
                 ],
                 true,
                 true,
@@ -174,7 +174,7 @@ class BasicMethodFactoryTest extends TestCase
                     ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
                     ['$property->setAccessible(true)'],
                     ['$property->setValue(null, $expected)'],
-                    ['$this->assertSame($expected, Foo::getBar())'],
+                    ['self::assertSame($expected, Foo::getBar())'],
                 ],
                 false,
                 true,
@@ -185,7 +185,7 @@ class BasicMethodFactoryTest extends TestCase
                     ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
                     ['$property->setAccessible(true)'],
                     ['$property->setValue($this->foo, $expected)'],
-                    ['$this->assertSame($expected, $this->foo->getBar())'],
+                    ['self::assertSame($expected, $this->foo->getBar())'],
                 ],
                 false,
                 false,
@@ -245,10 +245,10 @@ class BasicMethodFactoryTest extends TestCase
 
         $method = $class->getMethods()[0];
 
-        $this->assertSame('testSetBar', $method->getName());
-        $this->assertSame('public', $method->getVisibility());
-        $this->assertNull($method->getDocumentation());
-        $this->assertSame($expectedStatements, $method->getStatements()->map(function (TestStatement $statement) {
+        self::assertSame('testSetBar', $method->getName());
+        self::assertSame('public', $method->getVisibility());
+        self::assertNull($method->getDocumentation());
+        self::assertSame($expectedStatements, $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
     }
@@ -261,7 +261,7 @@ class BasicMethodFactoryTest extends TestCase
                     ['$expected = null'],
                     ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
                     ['$this->foo->setBar($expected)'],
-                    ['$this->assertSame($expected, $property->getValue($this->foo))'],
+                    ['self::assertSame($expected, $property->getValue($this->foo))'],
                 ],
                 true,
                 false,
@@ -271,7 +271,7 @@ class BasicMethodFactoryTest extends TestCase
                     ['$expected = null'],
                     ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
                     ['Foo::setBar($expected)'],
-                    ['$this->assertSame($expected, $property->getValue(null))'],
+                    ['self::assertSame($expected, $property->getValue(null))'],
                 ],
                 true,
                 true,
@@ -282,7 +282,7 @@ class BasicMethodFactoryTest extends TestCase
                     ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
                     ['$property->setAccessible(true)'],
                     ['Foo::setBar($expected)'],
-                    ['$this->assertSame($expected, $property->getValue(null))'],
+                    ['self::assertSame($expected, $property->getValue(null))'],
                 ],
                 false,
                 true,
@@ -293,7 +293,7 @@ class BasicMethodFactoryTest extends TestCase
                     ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
                     ['$property->setAccessible(true)'],
                     ['$this->foo->setBar($expected)'],
-                    ['$this->assertSame($expected, $property->getValue($this->foo))'],
+                    ['self::assertSame($expected, $property->getValue($this->foo))'],
                 ],
                 false,
                 false,

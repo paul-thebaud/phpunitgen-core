@@ -34,8 +34,8 @@ class TestProviderTest extends TestCase
 
     public function testItConstructs(): void
     {
-        $this->assertSame('fooProvider', $this->provider->getName());
-        $this->assertSame([['expected', 'actual']], $this->provider->getData());
+        self::assertSame('fooProvider', $this->provider->getName());
+        self::assertSame([['expected', 'actual']], $this->provider->getData());
     }
 
     public function testItAcceptsRenderer(): void
@@ -55,6 +55,6 @@ class TestProviderTest extends TestCase
 
         $this->provider->setDocumentation($documentation);
 
-        $this->assertSame($documentation, $this->provider->getDocumentation());
+        self::assertSame($documentation, $this->provider->getDocumentation());
     }
 }

@@ -41,6 +41,6 @@ class LocalFileSourceTest extends TestCase
 
         $source = new LocalFileSource($path);
 
-        $this->assertSame(file_get_contents($path), $source->toString());
+        self::assertSame(file_get_contents($path), $source->toString());
     }
 }

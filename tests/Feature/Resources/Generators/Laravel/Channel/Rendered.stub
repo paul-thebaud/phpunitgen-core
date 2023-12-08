@@ -50,13 +50,13 @@ final class EventChannelTest extends TestCase
     public function testJoinWhenUnauthorized(): void
     {
         /** @todo This test is incomplete. */
-        $this->assertFalse($this->eventChannel->join($this->user));
+        self::assertFalse($this->eventChannel->join($this->user));
     }
 
     public function testJoinWhenAuthorized(): void
     {
         /** @todo This test is incomplete. */
-        $this->assertTrue($this->eventChannel->join($this->user));
+        self::assertTrue($this->eventChannel->join($this->user));
     }
 
     public function testGetEventService(): void
@@ -66,7 +66,7 @@ final class EventChannelTest extends TestCase
             ->getProperty('eventService');
         $property->setAccessible(true);
         $property->setValue($this->eventChannel, $expected);
-        $this->assertSame($expected, $this->eventChannel->getEventService());
+        self::assertSame($expected, $this->eventChannel->getEventService());
     }
 
     public function testSetEventService(): void
@@ -76,6 +76,6 @@ final class EventChannelTest extends TestCase
             ->getProperty('eventService');
         $property->setAccessible(true);
         $this->eventChannel->setEventService($expected);
-        $this->assertSame($expected, $property->getValue($this->eventChannel));
+        self::assertSame($expected, $property->getValue($this->eventChannel));
     }
 }

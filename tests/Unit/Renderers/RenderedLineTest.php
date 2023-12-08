@@ -20,7 +20,7 @@ class RenderedLineTest extends TestCase
 
         $line->prepend('$foo');
 
-        $this->assertSame('$foo->bar();', $line->render());
+        self::assertSame('$foo->bar();', $line->render());
     }
 
     public function testItAppends(): void
@@ -29,30 +29,30 @@ class RenderedLineTest extends TestCase
 
         $line->append('->bar();');
 
-        $this->assertSame('$foo->bar();', $line->render());
+        self::assertSame('$foo->bar();', $line->render());
     }
 
     public function testItRenderWithoutIndentation(): void
     {
         $line = new RenderedLine(0, '$foo->bar();');
 
-        $this->assertSame('$foo->bar();', $line->render());
-        $this->assertSame('$foo->bar();', $line->getContent());
+        self::assertSame('$foo->bar();', $line->render());
+        self::assertSame('$foo->bar();', $line->getContent());
     }
 
     public function testItRenderWithIndentation(): void
     {
         $line = new RenderedLine(3, '$foo->bar();');
 
-        $this->assertSame('            $foo->bar();', $line->render());
-        $this->assertSame('$foo->bar();', $line->getContent());
+        self::assertSame('            $foo->bar();', $line->render());
+        self::assertSame('$foo->bar();', $line->getContent());
     }
 
     public function testItRenderWithIndentationAndEmptyContent(): void
     {
         $line = new RenderedLine(3, '');
 
-        $this->assertSame('', $line->render());
-        $this->assertSame('', $line->getContent());
+        self::assertSame('', $line->render());
+        self::assertSame('', $line->getContent());
     }
 }

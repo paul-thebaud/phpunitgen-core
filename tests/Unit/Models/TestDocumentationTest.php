@@ -33,7 +33,7 @@ class TestDocumentationTest extends TestCase
 
     public function testItConstructs(): void
     {
-        $this->assertSame([
+        self::assertSame([
             '@covers Foo',
         ], $this->documentation->getLines()->toArray());
     }
@@ -51,35 +51,35 @@ class TestDocumentationTest extends TestCase
 
     public function testItAddsLine(): void
     {
-        $this->assertSame(1, $this->documentation->getLines()->count());
+        self::assertSame(1, $this->documentation->getLines()->count());
 
         $this->documentation->addLine('@covers Bar');
 
-        $this->assertSame(2, $this->documentation->getLines()->count());
-        $this->assertSame('@covers Bar', $this->documentation->getLines()->last());
+        self::assertSame(2, $this->documentation->getLines()->count());
+        self::assertSame('@covers Bar', $this->documentation->getLines()->last());
     }
 
     public function testItRemovesLine(): void
     {
-        $this->assertSame(1, $this->documentation->getLines()->count());
+        self::assertSame(1, $this->documentation->getLines()->count());
 
         $this->documentation->removeLine();
 
-        $this->assertSame(0, $this->documentation->getLines()->count());
+        self::assertSame(0, $this->documentation->getLines()->count());
     }
 
     public function testItPrepends(): void
     {
         $this->documentation->prepend('@author bar ');
 
-        $this->assertSame('@author bar @covers Foo', $this->documentation->getLines()->last());
+        self::assertSame('@author bar @covers Foo', $this->documentation->getLines()->last());
     }
 
     public function testItAppends(): void
     {
         $this->documentation->append(' @author bar');
 
-        $this->assertSame('@covers Foo @author bar', $this->documentation->getLines()->last());
+        self::assertSame('@covers Foo @author bar', $this->documentation->getLines()->last());
     }
 
     public function testItPrependsWhenCustomKey(): void
@@ -88,7 +88,7 @@ class TestDocumentationTest extends TestCase
 
         $this->documentation->prepend('@author bar ', 0);
 
-        $this->assertSame('@author bar @covers Foo', $this->documentation->getLines()->first());
+        self::assertSame('@author bar @covers Foo', $this->documentation->getLines()->first());
     }
 
     public function testItAppendsWhenCustomKey(): void
@@ -97,6 +97,6 @@ class TestDocumentationTest extends TestCase
 
         $this->documentation->append(' @author bar', 0);
 
-        $this->assertSame('@covers Foo @author bar', $this->documentation->getLines()->first());
+        self::assertSame('@covers Foo @author bar', $this->documentation->getLines()->first());
     }
 }

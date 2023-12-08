@@ -48,8 +48,8 @@ class TypeFactoryTest extends TestCase
         $builtInType = 'string';
         $importType = new TestImport('DummyClass');
 
-        $this->assertSame('string', $this->typeFactory->formatType($builtInType));
-        $this->assertSame('DummyClass', $this->typeFactory->formatType($importType));
+        self::assertSame('string', $this->typeFactory->formatType($builtInType));
+        self::assertSame('DummyClass', $this->typeFactory->formatType($importType));
     }
 
     public function testFormatTypes(): void
@@ -57,15 +57,15 @@ class TypeFactoryTest extends TestCase
         $builtInType = 'string';
         $importType = new TestImport('DummyClass');
 
-        $this->assertSame(
+        self::assertSame(
             'string|DummyClass',
             $this->typeFactory->formatTypes(new Collection([$builtInType, $importType]))
         );
-        $this->assertSame(
+        self::assertSame(
             'DummyClass|string',
             $this->typeFactory->formatTypes(new Collection([$importType, $builtInType]))
         );
-        $this->assertSame(
+        self::assertSame(
             'DummyClass&string',
             $this->typeFactory->formatTypes(new Collection([$importType, $builtInType]), '&')
         );
@@ -102,7 +102,7 @@ class TypeFactoryTest extends TestCase
                 ->andReturn($expectedType);
         }
 
-        $this->assertSame($expectedType, $this->typeFactory->makeFromString($class, $type, $isBuiltIn));
+        self::assertSame($expectedType, $this->typeFactory->makeFromString($class, $type, $isBuiltIn));
     }
 
     public function makeFromStringDataProvider(): array

@@ -58,7 +58,7 @@ final class SendWelcomeMessageJobTest extends TestCase
             ->getProperty('user');
         $property->setAccessible(true);
         $property->setValue($this->sendWelcomeMessageJob, $expected);
-        $this->assertSame($expected, $this->sendWelcomeMessageJob->getUser());
+        self::assertSame($expected, $this->sendWelcomeMessageJob->getUser());
     }
 
     public function testSetUser(): void
@@ -68,6 +68,6 @@ final class SendWelcomeMessageJobTest extends TestCase
             ->getProperty('user');
         $property->setAccessible(true);
         $this->sendWelcomeMessageJob->setUser($expected);
-        $this->assertSame($expected, $property->getValue($this->sendWelcomeMessageJob));
+        self::assertSame($expected, $property->getValue($this->sendWelcomeMessageJob));
     }
 }

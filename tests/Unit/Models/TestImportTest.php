@@ -33,8 +33,8 @@ class TestImportTest extends TestCase
 
     public function testItConstructs(): void
     {
-        $this->assertSame('Bar', $this->import->getName());
-        $this->assertSame('BarAlias', $this->import->getAlias());
+        self::assertSame('Bar', $this->import->getName());
+        self::assertSame('BarAlias', $this->import->getAlias());
     }
 
     public function testItAcceptsRenderer(): void
@@ -50,13 +50,13 @@ class TestImportTest extends TestCase
 
     public function testItReturnsAliasWhenDefined(): void
     {
-        $this->assertSame('BarAlias', $this->import->getFinalName());
+        self::assertSame('BarAlias', $this->import->getFinalName());
     }
 
     public function testItReturnsShortNameWhenAliasNotDefined(): void
     {
         $import = new TestImport('Foo\\Bar\\Baz');
 
-        $this->assertSame('Baz', $import->getFinalName());
+        self::assertSame('Baz', $import->getFinalName());
     }
 }

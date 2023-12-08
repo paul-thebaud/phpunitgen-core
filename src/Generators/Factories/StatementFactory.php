@@ -54,7 +54,7 @@ class StatementFactory implements StatementFactoryContract, ImportFactoryAware
      */
     public function makeAssert(string $assert, string ...$parameters): TestStatement
     {
-        return (new TestStatement('$this->assert'))
+        return (new TestStatement('self::assert'))
             ->append(ucfirst($assert))
             ->append('(')
             ->append(implode(', ', $parameters))

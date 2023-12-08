@@ -38,12 +38,12 @@ class TestMethodTest extends TestCase
 
     public function testItConstructs(): void
     {
-        $this->assertSame('testFoo', $this->method->getName());
-        $this->assertSame('protected', $this->method->getVisibility());
+        self::assertSame('testFoo', $this->method->getName());
+        self::assertSame('protected', $this->method->getVisibility());
 
-        $this->assertNull($this->method->getProvider());
-        $this->assertEmpty($this->method->getParameters());
-        $this->assertEmpty($this->method->getStatements());
+        self::assertNull($this->method->getProvider());
+        self::assertEmpty($this->method->getParameters());
+        self::assertEmpty($this->method->getStatements());
     }
 
     public function testItAcceptsRenderer(): void
@@ -63,7 +63,7 @@ class TestMethodTest extends TestCase
 
         $this->method->setProvider($provider);
 
-        $this->assertSame($this->method, $provider->getTestMethod());
+        self::assertSame($this->method, $provider->getTestMethod());
     }
 
     public function testItAddsParameter(): void
@@ -72,7 +72,7 @@ class TestMethodTest extends TestCase
 
         $this->method->addParameter($parameter);
 
-        $this->assertSame($this->method, $parameter->getTestMethod());
+        self::assertSame($this->method, $parameter->getTestMethod());
     }
 
     public function testItAddsStatement(): void
@@ -81,7 +81,7 @@ class TestMethodTest extends TestCase
 
         $this->method->addStatement($statement);
 
-        $this->assertSame($this->method, $statement->getTestMethod());
+        self::assertSame($this->method, $statement->getTestMethod());
     }
 
     public function testItHasDocumentation(): void
@@ -90,6 +90,6 @@ class TestMethodTest extends TestCase
 
         $this->method->setDocumentation($documentation);
 
-        $this->assertSame($documentation, $this->method->getDocumentation());
+        self::assertSame($documentation, $this->method->getDocumentation());
     }
 }

@@ -31,7 +31,7 @@ class ReflectTest extends TestCase
         $reflectionClass->shouldReceive('getImmediateMethods')
             ->andReturn([]);
 
-        $this->assertSame([], Reflect::methods($reflectionClass)->toArray());
+        self::assertSame([], Reflect::methods($reflectionClass)->toArray());
     }
 
     public function testMethod(): void
@@ -51,9 +51,9 @@ class ReflectTest extends TestCase
                 $reflectionMethod2,
             ]);
 
-        $this->assertSame($reflectionMethod1, Reflect::method($reflectionClass, 'foo'));
-        $this->assertSame($reflectionMethod2, Reflect::method($reflectionClass, 'bar'));
-        $this->assertNull(Reflect::method($reflectionClass, 'baz'));
+        self::assertSame($reflectionMethod1, Reflect::method($reflectionClass, 'foo'));
+        self::assertSame($reflectionMethod2, Reflect::method($reflectionClass, 'bar'));
+        self::assertNull(Reflect::method($reflectionClass, 'baz'));
     }
 
     public function testProperties(): void
@@ -63,7 +63,7 @@ class ReflectTest extends TestCase
         $reflectionClass->shouldReceive('getImmediateProperties')
             ->andReturn([]);
 
-        $this->assertSame([], Reflect::properties($reflectionClass)->toArray());
+        self::assertSame([], Reflect::properties($reflectionClass)->toArray());
     }
 
     public function testProperty(): void
@@ -83,9 +83,9 @@ class ReflectTest extends TestCase
                 $reflectionProperty2,
             ]);
 
-        $this->assertSame($reflectionProperty1, Reflect::property($reflectionClass, 'foo'));
-        $this->assertSame($reflectionProperty2, Reflect::property($reflectionClass, 'bar'));
-        $this->assertNull(Reflect::property($reflectionClass, 'baz'));
+        self::assertSame($reflectionProperty1, Reflect::property($reflectionClass, 'foo'));
+        self::assertSame($reflectionProperty2, Reflect::property($reflectionClass, 'bar'));
+        self::assertNull(Reflect::property($reflectionClass, 'baz'));
     }
 
     public function testParameters(): void
@@ -95,7 +95,7 @@ class ReflectTest extends TestCase
         $reflectionMethod->shouldReceive('getParameters')
             ->andReturn([]);
 
-        $this->assertSame([], Reflect::parameters($reflectionMethod)->toArray());
+        self::assertSame([], Reflect::parameters($reflectionMethod)->toArray());
     }
 
     public function testParameterTypeWithReflectionType(): void
@@ -118,9 +118,9 @@ class ReflectTest extends TestCase
 
         $newReflectionType = Reflect::parameterType($reflectionParameter);
 
-        $this->assertNotNull($newReflectionType);
-        $this->assertFalse($newReflectionType->isNullable());
-        $this->assertSame('string', $newReflectionType->getType());
+        self::assertNotNull($newReflectionType);
+        self::assertFalse($newReflectionType->isNullable());
+        self::assertSame('string', $newReflectionType->getType());
     }
 
     public function testParameterTypeWithDocBlockType(): void
@@ -148,9 +148,9 @@ class ReflectTest extends TestCase
 
         $newReflectionType = Reflect::parameterType($reflectionParameter);
 
-        $this->assertNotNull($newReflectionType);
-        $this->assertTrue($newReflectionType->isNullable());
-        $this->assertSame('string', $newReflectionType->getType());
+        self::assertNotNull($newReflectionType);
+        self::assertTrue($newReflectionType->isNullable());
+        self::assertSame('string', $newReflectionType->getType());
     }
 
     public function testParameterTypeWithNone(): void
@@ -177,7 +177,7 @@ class ReflectTest extends TestCase
 
         $newReflectionType = Reflect::parameterType($reflectionParameter);
 
-        $this->assertNull($newReflectionType);
+        self::assertNull($newReflectionType);
     }
 
     public function testReturnTypeWithReflectionType(): void
@@ -196,9 +196,9 @@ class ReflectTest extends TestCase
 
         $newReflectionType = Reflect::returnType($reflectionMethod);
 
-        $this->assertNotNull($newReflectionType);
-        $this->assertFalse($newReflectionType->isNullable());
-        $this->assertSame('string', $newReflectionType->getType());
+        self::assertNotNull($newReflectionType);
+        self::assertFalse($newReflectionType->isNullable());
+        self::assertSame('string', $newReflectionType->getType());
     }
 
     public function testReturnTypeWithDocBlockType(): void
@@ -221,9 +221,9 @@ class ReflectTest extends TestCase
 
         $newReflectionType = Reflect::returnType($reflectionMethod);
 
-        $this->assertNotNull($newReflectionType);
-        $this->assertTrue($newReflectionType->isNullable());
-        $this->assertSame('string', $newReflectionType->getType());
+        self::assertNotNull($newReflectionType);
+        self::assertTrue($newReflectionType->isNullable());
+        self::assertSame('string', $newReflectionType->getType());
     }
 
     public function testReturnTypeWithNone(): void
@@ -237,7 +237,7 @@ class ReflectTest extends TestCase
 
         $newReflectionType = Reflect::returnType($reflectionMethod);
 
-        $this->assertNull($newReflectionType);
+        self::assertNull($newReflectionType);
     }
 
     public function testDocBlockWhenDefaultFactoryAndEmptyDocComment(): void
@@ -247,7 +247,7 @@ class ReflectTest extends TestCase
             ->withNoArgs()
             ->andReturn('');
 
-        $this->assertNull(Reflect::docBlock($reflectionMethod));
+        self::assertNull(Reflect::docBlock($reflectionMethod));
     }
 
     public function testDocBlockWhenDefaultFactoryAndNotEmptyDocComment(): void
@@ -269,7 +269,7 @@ class ReflectTest extends TestCase
             ->withNoArgs()
             ->andReturn($reflectionClass);
 
-        $this->assertInstanceOf(DocBlock::class, Reflect::docBlock($reflectionMethod));
+        self::assertInstanceOf(DocBlock::class, Reflect::docBlock($reflectionMethod));
     }
 
     public function testDocBlockWhenCustomFactory(): void
@@ -302,7 +302,7 @@ class ReflectTest extends TestCase
 
         Reflect::setDocBlockFactory($docBlockFactory);
 
-        $this->assertSame($docBlock, Reflect::docBlock($reflectionMethod));
+        self::assertSame($docBlock, Reflect::docBlock($reflectionMethod));
 
         Reflect::setDocBlockFactory(null);
     }
@@ -316,7 +316,7 @@ class ReflectTest extends TestCase
 
         $tags = Reflect::docBlockTags($reflectionMethod);
 
-        $this->assertTrue($tags->isEmpty());
+        self::assertTrue($tags->isEmpty());
     }
 
     public function testDocBlockTagsWhenNotEmptyDocComment(): void
@@ -343,9 +343,9 @@ class ReflectTest extends TestCase
 
         $tags = Reflect::docBlockTags($reflectionMethod);
 
-        $this->assertFalse($tags->isEmpty());
-        $this->assertCount(2, $tags);
-        $this->assertSame('@author John Doe', $tags->get(0)->render());
-        $this->assertSame('@see https://example.com', $tags->get(1)->render());
+        self::assertFalse($tags->isEmpty());
+        self::assertCount(2, $tags);
+        self::assertSame('@author John Doe', $tags->get(0)->render());
+        self::assertSame('@see https://example.com', $tags->get(1)->render());
     }
 }

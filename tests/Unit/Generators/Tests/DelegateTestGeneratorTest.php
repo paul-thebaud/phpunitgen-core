@@ -80,12 +80,12 @@ class DelegateTestGeneratorTest extends TestCase
     {
         $implementations = DelegateTestGenerator::implementations();
 
-        $this->assertSame([
+        self::assertSame([
             TestGenerator::class => DelegateTestGenerator::class,
         ], $implementations);
 
         foreach ($implementations as $contract => $implementation) {
-            $this->assertArrayHasKey($contract, class_implements($implementation));
+            self::assertArrayHasKey($contract, class_implements($implementation));
         }
     }
 
@@ -93,7 +93,7 @@ class DelegateTestGeneratorTest extends TestCase
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
 
-        $this->assertSame(true, $this->testGenerator->canGenerateFor($reflectionClass));
+        self::assertSame(true, $this->testGenerator->canGenerateFor($reflectionClass));
     }
 
     /**
@@ -157,7 +157,7 @@ class DelegateTestGeneratorTest extends TestCase
             ->with($reflectionClass)
             ->andReturn($testClass);
 
-        $this->assertSame($testClass, $this->testGenerator->generate($reflectionClass));
+        self::assertSame($testClass, $this->testGenerator->generate($reflectionClass));
     }
 
     public function generateDelegatesToLaravelDataProvider(): array
@@ -227,7 +227,7 @@ class DelegateTestGeneratorTest extends TestCase
             ->with($reflectionClass)
             ->andReturn($testClass);
 
-        $this->assertSame($testClass, $this->testGenerator->generate($reflectionClass));
+        self::assertSame($testClass, $this->testGenerator->generate($reflectionClass));
     }
 
     public function testMakeNewContainer(): void
@@ -236,8 +236,8 @@ class DelegateTestGeneratorTest extends TestCase
 
         $container = $this->callProtectedMethod(new DelegateTestGenerator(), 'makeNewContainer', $config);
 
-        $this->assertInstanceOf(Container::class, $container);
-        $this->assertSame($config, $container->get(ConfigContract::class));
+        self::assertInstanceOf(Container::class, $container);
+        self::assertSame($config, $container->get(ConfigContract::class));
     }
 
     public function testGetClassFactory(): void

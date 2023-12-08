@@ -122,7 +122,7 @@ class PolicyMethodFactoryTest extends TestCase
 
         $method = $this->methodFactory->makeSetUp($class);
 
-        $this->assertSame([
+        self::assertSame([
             ['parent::setUp()'],
             [''],
             ['/** @todo Correctly instantiate tested object to use it. */'],
@@ -175,14 +175,14 @@ class PolicyMethodFactoryTest extends TestCase
 
         $method = $class->getMethods()[0];
 
-        $this->assertSame('testGetBar', $method->getName());
-        $this->assertSame('public', $method->getVisibility());
-        $this->assertNull($method->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testGetBar', $method->getName());
+        self::assertSame('public', $method->getVisibility());
+        self::assertNull($method->getDocumentation());
+        self::assertSame([
             ['$expected = null'],
             ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
             ['$property->setValue($this->foo, $expected)'],
-            ['$this->assertSame($expected, $this->foo->getBar())'],
+            ['self::assertSame($expected, $this->foo->getBar())'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -250,34 +250,34 @@ class PolicyMethodFactoryTest extends TestCase
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('false', '$this->user->can(\'bar\', [Foo::class])')
-            ->andReturn(new TestStatement('$this->assertFalse($this->user->can(\'bar\', [Foo::class]))'));
+            ->andReturn(new TestStatement('self::assertFalse($this->user->can(\'bar\', [Foo::class]))'));
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('true', '$this->user->can(\'bar\', [Foo::class])')
-            ->andReturn(new TestStatement('$this->assertTrue($this->user->can(\'bar\', [Foo::class]))'));
+            ->andReturn(new TestStatement('self::assertTrue($this->user->can(\'bar\', [Foo::class]))'));
 
         $this->methodFactory->makeTestable($class, $reflectionMethod);
 
         $method1 = $class->getMethods()[0];
 
-        $this->assertSame('testBarWhenUnauthorized', $method1->getName());
-        $this->assertSame('public', $method1->getVisibility());
-        $this->assertNull($method1->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testBarWhenUnauthorized', $method1->getName());
+        self::assertSame('public', $method1->getVisibility());
+        self::assertNull($method1->getDocumentation());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
-            ['$this->assertFalse($this->user->can(\'bar\', [Foo::class]))'],
+            ['self::assertFalse($this->user->can(\'bar\', [Foo::class]))'],
         ], $method1->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
 
         $method2 = $class->getMethods()[1];
 
-        $this->assertSame('testBarWhenAuthorized', $method2->getName());
-        $this->assertSame('public', $method2->getVisibility());
-        $this->assertNull($method2->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testBarWhenAuthorized', $method2->getName());
+        self::assertSame('public', $method2->getVisibility());
+        self::assertNull($method2->getDocumentation());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
-            ['$this->assertTrue($this->user->can(\'bar\', [Foo::class]))'],
+            ['self::assertTrue($this->user->can(\'bar\', [Foo::class]))'],
         ], $method2->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -341,38 +341,38 @@ class PolicyMethodFactoryTest extends TestCase
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('false', '$this->user->can(\'bar\', $product)')
-            ->andReturn(new TestStatement('$this->assertFalse($this->user->can(\'bar\', $product))'));
+            ->andReturn(new TestStatement('self::assertFalse($this->user->can(\'bar\', $product))'));
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('true', '$this->user->can(\'bar\', $product)')
-            ->andReturn(new TestStatement('$this->assertTrue($this->user->can(\'bar\', $product))'));
+            ->andReturn(new TestStatement('self::assertTrue($this->user->can(\'bar\', $product))'));
 
         $this->methodFactory->makeTestable($class, $reflectionMethod);
 
         $method1 = $class->getMethods()[0];
 
-        $this->assertSame('testBarWhenUnauthorized', $method1->getName());
-        $this->assertSame('public', $method1->getVisibility());
-        $this->assertNull($method1->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testBarWhenUnauthorized', $method1->getName());
+        self::assertSame('public', $method1->getVisibility());
+        self::assertNull($method1->getDocumentation());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
             ['$product = 42'],
             [''],
-            ['$this->assertFalse($this->user->can(\'bar\', $product))'],
+            ['self::assertFalse($this->user->can(\'bar\', $product))'],
         ], $method1->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
 
         $method2 = $class->getMethods()[1];
 
-        $this->assertSame('testBarWhenAuthorized', $method2->getName());
-        $this->assertSame('public', $method2->getVisibility());
-        $this->assertNull($method2->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testBarWhenAuthorized', $method2->getName());
+        self::assertSame('public', $method2->getVisibility());
+        self::assertNull($method2->getDocumentation());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
             ['$product = 42'],
             [''],
-            ['$this->assertTrue($this->user->can(\'bar\', $product))'],
+            ['self::assertTrue($this->user->can(\'bar\', $product))'],
         ], $method2->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -456,40 +456,40 @@ class PolicyMethodFactoryTest extends TestCase
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('false', '$this->user->can(\'bar\', [$product, $category])')
-            ->andReturn(new TestStatement('$this->assertFalse($this->user->can(\'bar\', [$product, $category]))'));
+            ->andReturn(new TestStatement('self::assertFalse($this->user->can(\'bar\', [$product, $category]))'));
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('true', '$this->user->can(\'bar\', [$product, $category])')
-            ->andReturn(new TestStatement('$this->assertTrue($this->user->can(\'bar\', [$product, $category]))'));
+            ->andReturn(new TestStatement('self::assertTrue($this->user->can(\'bar\', [$product, $category]))'));
 
         $this->methodFactory->makeTestable($class, $reflectionMethod);
 
         $method1 = $class->getMethods()[0];
 
-        $this->assertSame('testBarWhenUnauthorized', $method1->getName());
-        $this->assertSame('public', $method1->getVisibility());
-        $this->assertNull($method1->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testBarWhenUnauthorized', $method1->getName());
+        self::assertSame('public', $method1->getVisibility());
+        self::assertNull($method1->getDocumentation());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
             ['$product = 42'],
             ['$category = 84'],
             [''],
-            ['$this->assertFalse($this->user->can(\'bar\', [$product, $category]))'],
+            ['self::assertFalse($this->user->can(\'bar\', [$product, $category]))'],
         ], $method1->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
 
         $method2 = $class->getMethods()[1];
 
-        $this->assertSame('testBarWhenAuthorized', $method2->getName());
-        $this->assertSame('public', $method2->getVisibility());
-        $this->assertNull($method2->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testBarWhenAuthorized', $method2->getName());
+        self::assertSame('public', $method2->getVisibility());
+        self::assertNull($method2->getDocumentation());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
             ['$product = 42'],
             ['$category = 84'],
             [''],
-            ['$this->assertTrue($this->user->can(\'bar\', [$product, $category]))'],
+            ['self::assertTrue($this->user->can(\'bar\', [$product, $category]))'],
         ], $method2->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());

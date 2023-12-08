@@ -34,14 +34,14 @@ class TestParameterTest extends TestCase
 
     public function testItConstructs(): void
     {
-        $this->assertSame('expected', $this->parameter->getName());
+        self::assertSame('expected', $this->parameter->getName());
     }
 
     public function testItHasType(): void
     {
-        $this->assertSame(null, $this->parameter->getType());
+        self::assertSame(null, $this->parameter->getType());
         $this->parameter->setType('int');
-        $this->assertSame('int', $this->parameter->getType());
+        self::assertSame('int', $this->parameter->getType());
     }
 
     public function testItAcceptsRenderer(): void

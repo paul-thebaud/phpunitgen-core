@@ -46,8 +46,8 @@ class ImportFactoryTest extends TestCase
 
         $import = $this->importFactory->make($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('Baz', $import->getFinalName());
-        $this->assertCount(1, $this->class->getImports());
+        self::assertSame('Baz', $import->getFinalName());
+        self::assertCount(1, $this->class->getImports());
     }
 
     public function testItReturnsAlreadyImportedClassWithAlias(): void
@@ -56,16 +56,16 @@ class ImportFactoryTest extends TestCase
 
         $import = $this->importFactory->make($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('BazAlias', $import->getFinalName());
-        $this->assertCount(1, $this->class->getImports());
+        self::assertSame('BazAlias', $import->getFinalName());
+        self::assertCount(1, $this->class->getImports());
     }
 
     public function testItReturnsNotImportedClassWithoutAliasing(): void
     {
         $import = $this->importFactory->make($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('Baz', $import->getFinalName());
-        $this->assertCount(1, $this->class->getImports());
+        self::assertSame('Baz', $import->getFinalName());
+        self::assertCount(1, $this->class->getImports());
     }
 
     public function testItReturnsNotImportedClassWithAliasing(): void
@@ -74,8 +74,8 @@ class ImportFactoryTest extends TestCase
 
         $import = $this->importFactory->make($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('BazAlias', $import->getFinalName());
-        $this->assertCount(2, $this->class->getImports());
+        self::assertSame('BazAlias', $import->getFinalName());
+        self::assertCount(2, $this->class->getImports());
     }
 
     public function testItReturnsNotImportedClassWithDeepAliasing(): void
@@ -85,7 +85,7 @@ class ImportFactoryTest extends TestCase
 
         $import = $this->importFactory->make($this->class, 'Foo\\Bar\\Baz');
 
-        $this->assertSame('BazAliasAlias', $import->getFinalName());
-        $this->assertCount(3, $this->class->getImports());
+        self::assertSame('BazAliasAlias', $import->getFinalName());
+        self::assertCount(3, $this->class->getImports());
     }
 }

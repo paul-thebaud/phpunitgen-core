@@ -63,7 +63,7 @@ final class PersonTest extends TestCase
             ->getProperty('connection');
         $property->setAccessible(true);
         $property->setValue(null, $expected);
-        $this->assertSame($expected, Person::getConnection());
+        self::assertSame($expected, Person::getConnection());
     }
 
     public function testSetConnection(): void
@@ -73,25 +73,25 @@ final class PersonTest extends TestCase
             ->getProperty('connection');
         $property->setAccessible(true);
         Person::setConnection($expected);
-        $this->assertSame($expected, $property->getValue(null));
+        self::assertSame($expected, $property->getValue(null));
     }
 
     public function testFind(): void
     {
         /** @todo This test is incomplete. */
-        $this->markTestIncomplete();
+        self::markTestIncomplete();
     }
 
     public function testSave(): void
     {
         /** @todo This test is incomplete. */
-        $this->markTestIncomplete();
+        self::markTestIncomplete();
     }
 
     public function testDelete(): void
     {
         /** @todo This test is incomplete. */
-        $this->markTestIncomplete();
+        self::markTestIncomplete();
     }
 
     public function testGetName(): void
@@ -101,7 +101,7 @@ final class PersonTest extends TestCase
             ->getProperty('name');
         $property->setAccessible(true);
         $property->setValue($this->person, $expected);
-        $this->assertSame($expected, $this->person->getName());
+        self::assertSame($expected, $this->person->getName());
     }
 
     public function testSetName(): void
@@ -111,7 +111,7 @@ final class PersonTest extends TestCase
             ->getProperty('name');
         $property->setAccessible(true);
         $this->person->setName($expected);
-        $this->assertSame($expected, $property->getValue($this->person));
+        self::assertSame($expected, $property->getValue($this->person));
     }
 
     public function testGetWork(): void
@@ -121,7 +121,7 @@ final class PersonTest extends TestCase
             ->getProperty('work');
         $property->setAccessible(true);
         $property->setValue($this->person, $expected);
-        $this->assertSame($expected, $this->person->getWork());
+        self::assertSame($expected, $this->person->getWork());
     }
 
     public function testSetWork(): void
@@ -131,6 +131,6 @@ final class PersonTest extends TestCase
             ->getProperty('work');
         $property->setAccessible(true);
         $this->person->setWork($expected);
-        $this->assertSame($expected, $property->getValue($this->person));
+        self::assertSame($expected, $property->getValue($this->person));
     }
 }

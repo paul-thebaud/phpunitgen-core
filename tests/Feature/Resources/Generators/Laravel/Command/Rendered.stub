@@ -58,7 +58,7 @@ final class PruneUsersCommandTest extends TestCase
             ->getProperty('userService');
         $property->setAccessible(true);
         $property->setValue($this->pruneUsersCommand, $expected);
-        $this->assertSame($expected, $this->pruneUsersCommand->getUserService());
+        self::assertSame($expected, $this->pruneUsersCommand->getUserService());
     }
 
     public function testSetUserService(): void
@@ -68,6 +68,6 @@ final class PruneUsersCommandTest extends TestCase
             ->getProperty('userService');
         $property->setAccessible(true);
         $this->pruneUsersCommand->setUserService($expected);
-        $this->assertSame($expected, $property->getValue($this->pruneUsersCommand));
+        self::assertSame($expected, $property->getValue($this->pruneUsersCommand));
     }
 }

@@ -92,7 +92,7 @@ final class UserControllerTest extends TestCase
             ->getProperty('userService');
         $property->setAccessible(true);
         $property->setValue($this->userController, $expected);
-        $this->assertSame($expected, $this->userController->getUserService());
+        self::assertSame($expected, $this->userController->getUserService());
     }
 
     public function testSetUserService(): void
@@ -102,6 +102,6 @@ final class UserControllerTest extends TestCase
             ->getProperty('userService');
         $property->setAccessible(true);
         $this->userController->setUserService($expected);
-        $this->assertSame($expected, $property->getValue($this->userController));
+        self::assertSame($expected, $property->getValue($this->userController));
     }
 }

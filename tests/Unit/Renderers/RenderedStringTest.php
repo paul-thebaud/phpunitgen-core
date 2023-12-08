@@ -18,6 +18,6 @@ class RenderedStringTest extends TestCase
     {
         $line = new RenderedString('class FooTest{}');
 
-        $this->assertSame('class FooTest{}', $line->toString());
+        self::assertSame('class FooTest{}', $line->toString());
     }
 }

@@ -102,9 +102,9 @@ class PropertyFactoryTest extends TestCase
 
         $property = $this->propertyFactory->makeForClass($class);
 
-        $this->assertSame('foo', $property->getName());
-        $this->assertSame($doc, $property->getDocumentation());
-        $this->assertSame(null, $property->getType());
+        self::assertSame('foo', $property->getName());
+        self::assertSame($doc, $property->getDocumentation());
+        self::assertSame(null, $property->getType());
     }
 
     public function testMakeForClassWithTypedProperties(): void
@@ -131,9 +131,9 @@ class PropertyFactoryTest extends TestCase
 
         $property = $this->propertyFactory->makeForClass($class);
 
-        $this->assertSame('foo', $property->getName());
-        $this->assertSame(null, $property->getDocumentation());
-        $this->assertSame('Foo', $property->getType());
+        self::assertSame('foo', $property->getName());
+        self::assertSame(null, $property->getDocumentation());
+        self::assertSame('Foo', $property->getType());
     }
 
     public function testMakeForParameterWithObjectType(): void
@@ -190,8 +190,8 @@ class PropertyFactoryTest extends TestCase
 
         $property = $this->propertyFactory->makeForParameter($class, $reflectionParameter);
 
-        $this->assertSame('bar', $property->getName());
-        $this->assertSame($doc, $property->getDocumentation());
+        self::assertSame('bar', $property->getName());
+        self::assertSame($doc, $property->getDocumentation());
     }
 
     /**
@@ -241,8 +241,8 @@ class PropertyFactoryTest extends TestCase
 
         $property = $this->propertyFactory->makeForParameter($class, $reflectionParameter);
 
-        $this->assertSame('bar', $property->getName());
-        $this->assertSame($doc, $property->getDocumentation());
+        self::assertSame('bar', $property->getName());
+        self::assertSame($doc, $property->getDocumentation());
     }
 
     public function makeForParameterWithBuiltInTypeDataProvider(): array

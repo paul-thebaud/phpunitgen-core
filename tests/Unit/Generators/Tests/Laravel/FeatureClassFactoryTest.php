@@ -44,6 +44,6 @@ class FeatureClassFactoryTest extends TestCase
 
         $class = $classFactory->make($reflectionClass);
 
-        $this->assertSame('Tests\\Feature\\App\\Foo\\BarTest', $class->getName());
+        self::assertSame('Tests\\Feature\\App\\Foo\\BarTest', $class->getName());
     }
 }

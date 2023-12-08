@@ -33,7 +33,7 @@ class LaravelTestGeneratorTest extends TestCase
     {
         $implementations = LaravelTestGenerator::implementations();
 
-        $this->assertSame([
+        self::assertSame([
             TestGeneratorContract::class        => LaravelTestGenerator::class,
             ClassFactoryContract::class         => UnitClassFactory::class,
             DocumentationFactoryContract::class => DocumentationFactory::class,
@@ -45,7 +45,7 @@ class LaravelTestGeneratorTest extends TestCase
         ], $implementations);
 
         foreach ($implementations as $contract => $implementation) {
-            $this->assertArrayHasKey($contract, class_implements($implementation));
+            self::assertArrayHasKey($contract, class_implements($implementation));
         }
     }
 }

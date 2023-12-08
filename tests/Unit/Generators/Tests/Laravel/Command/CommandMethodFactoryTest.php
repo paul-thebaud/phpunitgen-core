@@ -101,7 +101,7 @@ class CommandMethodFactoryTest extends TestCase
 
         $method = $this->methodFactory->makeSetUp($class);
 
-        $this->assertSame([
+        self::assertSame([
             ['parent::setUp()'],
             [''],
             ['/** @todo Correctly instantiate tested object to use it. */'],
@@ -153,14 +153,14 @@ class CommandMethodFactoryTest extends TestCase
 
         $method = $class->getMethods()[0];
 
-        $this->assertSame('testGetBar', $method->getName());
-        $this->assertSame('public', $method->getVisibility());
-        $this->assertNull($method->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testGetBar', $method->getName());
+        self::assertSame('public', $method->getVisibility());
+        self::assertNull($method->getDocumentation());
+        self::assertSame([
             ['$expected = null'],
             ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
             ['$property->setValue($this->foo, $expected)'],
-            ['$this->assertSame($expected, $this->foo->getBar())'],
+            ['self::assertSame($expected, $this->foo->getBar())'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -224,10 +224,10 @@ class CommandMethodFactoryTest extends TestCase
 
         $method = $class->getMethods()[0];
 
-        $this->assertSame('testHandle', $method->getName());
-        $this->assertSame('public', $method->getVisibility());
-        $this->assertNull($method->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testHandle', $method->getName());
+        self::assertSame('public', $method->getVisibility());
+        self::assertNull($method->getDocumentation());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
             [
                 "\$this->artisan('{$expectedSignature}')",

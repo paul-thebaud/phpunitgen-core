@@ -48,7 +48,7 @@ final class ProductResourceTest extends TestCase
         $request = Mockery::mock(Request::class);
 
         /** @todo This test is incomplete. */
-        $this->assertSame([], $this->productResource->toArray($request));
+        self::assertSame([], $this->productResource->toArray($request));
     }
 
     public function testGetProductService(): void
@@ -58,7 +58,7 @@ final class ProductResourceTest extends TestCase
             ->getProperty('productService');
         $property->setAccessible(true);
         $property->setValue($this->productResource, $expected);
-        $this->assertSame($expected, $this->productResource->getProductService());
+        self::assertSame($expected, $this->productResource->getProductService());
     }
 
     public function testSetProductService(): void
@@ -68,6 +68,6 @@ final class ProductResourceTest extends TestCase
             ->getProperty('productService');
         $property->setAccessible(true);
         $this->productResource->setProductService($expected);
-        $this->assertSame($expected, $property->getValue($this->productResource));
+        self::assertSame($expected, $property->getValue($this->productResource));
     }
 }

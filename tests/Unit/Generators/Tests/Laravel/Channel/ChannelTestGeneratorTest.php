@@ -41,7 +41,7 @@ class ChannelTestGeneratorTest extends TestCase
     {
         $implementations = ChannelTestGenerator::implementations();
 
-        $this->assertSame([
+        self::assertSame([
             TestGeneratorContract::class        => ChannelTestGenerator::class,
             ClassFactoryContract::class         => UnitClassFactory::class,
             DocumentationFactoryContract::class => DocumentationFactory::class,
@@ -53,7 +53,7 @@ class ChannelTestGeneratorTest extends TestCase
         ], $implementations);
 
         foreach ($implementations as $contract => $implementation) {
-            $this->assertArrayHasKey($contract, class_implements($implementation));
+            self::assertArrayHasKey($contract, class_implements($implementation));
         }
     }
 
@@ -89,7 +89,7 @@ class ChannelTestGeneratorTest extends TestCase
 
         $testGenerator->setConfig($config = Mockery::mock(Config::class));
         $config->shouldReceive(['automaticGeneration' => $automatic]);
-        $this->assertSame($expected, $this->callProtectedMethod($testGenerator, 'isTestable', $class, $method));
+        self::assertSame($expected, $this->callProtectedMethod($testGenerator, 'isTestable', $class, $method));
     }
 
     public function isTestableDataProvider(): array

@@ -18,7 +18,7 @@ class ConfigTest extends TestCase
 {
     public function testWhenDefaultConfiguration(): void
     {
-        $this->assertSame([
+        self::assertSame([
             'automaticGeneration'      => true,
             'implementations'          => DelegateTestGenerator::implementations(),
             'baseNamespace'            => 'App',
@@ -46,7 +46,7 @@ class ConfigTest extends TestCase
 
     public function testWhenCompleteConfiguration(): void
     {
-        $this->assertSame([
+        self::assertSame([
             'automaticGeneration'      => false,
             'implementations'          => [],
             'baseNamespace'            => 'App\\',
@@ -77,7 +77,7 @@ class ConfigTest extends TestCase
 
     public function testMissingNullOrInvalidPropertiesAreIgnored(): void
     {
-        $this->assertSame([], Config::validate([
+        self::assertSame([], Config::validate([
             'automaticGeneration' => null,
             'unknown'             => 'foo bar',
         ]));
@@ -88,7 +88,7 @@ class ConfigTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('configuration property automaticGeneration must be of type bool');
 
-        $this->assertSame([], Config::validate([
+        self::assertSame([], Config::validate([
             'automaticGeneration' => ['invalid type'],
         ]));
     }
@@ -98,7 +98,7 @@ class ConfigTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('configuration property baseNamespace must be of type string');
 
-        $this->assertSame([], Config::validate([
+        self::assertSame([], Config::validate([
             'baseNamespace' => ['invalid type'],
         ]));
     }
@@ -108,7 +108,7 @@ class ConfigTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('configuration property excludedMethods must be of type array');
 
-        $this->assertSame([], Config::validate([
+        self::assertSame([], Config::validate([
             'excludedMethods' => 'invalid type',
         ]));
     }
@@ -129,19 +129,19 @@ class ConfigTest extends TestCase
             'options'              => ['custom' => 'option'],
         ]);
 
-        $this->assertSame(false, $config->automaticGeneration());
-        $this->assertSame([], $config->implementations());
-        $this->assertSame('App\\', $config->baseNamespace());
-        $this->assertSame('App\\Tests\\', $config->baseTestNamespace());
-        $this->assertSame('App\\Tests\\TestCase', $config->testCase());
-        $this->assertSame(false, $config->testClassFinal());
-        $this->assertSame(true, $config->testClassStrictTypes());
-        $this->assertSame([], $config->excludedMethods());
-        $this->assertSame([], $config->mergedPhpDoc());
-        $this->assertSame(['@author John Doe'], $config->phpDoc());
-        $this->assertSame(['custom' => 'option'], $config->options());
-        $this->assertSame('option', $config->getOption('custom'));
-        $this->assertSame(null, $config->getOption('unknown'));
-        $this->assertSame('foo bar', $config->getOption('unknown', 'foo bar'));
+        self::assertSame(false, $config->automaticGeneration());
+        self::assertSame([], $config->implementations());
+        self::assertSame('App\\', $config->baseNamespace());
+        self::assertSame('App\\Tests\\', $config->baseTestNamespace());
+        self::assertSame('App\\Tests\\TestCase', $config->testCase());
+        self::assertSame(false, $config->testClassFinal());
+        self::assertSame(true, $config->testClassStrictTypes());
+        self::assertSame([], $config->excludedMethods());
+        self::assertSame([], $config->mergedPhpDoc());
+        self::assertSame(['@author John Doe'], $config->phpDoc());
+        self::assertSame(['custom' => 'option'], $config->options());
+        self::assertSame('option', $config->getOption('custom'));
+        self::assertSame(null, $config->getOption('unknown'));
+        self::assertSame('foo bar', $config->getOption('unknown', 'foo bar'));
     }
 }

@@ -34,7 +34,7 @@ class TestPropertyTest extends TestCase
 
     public function testItConstructs(): void
     {
-        $this->assertSame('foo', $this->property->getName());
+        self::assertSame('foo', $this->property->getName());
     }
 
     public function testItAcceptsRenderer(): void
@@ -54,6 +54,6 @@ class TestPropertyTest extends TestCase
 
         $this->property->setDocumentation($documentation);
 
-        $this->assertSame($documentation, $this->property->getDocumentation());
+        self::assertSame($documentation, $this->property->getDocumentation());
     }
 }

@@ -52,7 +52,7 @@ class RendererTest extends TestCase
 
     public function testItRendersWithoutLine(): void
     {
-        $this->assertSame('', $this->renderer->getRendered()->toString());
+        self::assertSame('', $this->renderer->getRendered()->toString());
     }
 
     public function testItRendersWithMultipleLine(): void
@@ -60,7 +60,7 @@ class RendererTest extends TestCase
         $this->renderer->visitTestImport(new TestImport('Foo\\Bar'));
         $this->renderer->visitTestImport(new TestImport('Foo\\Baz'));
 
-        $this->assertSame(
+        self::assertSame(
             'use Foo\\Bar;
 use Foo\\Baz;',
             $this->renderer->getRendered()->toString()
@@ -71,8 +71,8 @@ use Foo\\Baz;',
     {
         $this->renderer->visitTestImport(new TestImport('Foo\\Bar'));
 
-        $this->assertCount(1, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(1, $this->renderer->getLines());
+        self::assertSame(
             'use Foo\\Bar;',
             $this->renderer->getRendered()->toString()
         );
@@ -82,8 +82,8 @@ use Foo\\Baz;',
     {
         $this->renderer->visitTestImport(new TestImport('Foo\\Bar', 'BarAlias'));
 
-        $this->assertCount(1, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(1, $this->renderer->getLines());
+        self::assertSame(
             'use Foo\\Bar as BarAlias;',
             $this->renderer->getRendered()->toString()
         );
@@ -100,8 +100,8 @@ use Foo\\Baz;',
 
         $this->renderer->visitTestClass(new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest'));
 
-        $this->assertCount(6, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(6, $this->renderer->getLines());
+        self::assertSame(
             '<?php
 
 final class FooTest extends TestCase
@@ -123,8 +123,8 @@ final class FooTest extends TestCase
 
         $this->renderer->visitTestClass(new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest'));
 
-        $this->assertCount(8, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(8, $this->renderer->getLines());
+        self::assertSame(
             '<?php
 
 declare(strict_types=1);
@@ -216,8 +216,8 @@ class FooTest extends TestCase
 
         $this->renderer->visitTestClass($class);
 
-        $this->assertCount(9, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(9, $this->renderer->getLines());
+        self::assertSame(
             '<?php
 
 namespace Tests\\Bar;
@@ -235,8 +235,8 @@ final class FooTest extends TestCase
     {
         $this->renderer->visitTestTrait(new TestTrait('Foo'));
 
-        $this->assertCount(1, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(1, $this->renderer->getLines());
+        self::assertSame(
             'use Foo;',
             $this->renderer->getRendered()->toString()
         );
@@ -246,8 +246,8 @@ final class FooTest extends TestCase
     {
         $this->renderer->visitTestProperty(new TestProperty('fooMock'));
 
-        $this->assertCount(2, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(2, $this->renderer->getLines());
+        self::assertSame(
             'private $fooMock;
 ',
             $this->renderer->getRendered()->toString()
@@ -266,8 +266,8 @@ final class FooTest extends TestCase
 
         $this->renderer->visitTestProperty($property);
 
-        $this->assertCount(2, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(2, $this->renderer->getLines());
+        self::assertSame(
             'private $fooMock;
 ',
             $this->renderer->getRendered()->toString()
@@ -278,8 +278,8 @@ final class FooTest extends TestCase
     {
         $this->renderer->visitTestMethod(new TestMethod('testFoo'));
 
-        $this->assertCount(4, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(4, $this->renderer->getLines());
+        self::assertSame(
             'public function testFoo(): void
 {
 }
@@ -337,8 +337,8 @@ final class FooTest extends TestCase
 
         $this->renderer->visitTestMethod($method);
 
-        $this->assertCount(4, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(4, $this->renderer->getLines());
+        self::assertSame(
             'public function testFoo(, , ): void
 {
 }
@@ -353,7 +353,7 @@ final class FooTest extends TestCase
 
         $this->renderer->visitTestParameter(new TestParameter('expected'));
 
-        $this->assertSame(
+        self::assertSame(
             '$expected',
             $this->renderer->getRendered()->toString()
         );
@@ -368,7 +368,7 @@ final class FooTest extends TestCase
 
         $this->renderer->visitTestParameter($parameter);
 
-        $this->assertSame(
+        self::assertSame(
             'int $expected',
             $this->renderer->getRendered()->toString()
         );
@@ -378,8 +378,8 @@ final class FooTest extends TestCase
     {
         $this->renderer->visitTestProvider(new TestProvider('sumDataProvider', []));
 
-        $this->assertCount(6, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(6, $this->renderer->getLines());
+        self::assertSame(
             'public function sumDataProvider(): array
 {
     return [
@@ -407,8 +407,8 @@ final class FooTest extends TestCase
 
         $this->renderer->visitTestProvider($provider);
 
-        $this->assertCount(10, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(10, $this->renderer->getLines());
+        self::assertSame(
             'public function sumDataProvider(): array
 {
     return [
@@ -427,8 +427,8 @@ final class FooTest extends TestCase
     {
         $this->renderer->visitTestStatement(new TestStatement());
 
-        $this->assertCount(0, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(0, $this->renderer->getLines());
+        self::assertSame(
             '',
             $this->renderer->getRendered()->toString()
         );
@@ -436,11 +436,11 @@ final class FooTest extends TestCase
 
     public function testItRendersStatementWithSingleLine(): void
     {
-        $this->renderer->visitTestStatement(new TestStatement('$this->assertTrue(true)'));
+        $this->renderer->visitTestStatement(new TestStatement('self::assertTrue(true)'));
 
-        $this->assertCount(1, $this->renderer->getLines());
-        $this->assertSame(
-            '$this->assertTrue(true);',
+        self::assertCount(1, $this->renderer->getLines());
+        self::assertSame(
+            'self::assertTrue(true);',
             $this->renderer->getRendered()->toString()
         );
     }
@@ -455,8 +455,8 @@ final class FooTest extends TestCase
 
         $this->renderer->visitTestStatement($statement);
 
-        $this->assertCount(5, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(5, $this->renderer->getLines());
+        self::assertSame(
             '$this->getMockBuilder(Foo::class)
     // A blank line to test comma are not added.
 
@@ -470,8 +470,8 @@ final class FooTest extends TestCase
     {
         $this->renderer->visitTestStatement(new TestStatement('/** @todo */'));
 
-        $this->assertCount(1, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(1, $this->renderer->getLines());
+        self::assertSame(
             '/** @todo */',
             $this->renderer->getRendered()->toString()
         );
@@ -481,8 +481,8 @@ final class FooTest extends TestCase
     {
         $this->renderer->visitTestDocumentation(new TestDocumentation());
 
-        $this->assertCount(0, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(0, $this->renderer->getLines());
+        self::assertSame(
             '',
             $this->renderer->getRendered()->toString()
         );
@@ -496,8 +496,8 @@ final class FooTest extends TestCase
 
         $this->renderer->visitTestDocumentation($documentation);
 
-        $this->assertCount(5, $this->renderer->getLines());
-        $this->assertSame(
+        self::assertCount(5, $this->renderer->getLines());
+        self::assertSame(
             '/**
  * @covers Foo
  *

@@ -48,7 +48,7 @@ class StatementFactoryTest extends TestCase
     {
         $statement = $this->statementFactory->makeTodo('This is a TODO.');
 
-        $this->assertSame([
+        self::assertSame([
             '/** @todo This is a TODO. */',
         ], $statement->getLines()->toArray());
     }
@@ -65,7 +65,7 @@ class StatementFactoryTest extends TestCase
     {
         $statement = $this->statementFactory->makeAffect($name, $value, $isProperty);
 
-        $this->assertSame([
+        self::assertSame([
             $expected,
         ], $statement->getLines()->toArray());
     }
@@ -82,8 +82,8 @@ class StatementFactoryTest extends TestCase
     {
         $statement = $this->statementFactory->makeAssert('equals');
 
-        $this->assertSame([
-            '$this->assertEquals()',
+        self::assertSame([
+            'self::assertEquals()',
         ], $statement->getLines()->toArray());
     }
 
@@ -91,8 +91,8 @@ class StatementFactoryTest extends TestCase
     {
         $statement = $this->statementFactory->makeAssert('Equals', '1', '2');
 
-        $this->assertSame([
-            '$this->assertEquals(1, 2)',
+        self::assertSame([
+            'self::assertEquals(1, 2)',
         ], $statement->getLines()->toArray());
     }
 
@@ -121,7 +121,7 @@ class StatementFactoryTest extends TestCase
 
         $statement = $this->statementFactory->makeInstantiation($class, new Collection($parameters));
 
-        $this->assertSame($expectedStatementLines, $statement->getLines()->toArray());
+        self::assertSame($expectedStatementLines, $statement->getLines()->toArray());
     }
 
     public function makeInstantiationDataProvider(): array

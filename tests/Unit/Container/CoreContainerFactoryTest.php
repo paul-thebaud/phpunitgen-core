@@ -22,6 +22,6 @@ class CoreContainerFactoryTest extends TestCase
 
         $container = CoreContainerFactory::make($config);
 
-        $this->assertSame($config, $container->get(ConfigContract::class));
+        self::assertSame($config, $container->get(ConfigContract::class));
     }
 }

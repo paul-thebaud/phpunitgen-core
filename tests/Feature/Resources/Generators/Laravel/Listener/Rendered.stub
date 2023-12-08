@@ -58,7 +58,7 @@ final class NewUserListenerTest extends TestCase
             ->getProperty('userService');
         $property->setAccessible(true);
         $property->setValue($this->newUserListener, $expected);
-        $this->assertSame($expected, $this->newUserListener->getUserService());
+        self::assertSame($expected, $this->newUserListener->getUserService());
     }
 
     public function testSetUserService(): void
@@ -68,6 +68,6 @@ final class NewUserListenerTest extends TestCase
             ->getProperty('userService');
         $property->setAccessible(true);
         $this->newUserListener->setUserService($expected);
-        $this->assertSame($expected, $property->getValue($this->newUserListener));
+        self::assertSame($expected, $property->getValue($this->newUserListener));
     }
 }

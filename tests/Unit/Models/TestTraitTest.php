@@ -33,7 +33,7 @@ class TestTraitTest extends TestCase
 
     public function testItConstructs(): void
     {
-        $this->assertSame('Bar', $this->trait->getName());
+        self::assertSame('Bar', $this->trait->getName());
     }
 
     public function testItAcceptsRenderer(): void

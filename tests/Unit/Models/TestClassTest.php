@@ -46,23 +46,23 @@ class TestClassTest extends TestCase
 
     public function testItConstructs(): void
     {
-        $this->assertSame($this->reflectionClass, $this->class->getReflectionClass());
-        $this->assertSame('Bar\\FooTest', $this->class->getName());
-        $this->assertSame('Bar', $this->class->getNamespace());
-        $this->assertSame('FooTest', $this->class->getShortName());
+        self::assertSame($this->reflectionClass, $this->class->getReflectionClass());
+        self::assertSame('Bar\\FooTest', $this->class->getName());
+        self::assertSame('Bar', $this->class->getNamespace());
+        self::assertSame('FooTest', $this->class->getShortName());
 
-        $this->assertEmpty($this->class->getImports());
-        $this->assertEmpty($this->class->getTraits());
-        $this->assertEmpty($this->class->getProperties());
-        $this->assertEmpty($this->class->getMethods());
+        self::assertEmpty($this->class->getImports());
+        self::assertEmpty($this->class->getTraits());
+        self::assertEmpty($this->class->getProperties());
+        self::assertEmpty($this->class->getMethods());
     }
 
     public function testItGetNamesWhenNoNamespace(): void
     {
         $class = new TestClass(Mockery::mock(ReflectionClass::class), 'FooTest');
 
-        $this->assertNull($class->getNamespace());
-        $this->assertSame('FooTest', $class->getShortName());
+        self::assertNull($class->getNamespace());
+        self::assertSame('FooTest', $class->getShortName());
     }
 
     public function testItAcceptsRenderer(): void
@@ -82,7 +82,7 @@ class TestClassTest extends TestCase
 
         $this->class->addImport($import);
 
-        $this->assertSame($this->class, $import->getTestClass());
+        self::assertSame($this->class, $import->getTestClass());
     }
 
     public function testItAddsTrait(): void
@@ -91,7 +91,7 @@ class TestClassTest extends TestCase
 
         $this->class->addTrait($trait);
 
-        $this->assertSame($this->class, $trait->getTestClass());
+        self::assertSame($this->class, $trait->getTestClass());
     }
 
     public function testItAddsProperty(): void
@@ -100,7 +100,7 @@ class TestClassTest extends TestCase
 
         $this->class->addProperty($property);
 
-        $this->assertSame($this->class, $property->getTestClass());
+        self::assertSame($this->class, $property->getTestClass());
     }
 
     public function testItAddsMethod(): void
@@ -109,7 +109,7 @@ class TestClassTest extends TestCase
 
         $this->class->addMethod($method);
 
-        $this->assertSame($this->class, $method->getTestClass());
+        self::assertSame($this->class, $method->getTestClass());
     }
 
     public function testItHasDocumentation(): void
@@ -118,6 +118,6 @@ class TestClassTest extends TestCase
 
         $this->class->setDocumentation($documentation);
 
-        $this->assertSame($documentation, $this->class->getDocumentation());
+        self::assertSame($documentation, $this->class->getDocumentation());
     }
 }

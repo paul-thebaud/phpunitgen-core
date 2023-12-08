@@ -72,6 +72,6 @@ class CodeParserTest extends TestCase
     {
         $class = $this->codeParser->parse(new StringSource('<?php class Foo {}'));
 
-        $this->assertSame('Foo', $class->getName());
+        self::assertSame('Foo', $class->getName());
     }
 }

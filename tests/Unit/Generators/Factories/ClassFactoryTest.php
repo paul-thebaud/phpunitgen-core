@@ -55,9 +55,9 @@ class ClassFactoryTest extends TestCase
 
         $class = $classFactory->make($reflectionClass);
 
-        $this->assertSame($reflectionClass, $class->getReflectionClass());
-        $this->assertSame($testName, $class->getName());
-        $this->assertInstanceOf(TestDocumentation::class, $class->getDocumentation());
+        self::assertSame($reflectionClass, $class->getReflectionClass());
+        self::assertSame($testName, $class->getName());
+        self::assertInstanceOf(TestDocumentation::class, $class->getDocumentation());
     }
 
     public function makeDataProvider(): array

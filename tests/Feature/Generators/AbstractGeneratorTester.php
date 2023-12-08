@@ -30,7 +30,7 @@ class AbstractGeneratorTester extends TestCase
             new LocalFileSource($this->getFileAbsolutePath($sourcePath))
         );
 
-        $this->assertSame(
+        self::assertSame(
             file_get_contents($this->getFileAbsolutePath($expectedPath)),
             $actual->toString()
         );

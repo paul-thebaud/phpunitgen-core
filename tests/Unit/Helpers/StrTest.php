@@ -23,7 +23,7 @@ class StrTest extends TestCase
      */
     public function testBeforeLast(string $expected, string $search, string $subject): void
     {
-        $this->assertSame($expected, Str::beforeLast($search, $subject));
+        self::assertSame($expected, Str::beforeLast($search, $subject));
     }
 
     public function beforeLastProvider(): array
@@ -44,7 +44,7 @@ class StrTest extends TestCase
      */
     public function testAfterFirst(string $expected, string $search, string $subject): void
     {
-        $this->assertSame($expected, Str::afterFirst($search, $subject));
+        self::assertSame($expected, Str::afterFirst($search, $subject));
     }
 
     public function afterFirstProvider(): array
@@ -65,7 +65,7 @@ class StrTest extends TestCase
      */
     public function testAfterLast(string $expected, string $search, string $subject): void
     {
-        $this->assertSame($expected, Str::afterLast($search, $subject));
+        self::assertSame($expected, Str::afterLast($search, $subject));
     }
 
     public function afterLastProvider(): array
@@ -87,7 +87,7 @@ class StrTest extends TestCase
      */
     public function testReplaceFirst(string $expected, string $search, string $replace, string $subject): void
     {
-        $this->assertSame($expected, Str::replaceFirst($search, $replace, $subject));
+        self::assertSame($expected, Str::replaceFirst($search, $replace, $subject));
     }
 
     public function replaceFirstProvider(): array
@@ -109,7 +109,7 @@ class StrTest extends TestCase
      */
     public function testReplaceLast(string $expected, string $search, string $replace, string $subject): void
     {
-        $this->assertSame($expected, Str::replaceLast($search, $replace, $subject));
+        self::assertSame($expected, Str::replaceLast($search, $replace, $subject));
     }
 
     public function replaceLastProvider(): array
@@ -130,7 +130,7 @@ class StrTest extends TestCase
      */
     public function testContains(bool $expected, $search, string $subject): void
     {
-        $this->assertSame($expected, Str::contains($search, $subject));
+        self::assertSame($expected, Str::contains($search, $subject));
     }
 
     public function containsProvider(): array
@@ -155,7 +155,7 @@ class StrTest extends TestCase
      */
     public function testContainsRegex(bool $expected, $expression, string $subject): void
     {
-        $this->assertSame($expected, Str::containsRegex($expression, $subject));
+        self::assertSame($expected, Str::containsRegex($expression, $subject));
     }
 
     public function containsRegexProvider(): array
@@ -181,7 +181,7 @@ class StrTest extends TestCase
      */
     public function testStartsWith(bool $expected, $search, string $subject): void
     {
-        $this->assertSame($expected, Str::startsWith($search, $subject));
+        self::assertSame($expected, Str::startsWith($search, $subject));
     }
 
     public function startsWithProvider(): array
@@ -203,7 +203,7 @@ class StrTest extends TestCase
      */
     public function testEndsWith(bool $expected, $search, string $subject): void
     {
-        $this->assertSame($expected, Str::endsWith($search, $subject));
+        self::assertSame($expected, Str::endsWith($search, $subject));
     }
 
     public function endsWithProvider(): array

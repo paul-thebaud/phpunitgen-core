@@ -44,6 +44,6 @@ class UnitClassFactoryTest extends TestCase
 
         $class = $classFactory->make($reflectionClass);
 
-        $this->assertSame('Tests\\Unit\\App\\Foo\\BarTest', $class->getName());
+        self::assertSame('Tests\\Unit\\App\\Foo\\BarTest', $class->getName());
     }
 }

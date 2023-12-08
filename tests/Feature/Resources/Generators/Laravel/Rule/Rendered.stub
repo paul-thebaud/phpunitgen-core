@@ -45,19 +45,19 @@ final class ProductRuleTest extends TestCase
     public function testPassesWhenOk(): void
     {
         /** @todo This test is incomplete. */
-        $this->assertTrue($this->productRule->passes('attribute', 'valid value'));
+        self::assertTrue($this->productRule->passes('attribute', 'valid value'));
     }
 
     public function testPassesWhenFailed(): void
     {
         /** @todo This test is incomplete. */
-        $this->assertFalse($this->productRule->passes('attribute', 'invalid value'));
+        self::assertFalse($this->productRule->passes('attribute', 'invalid value'));
     }
 
     public function testMessage(): void
     {
         /** @todo This test is incomplete. */
-        $this->markTestIncomplete();
+        self::markTestIncomplete();
     }
 
     public function testGetProductService(): void
@@ -67,7 +67,7 @@ final class ProductRuleTest extends TestCase
             ->getProperty('productService');
         $property->setAccessible(true);
         $property->setValue($this->productRule, $expected);
-        $this->assertSame($expected, $this->productRule->getProductService());
+        self::assertSame($expected, $this->productRule->getProductService());
     }
 
     public function testSetProductService(): void
@@ -77,6 +77,6 @@ final class ProductRuleTest extends TestCase
             ->getProperty('productService');
         $property->setAccessible(true);
         $this->productRule->setProductService($expected);
-        $this->assertSame($expected, $property->getValue($this->productRule));
+        self::assertSame($expected, $property->getValue($this->productRule));
     }
 }

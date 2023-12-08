@@ -81,7 +81,7 @@ class DocumentationFactoryTest extends TestCase
 
         $doc = $this->documentationFactory->makeForClass($class);
 
-        $this->assertSame([
+        self::assertSame([
             'Class FooTest.',
             '',
             '@covers \\App\\Foo',
@@ -125,7 +125,7 @@ class DocumentationFactoryTest extends TestCase
 
         $doc = $this->documentationFactory->makeForClass($class);
 
-        $this->assertSame([
+        self::assertSame([
             'Class FooTest.',
             '',
             '@author John',
@@ -148,7 +148,7 @@ class DocumentationFactoryTest extends TestCase
 
         $doc = $this->documentationFactory->makeForProperty($property, $types);
 
-        $this->assertSame([
+        self::assertSame([
             '@var string|bool',
         ], $doc->getLines()->toArray());
     }
@@ -159,6 +159,6 @@ class DocumentationFactoryTest extends TestCase
 
         $doc = $this->documentationFactory->makeForInheritedMethod($method);
 
-        $this->assertSame(['{@inheritdoc}'], $doc->getLines()->toArray());
+        self::assertSame(['{@inheritdoc}'], $doc->getLines()->toArray());
     }
 }

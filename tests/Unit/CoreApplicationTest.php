@@ -33,7 +33,7 @@ class CoreApplicationTest extends TestCase
         /** @var Config $config */
         $config = $application->getContainer()->get(Config::class);
 
-        $this->assertFalse($config->automaticGeneration());
+        self::assertFalse($config->automaticGeneration());
     }
 
     public function testRunExecutesAllPhpUnitGenTasks(): void
@@ -79,6 +79,6 @@ class CoreApplicationTest extends TestCase
             ->withNoArgs()
             ->andReturn($rendered);
 
-        $this->assertSame($rendered, $application->run($source));
+        self::assertSame($rendered, $application->run($source));
     }
 }

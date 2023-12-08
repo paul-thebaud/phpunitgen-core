@@ -109,10 +109,10 @@ class MethodFactoryTest extends TestCase
 
         $method = $this->methodFactory->makeSetUp($class);
 
-        $this->assertSame('setUp', $method->getName());
-        $this->assertSame('protected', $method->getVisibility());
-        $this->assertSame($doc, $method->getDocumentation());
-        $this->assertSame([
+        self::assertSame('setUp', $method->getName());
+        self::assertSame('protected', $method->getVisibility());
+        self::assertSame($doc, $method->getDocumentation());
+        self::assertSame([
             ['parent::setUp()'],
             [''],
             ['/** @todo Correctly instantiate tested object to use it. */'],
@@ -220,10 +220,10 @@ class MethodFactoryTest extends TestCase
 
         $method = $this->methodFactory->makeSetUp($class);
 
-        $this->assertSame('setUp', $method->getName());
-        $this->assertSame('protected', $method->getVisibility());
-        $this->assertSame($doc, $method->getDocumentation());
-        $this->assertSame([
+        self::assertSame('setUp', $method->getName());
+        self::assertSame('protected', $method->getVisibility());
+        self::assertSame($doc, $method->getDocumentation());
+        self::assertSame([
             ['parent::setUp()'],
             [''],
             ['$this->bar = null'],
@@ -248,10 +248,10 @@ class MethodFactoryTest extends TestCase
 
         $method = $this->methodFactory->makeTearDown($class);
 
-        $this->assertSame('tearDown', $method->getName());
-        $this->assertSame('protected', $method->getVisibility());
-        $this->assertSame($doc, $method->getDocumentation());
-        $this->assertSame([
+        self::assertSame('tearDown', $method->getName());
+        self::assertSame('protected', $method->getVisibility());
+        self::assertSame($doc, $method->getDocumentation());
+        self::assertSame([
             ['parent::tearDown()'],
             [''],
             ['unset($this->foo)'],
@@ -277,10 +277,10 @@ class MethodFactoryTest extends TestCase
 
         $method = $this->methodFactory->makeTearDown($class);
 
-        $this->assertSame('tearDown', $method->getName());
-        $this->assertSame('protected', $method->getVisibility());
-        $this->assertSame($doc, $method->getDocumentation());
-        $this->assertSame([
+        self::assertSame('tearDown', $method->getName());
+        self::assertSame('protected', $method->getVisibility());
+        self::assertSame($doc, $method->getDocumentation());
+        self::assertSame([
             ['parent::tearDown()'],
             [''],
             ['/** @todo Complete the tearDown() method. */'],
@@ -299,8 +299,8 @@ class MethodFactoryTest extends TestCase
 
         $method = $this->methodFactory->makeEmpty($reflectionMethod, 'UsingBaz');
 
-        $this->assertSame('testFooBarUsingBaz', $method->getName());
-        $this->assertSame('public', $method->getVisibility());
+        self::assertSame('testFooBarUsingBaz', $method->getName());
+        self::assertSame('public', $method->getVisibility());
     }
 
     public function testMakeIncomplete(): void
@@ -317,11 +317,11 @@ class MethodFactoryTest extends TestCase
 
         $method = $this->methodFactory->makeIncomplete($reflectionMethod);
 
-        $this->assertSame('testFooBar', $method->getName());
-        $this->assertSame('public', $method->getVisibility());
-        $this->assertSame([
+        self::assertSame('testFooBar', $method->getName());
+        self::assertSame('public', $method->getVisibility());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
-            ['$this->markTestIncomplete()'],
+            ['self::markTestIncomplete()'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -345,11 +345,11 @@ class MethodFactoryTest extends TestCase
 
         $method = $class->getMethods()->first();
 
-        $this->assertSame('testFooBar', $method->getName());
-        $this->assertSame('public', $method->getVisibility());
-        $this->assertSame([
+        self::assertSame('testFooBar', $method->getName());
+        self::assertSame('public', $method->getVisibility());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
-            ['$this->markTestIncomplete()'],
+            ['self::markTestIncomplete()'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());

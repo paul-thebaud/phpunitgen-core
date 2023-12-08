@@ -33,10 +33,10 @@ class TestStatementTest extends TestCase
 
     public function testItConstructs(): void
     {
-        $this->assertSame(1, $this->statement->getLines()->count());
-        $this->assertSame('/** @todo */', $this->statement->getLines()->first());
+        self::assertSame(1, $this->statement->getLines()->count());
+        self::assertSame('/** @todo */', $this->statement->getLines()->first());
 
-        $this->assertSame(0, (new TestStatement())->getLines()->count());
+        self::assertSame(0, (new TestStatement())->getLines()->count());
     }
 
     public function testItAcceptsRenderer(): void
@@ -52,35 +52,35 @@ class TestStatementTest extends TestCase
 
     public function testItAddsLine(): void
     {
-        $this->assertSame(1, $this->statement->getLines()->count());
+        self::assertSame(1, $this->statement->getLines()->count());
 
         $this->statement->addLine('$this->fooBar();');
 
-        $this->assertSame(2, $this->statement->getLines()->count());
-        $this->assertSame('$this->fooBar();', $this->statement->getLines()->last());
+        self::assertSame(2, $this->statement->getLines()->count());
+        self::assertSame('$this->fooBar();', $this->statement->getLines()->last());
     }
 
     public function testItRemovesLine(): void
     {
-        $this->assertSame(1, $this->statement->getLines()->count());
+        self::assertSame(1, $this->statement->getLines()->count());
 
         $this->statement->removeLine();
 
-        $this->assertSame(0, $this->statement->getLines()->count());
+        self::assertSame(0, $this->statement->getLines()->count());
     }
 
     public function testItPrepends(): void
     {
         $this->statement->prepend('foo bar ');
 
-        $this->assertSame('foo bar /** @todo */', $this->statement->getLines()->last());
+        self::assertSame('foo bar /** @todo */', $this->statement->getLines()->last());
     }
 
     public function testItAppends(): void
     {
         $this->statement->append(' foo bar');
 
-        $this->assertSame('/** @todo */ foo bar', $this->statement->getLines()->last());
+        self::assertSame('/** @todo */ foo bar', $this->statement->getLines()->last());
     }
 
     public function testItPrependsWhenCustomKey(): void
@@ -89,7 +89,7 @@ class TestStatementTest extends TestCase
 
         $this->statement->prepend('foo bar ', 0);
 
-        $this->assertSame('foo bar /** @todo */', $this->statement->getLines()->first());
+        self::assertSame('foo bar /** @todo */', $this->statement->getLines()->first());
     }
 
     public function testItAppendsWhenCustomKey(): void
@@ -98,6 +98,6 @@ class TestStatementTest extends TestCase
 
         $this->statement->append(' foo bar', 0);
 
-        $this->assertSame('/** @todo */ foo bar', $this->statement->getLines()->first());
+        self::assertSame('/** @todo */ foo bar', $this->statement->getLines()->first());
     }
 }

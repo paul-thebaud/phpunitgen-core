@@ -119,7 +119,7 @@ class ChannelMethodFactoryTest extends TestCase
 
         $method = $this->methodFactory->makeSetUp($class);
 
-        $this->assertSame([
+        self::assertSame([
             ['parent::setUp()'],
             [''],
             ['/** @todo Correctly instantiate tested object to use it. */'],
@@ -171,14 +171,14 @@ class ChannelMethodFactoryTest extends TestCase
 
         $method = $class->getMethods()[0];
 
-        $this->assertSame('testGetBar', $method->getName());
-        $this->assertSame('public', $method->getVisibility());
-        $this->assertNull($method->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testGetBar', $method->getName());
+        self::assertSame('public', $method->getVisibility());
+        self::assertNull($method->getDocumentation());
+        self::assertSame([
             ['$expected = null'],
             ['$property = (new ReflectionClass(Foo::class))', '->getProperty(\'bar\')'],
             ['$property->setValue($this->foo, $expected)'],
-            ['$this->assertSame($expected, $this->foo->getBar())'],
+            ['self::assertSame($expected, $this->foo->getBar())'],
         ], $method->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
@@ -234,34 +234,34 @@ class ChannelMethodFactoryTest extends TestCase
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('false', '$this->foo->join($this->user)')
-            ->andReturn(new TestStatement('$this->assertFalse($this->foo->join($this->user))'));
+            ->andReturn(new TestStatement('self::assertFalse($this->foo->join($this->user))'));
         $this->statementFactory->shouldReceive('makeAssert')
             ->once()
             ->with('true', '$this->foo->join($this->user)')
-            ->andReturn(new TestStatement('$this->assertTrue($this->foo->join($this->user))'));
+            ->andReturn(new TestStatement('self::assertTrue($this->foo->join($this->user))'));
 
         $this->methodFactory->makeTestable($class, $reflectionMethod);
 
         $method1 = $class->getMethods()[0];
 
-        $this->assertSame('testJoinWhenUnauthorized', $method1->getName());
-        $this->assertSame('public', $method1->getVisibility());
-        $this->assertNull($method1->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testJoinWhenUnauthorized', $method1->getName());
+        self::assertSame('public', $method1->getVisibility());
+        self::assertNull($method1->getDocumentation());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
-            ['$this->assertFalse($this->foo->join($this->user))'],
+            ['self::assertFalse($this->foo->join($this->user))'],
         ], $method1->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
 
         $method2 = $class->getMethods()[1];
 
-        $this->assertSame('testJoinWhenAuthorized', $method2->getName());
-        $this->assertSame('public', $method2->getVisibility());
-        $this->assertNull($method2->getDocumentation());
-        $this->assertSame([
+        self::assertSame('testJoinWhenAuthorized', $method2->getName());
+        self::assertSame('public', $method2->getVisibility());
+        self::assertNull($method2->getDocumentation());
+        self::assertSame([
             ['/** @todo This test is incomplete. */'],
-            ['$this->assertTrue($this->foo->join($this->user))'],
+            ['self::assertTrue($this->foo->join($this->user))'],
         ], $method2->getStatements()->map(function (TestStatement $statement) {
             return $statement->getLines()->toArray();
         })->toArray());
