@@ -239,7 +239,7 @@ class CommandMethodFactoryTest extends TestCase
         })->toArray());
     }
 
-    public function makeTestableHandleMethodDataProvider(): array
+    public static function makeTestableHandleMethodDataProvider(): array
     {
         $invalidName = Mockery::mock(ReflectionProperty::class);
         $static = Mockery::mock(ReflectionProperty::class);

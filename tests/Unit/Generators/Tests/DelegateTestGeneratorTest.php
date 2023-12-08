@@ -160,7 +160,7 @@ class DelegateTestGeneratorTest extends TestCase
         self::assertSame($testClass, $this->testGenerator->generate($reflectionClass));
     }
 
-    public function generateDelegatesToLaravelDataProvider(): array
+    public static function generateDelegatesToLaravelDataProvider(): array
     {
         return [
             ['App\\Services\\ProductService', LaravelTestGenerator::class, UnitClassFactory::class],

@@ -26,7 +26,7 @@ class StrTest extends TestCase
         self::assertSame($expected, Str::beforeLast($search, $subject));
     }
 
-    public function beforeLastProvider(): array
+    public static function beforeLastProvider(): array
     {
         return [
             ['Foo', '\\', 'Foo'],
@@ -47,7 +47,7 @@ class StrTest extends TestCase
         self::assertSame($expected, Str::afterFirst($search, $subject));
     }
 
-    public function afterFirstProvider(): array
+    public static function afterFirstProvider(): array
     {
         return [
             ['Foo', '\\', 'Foo'],
@@ -68,7 +68,7 @@ class StrTest extends TestCase
         self::assertSame($expected, Str::afterLast($search, $subject));
     }
 
-    public function afterLastProvider(): array
+    public static function afterLastProvider(): array
     {
         return [
             ['Foo', '\\', 'Foo'],
@@ -90,7 +90,7 @@ class StrTest extends TestCase
         self::assertSame($expected, Str::replaceFirst($search, $replace, $subject));
     }
 
-    public function replaceFirstProvider(): array
+    public static function replaceFirstProvider(): array
     {
         return [
             ['Foo Bar', 'Baz', 'Foo', 'Foo Bar'],
@@ -112,7 +112,7 @@ class StrTest extends TestCase
         self::assertSame($expected, Str::replaceLast($search, $replace, $subject));
     }
 
-    public function replaceLastProvider(): array
+    public static function replaceLastProvider(): array
     {
         return [
             ['Foo Bar', 'Baz', 'Foo', 'Foo Bar'],
@@ -133,7 +133,7 @@ class StrTest extends TestCase
         self::assertSame($expected, Str::contains($search, $subject));
     }
 
-    public function containsProvider(): array
+    public static function containsProvider(): array
     {
         return [
             [false, 'Foo', 'Bar Baz'],
@@ -158,7 +158,7 @@ class StrTest extends TestCase
         self::assertSame($expected, Str::containsRegex($expression, $subject));
     }
 
-    public function containsRegexProvider(): array
+    public static function containsRegexProvider(): array
     {
         return [
             [false, 'foo', 'Bar Baz'],
@@ -184,7 +184,7 @@ class StrTest extends TestCase
         self::assertSame($expected, Str::startsWith($search, $subject));
     }
 
-    public function startsWithProvider(): array
+    public static function startsWithProvider(): array
     {
         return [
             [false, 'Foo', 'Bar Baz'],
@@ -206,7 +206,7 @@ class StrTest extends TestCase
         self::assertSame($expected, Str::endsWith($search, $subject));
     }
 
-    public function endsWithProvider(): array
+    public static function endsWithProvider(): array
     {
         return [
             [false, 'Foo', 'Bar Baz'],

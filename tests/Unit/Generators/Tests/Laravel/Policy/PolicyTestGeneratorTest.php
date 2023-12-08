@@ -93,7 +93,7 @@ class PolicyTestGeneratorTest extends TestCase
         self::assertSame($expected, $this->callProtectedMethod($testGenerator, 'isTestable', $class, $method));
     }
 
-    public function isTestableDataProvider(): array
+    public static function isTestableDataProvider(): array
     {
         $staticMethod = Mockery::mock(ReflectionMethod::class);
         $getterMethod = Mockery::mock(ReflectionMethod::class);

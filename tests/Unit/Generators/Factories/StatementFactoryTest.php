@@ -70,7 +70,7 @@ class StatementFactoryTest extends TestCase
         ], $statement->getLines()->toArray());
     }
 
-    public function makeAffectDataProvider(): array
+    public static function makeAffectDataProvider(): array
     {
         return [
             ['$this->foo = 1', 'foo', '1', true],
@@ -124,7 +124,7 @@ class StatementFactoryTest extends TestCase
         self::assertSame($expectedStatementLines, $statement->getLines()->toArray());
     }
 
-    public function makeInstantiationDataProvider(): array
+    public static function makeInstantiationDataProvider(): array
     {
         $reflectionClass = Mockery::mock(ReflectionClass::class);
         $reflectionAbstract = Mockery::mock(ReflectionClass::class);

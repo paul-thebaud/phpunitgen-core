@@ -245,7 +245,7 @@ class PropertyFactoryTest extends TestCase
         self::assertSame($doc, $property->getDocumentation());
     }
 
-    public function makeForParameterWithBuiltInTypeDataProvider(): array
+    public static function makeForParameterWithBuiltInTypeDataProvider(): array
     {
         $intType = PhpVersionDependents::makeReflectionTypeMock();
 

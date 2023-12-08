@@ -96,7 +96,7 @@ class ReflectionTypeTest extends TestCase
         self::assertSame($expected, (new ReflectionType($type, false))->isBuiltIn());
     }
 
-    public function isBuiltInDataProvider(): array
+    public static function isBuiltInDataProvider(): array
     {
         return [
             [true, 'int'],

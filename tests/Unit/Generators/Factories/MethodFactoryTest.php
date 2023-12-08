@@ -122,7 +122,7 @@ class MethodFactoryTest extends TestCase
         })->toArray());
     }
 
-    public function makeSetUpWithoutConstructorDataProvider(): array
+    public static function makeSetUpWithoutConstructorDataProvider(): array
     {
         $protectedConstructor = Mockery::mock(ReflectionMethod::class);
         $abstractConstructor = Mockery::mock(ReflectionMethod::class);

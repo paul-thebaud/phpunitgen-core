@@ -145,7 +145,7 @@ class BasicMethodFactoryTest extends TestCase
         })->toArray());
     }
 
-    public function makeTestableForGetterDataProvider(): array
+    public static function makeTestableForGetterDataProvider(): array
     {
         return [
             [
@@ -253,7 +253,7 @@ class BasicMethodFactoryTest extends TestCase
         })->toArray());
     }
 
-    public function makeTestableForSetterDataProvider(): array
+    public static function makeTestableForSetterDataProvider(): array
     {
         return [
             [

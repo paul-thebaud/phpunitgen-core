@@ -147,7 +147,7 @@ class BasicTestGeneratorTest extends TestCase
         self::assertSame($expected, $this->testGenerator->canGenerateFor($reflectionClass));
     }
 
-    public function canGenerateDataProvider(): array
+    public static function canGenerateDataProvider(): array
     {
         $publicMethod = Mockery::mock(ReflectionMethod::class);
         $publicMethod->shouldReceive([

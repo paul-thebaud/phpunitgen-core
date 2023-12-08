@@ -60,7 +60,7 @@ class ClassFactoryTest extends TestCase
         self::assertInstanceOf(TestDocumentation::class, $class->getDocumentation());
     }
 
-    public function makeDataProvider(): array
+    public static function makeDataProvider(): array
     {
         return [
             ['', 'Tests\\Unit', 'Foo\\Bar', 'Tests\\Unit\\Foo\\BarTest'],

@@ -105,7 +105,7 @@ class TypeFactoryTest extends TestCase
         self::assertSame($expectedType, $this->typeFactory->makeFromString($class, $type, $isBuiltIn));
     }
 
-    public function makeFromStringDataProvider(): array
+    public static function makeFromStringDataProvider(): array
     {
         return [
             [new TestImport('MyParentClass'), 'DummyTestClass', 'parent', true],
