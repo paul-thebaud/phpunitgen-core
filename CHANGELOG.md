@@ -1,5 +1,17 @@
 # Change Log
 
+## 4.0.0
+
+**Added**
+
+- Add `phpHeaderDoc` option to generate a documentation block in generated file header (closes #30).
+
+**Changed**
+
+- **BREAKING** Drop support for PHP 8.0.
+- Change PHPUnit methods calls (`markTestIncomplete`, etc.) from instance to static calls (closes #29).
+- Remove `setAccessible` calls (methods are accessible by default since PHP 8.1) (closes #27).
+
 ## 3.1.0
 
 **Added**
