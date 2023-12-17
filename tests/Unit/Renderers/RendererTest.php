@@ -119,7 +119,7 @@ final class FooTest extends TestCase
     {
         $this->config->shouldReceive('phpHeaderDoc')
             ->once()
-            ->andReturn("/*\n * @license MIT\n */");
+            ->andReturn('/*'.PHP_EOL.' * @license MIT'.PHP_EOL.' */');
         $this->config->shouldReceive('testClassFinal')
             ->once()
             ->andReturnFalse();
