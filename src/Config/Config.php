@@ -92,7 +92,7 @@ class Config implements ConfigContract
                 continue;
             }
 
-            if (! call_user_func('is_' . $type, $value)) {
+            if (! call_user_func('is_'.$type, $value)) {
                 throw new InvalidArgumentException(
                     "configuration property {$property} must be of type {$type}",
                 );
@@ -111,7 +111,7 @@ class Config implements ConfigContract
      */
     protected static function getDefaultConfig(): array
     {
-        return require __DIR__ . '/../../config/phpunitgen.php';
+        return require __DIR__.'/../../config/phpunitgen.php';
     }
 
     /**
