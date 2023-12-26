@@ -3,5 +3,6 @@ enabled:
   - phpdoc_separation
   - phpdoc_align
 disabled:
+  - array_indentation
   - laravel_phpdoc_separation
   - laravel_phpdoc_alignment
