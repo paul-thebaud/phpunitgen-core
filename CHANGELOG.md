@@ -1,5 +1,11 @@
 # Change Log
 
+## 4.1.0
+
+**Added**
+
+- Add `php@8.3` support (see paul-thebaud/phpunitgen-console#13).
+
 ## 4.0.0
 
 **Added**
